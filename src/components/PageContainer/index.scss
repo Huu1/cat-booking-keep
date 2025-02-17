@@ -1,0 +1,13 @@
+.page-container {
+  height: 100vh;
+  overflow: auto;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  background-image: url('../../assets//images/footbg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  >view:last-child {
+    flex: 1;
+  }
+}

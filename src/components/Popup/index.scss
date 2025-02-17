@@ -1,0 +1,16 @@
+.mm-popup {
+  display: flex;
+  flex-direction: column;
+  .popup-border {
+    background-image: url("../../assets/images/blackBorder.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 8px;
+    margin-top: 6px;
+  }
+  .popup-content {
+    flex: 1;
+    overflow: hidden auto;
+  }
+}

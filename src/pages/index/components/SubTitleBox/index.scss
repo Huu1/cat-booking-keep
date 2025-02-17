@@ -1,0 +1,24 @@
+
+.subTitleBox {
+  margin: 12px 0;
+
+  >text {
+    font-size: 12px;
+    position: relative;
+    color: #787878;
+    display: inline-flex;
+
+    &:after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      width: 100%;
+      // left: 0;
+      // right: 0;
+      height: 2px;
+      background: #ffcf53;
+    }
+  }
+
+
+}
