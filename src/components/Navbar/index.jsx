@@ -2,7 +2,7 @@ import { isFunction, getSystemInfo } from "@/utils";
 import { Component } from "react";
 import Taro from "@tarojs/taro";
 import { View } from "@tarojs/components";
-import "./index.scss";
+// import "./index.scss";
 
 let globalSystemInfo = getSystemInfo();
 

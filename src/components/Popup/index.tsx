@@ -21,7 +21,7 @@ const Index = (props: MMButton) => {
   return (
     <Popup
       visible={props.visible}
-      style={{ height: "45%", borderRadius: 12 }}
+      style={{ height: "45%", borderRadius: 12 ,borderBottomLeftRadius:0,borderBottomRightRadius:0}}
       position="bottom"
       onClose={() => {
         props.setVisible(false);

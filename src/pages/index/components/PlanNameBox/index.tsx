@@ -1,25 +1,27 @@
 import Popup from "@/components/Popup";
-import { Image, Input, View } from "@tarojs/components";
+import { Image, Input, ScrollView, View } from "@tarojs/components";
 import { useState } from "react";
 import SubTitleBox from "../SubTitleBox";
-import house from "@/assets/images/房子.png";
-import baskketball from "@/assets/images/篮球.png";
-import badminton from "@/assets/images/羽毛球.png";
-import headset from "@/assets/images/耳机.png";
 import "./index.scss";
 import { Icon, iconNames } from "@/components/Icon";
 
-const PlanIconBox = ({ src }: { src: string }) => {
-  return (
-    <View className="planIconBox">
-      <Image src={src}></Image>
-    </View>
-  );
-};
+const planNameList = [
+  "存钱去旅游",
+  "存钱买辆车",
+  "存钱养可爱猫咪",
+  "存钱买一台新手机",
+  "存钱看一场演唱会",
+  "存钱买包包",
+  "个人小金库",
+  "零花钱小金库",
+  "秘密小金库",
+];
 
 const Index = () => {
   const [visible, setVisible] = useState(false);
+  const [visible2, setVisible2] = useState(false);
   const [planIcon, setPlanIcon] = useState("房子");
+  const [planName, setPlanName] = useState("");
 
   return (
     <>
@@ -35,15 +37,28 @@ const Index = () => {
         <View className="planNameRightBox">
           <View className="borderGrayLine nameBox">
             <SubTitleBox title="计划名称" className="m-0" />
-            <Input placeholder="个人小金库" />
+            <Input
+              placeholder="个人小金库"
+              value={planName}
+              onInput={(e) => {
+                setPlanName(e.detail.value);
+              }}
+            />
           </View>
-          <View className="rightbtn">愿望清单</View>
+          <View
+            className="rightbtn"
+            onClick={() => {
+              setVisible2(true);
+            }}
+          >
+            愿望清单
+          </View>
         </View>
       </View>
       <Popup
         visible={visible}
         setVisible={setVisible}
-        contentClassName="popup-content-box"
+        contentClassName="popup-content-box-plan-icon"
       >
         <View>选择计划封面</View>
 
@@ -63,6 +78,38 @@ const Index = () => {
             );
           })}
         </View>
+      </Popup>
+
+      <Popup
+        visible={visible2}
+        setVisible={setVisible2}
+        contentClassName="popup-content-box-planname"
+      >
+        <View>选择我的存钱愿望清单</View>
+
+        <ScrollView
+          scrollY
+          enhanced
+          scrollWithAnimation
+          lowerThreshold={20}
+          upperThreshold={20}
+          className="planname-list"
+        >
+          {planNameList.map((i) => {
+            return (
+              <View
+                key={i}
+                className={`${i === planName ? "checked" : ""} planname-item`}
+                onClick={() => {
+                  setPlanName(i);
+                  setVisible2(false);
+                }}
+              >
+                {i}
+              </View>
+            );
+          })}
+        </ScrollView>
       </Popup>
     </>
   );

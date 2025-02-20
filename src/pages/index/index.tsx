@@ -1,13 +1,15 @@
-import {  Text, View } from "@tarojs/components";
+import { Button, Text, View } from "@tarojs/components";
 import "./index.scss";
 import PageContainer from "@/components/PageContainer";
 import NavBar from "@/components/Navbar";
 import { Calendar } from "@nutui/nutui-react-taro";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dayjs from "dayjs";
-import Button from "@/components/Button";
+import MButton from "@/components/Button";
 import PlanNameBox from "./components/PlanNameBox";
 import SubTitleBox from "./components/SubTitleBox";
+import Taro from "@tarojs/taro";
+import { request } from "@/utils/request";
 
 export const TitleBox = ({
   title,
@@ -76,6 +78,30 @@ function Index() {
 
   const [confirmLoading, setConfirmLoading] = useState(false);
 
+  // 处理登录（无需手机号）
+  const handleLogin = async () => {
+    setConfirmLoading(true);
+    try {
+      // Step 1: 获取 code
+      const { code } = await Taro.login();
+      // Step 2: 发送 code 到服务端
+      const { token } = await request.post("/user/login", {
+        code,
+      });
+      if (token) {
+        // Step 4: 存储 token
+        Taro.setStorageSync("token", token);
+        Taro.showToast({ title: "登录成功" });
+      }
+    } catch (error) {
+      console.log(error);
+      Taro.showToast({ title: "登录失败", icon: "none" });
+    }
+
+    setConfirmLoading(false);
+  };
+
+
   return (
     <PageContainer
       navBar={
@@ -83,11 +109,7 @@ function Index() {
       }
       bodyClassName="index-content-box"
     >
-      <View className="topInfoImgeBox" >
-        {/* <View>365天存钱</View>
-        <View>将一年分为365天，每天存一笔钱，在起始金额的基础</View>
-        <View>上每日递增，第n天需要存入的金额为起始金额*n。</View>
-        <View></View> */}
+      <View className="topInfoImgeBox">
       </View>
 
       <TitleBox title="设置365天存钱计划" />
@@ -100,18 +122,18 @@ function Index() {
       <StartDateBox date={startDate} setDate={setStartDate} />
 
       <View className="confirmPlanButtonBox">
-        <Button
+        <MButton
           size="large"
           loading={confirmLoading}
           onClick={() => {
-            setConfirmLoading(true);
-            setTimeout(function () {
-              setConfirmLoading(false);
-            }, 2000);
+            // handleLogin();
+            Taro.navigateTo({
+              url:'/pages/saving/index'
+            })
           }}
         >
-          立即开始
-        </Button>
+          创建计划
+        </MButton>
       </View>
     </PageContainer>
   );

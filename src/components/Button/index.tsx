@@ -1,8 +1,7 @@
 import React from "react";
-import { ITouchEvent, Text, View } from "@tarojs/components";
+import { ITouchEvent, View } from "@tarojs/components";
 import cs from "classnames";
 import "./index.scss";
-import { Loading } from "@nutui/nutui-react-taro";
 
 type MMButton = {
   children: React.ReactNode;
