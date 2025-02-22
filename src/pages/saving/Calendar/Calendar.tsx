@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { View, ScrollView, Text } from "@tarojs/components";
 import "./index.scss";
+import { isDateEqual } from "@/utils";
 
 const months = [
   "Jan",
@@ -31,7 +32,12 @@ const chnMonths = [
   "十二月",
 ];
 
-const Calendar = ({ startDate = new Date() }) => {
+const Calendar = ({
+  startDate = new Date(),
+  checkinDates,
+  selectedDate,
+  setSelectedDate,
+}) => {
   const [isExpanded, setIsExpanded] = useState<any>(false);
   const [dates, setDates] = useState<any[]>([]);
   const scrollRef = useRef<any>(null);
@@ -62,35 +68,16 @@ const Calendar = ({ startDate = new Date() }) => {
   const startDay = startDate.getDay();
   const startOffset = startDay === 0 ? 6 : startDay - 1;
 
-  // 滚动到指定行
-  const scrollToRow = (index) => {
-    if (scrollRef.current) {
-      const rowHeight = 80; // 每行高度
-      const maxScroll =
-        (dates.length / 7) * rowHeight - containerRef.current.clientHeight;
-      const targetScroll = Math.min(index * rowHeight, maxScroll);
-      scrollRef.current.scrollTo({ top: targetScroll, animated: true });
-    }
-  };
-
   // 处理日期点击
-  const handleDateClick = (date, index) => {
-    console.log("Selected:", date);
-    if (isExpanded) {
-      setIsExpanded(false);
-      const row = Math.floor((index + startOffset) / 7);
-      setTimeout(() => scrollToRow(row), 300);
-    }
+  const handleDateClick = (date) => {
+    setSelectedDate(date);
   };
 
-  // 滚动到今日
-  const scrollToToday = () => {
-    const todayIndex = dates.findIndex((d) => d.isToday);
-    if (todayIndex > -1 && scrollRef.current) {
-      const row = Math.floor((todayIndex + startOffset) / 7);
-      scrollRef.current.scrollIntoView(`row-${row}`);
-    }
-  };
+  const isCheckInDate=(date)=>{
+    return checkinDates.some((i) => {
+      return isDateEqual(i, date);
+    });
+  }
 
   return (
     <View
@@ -107,7 +94,12 @@ const Calendar = ({ startDate = new Date() }) => {
       </View>
 
       {/* 日期主体 */}
-      <ScrollView scrollY className="calendar-body" ref={scrollRef} showScrollbar={false}>
+      <ScrollView
+        scrollY
+        className="calendar-body"
+        ref={scrollRef}
+        showScrollbar={false}
+      >
         <View className="grid-container">
           {/* 起始空白 */}
           {Array.from({ length: startOffset }).map((_, i) => (
@@ -118,8 +110,12 @@ const Calendar = ({ startDate = new Date() }) => {
           {dates.map((d, i) => (
             <View
               key={i}
-              className={`cell ${d.isToday ? "today" : ""}`}
-              onClick={() => handleDateClick(d.date, i)}
+              className={`cell
+              ${d.isToday ? "today" : ""}
+              ${isDateEqual(d.date, selectedDate) ? "cell-selected" : ""}
+              ${isCheckInDate(d.date)?'cell-checkin': ''}`
+            }
+              onClick={() => handleDateClick(d.date)}
             >
               {!d.isNewYear && !d.isFirstDay && !d.isNewYear && (
                 <Text className="date-number">{d.date.getDate()}</Text>

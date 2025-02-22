@@ -1,13 +1,22 @@
 import { ScrollView, View } from "@tarojs/components";
 import React from "react";
-import "./index.scss";
+import cs from "classnames";
+import styles from "./index.module.scss";
 
 type TPageBoxType = {
   navBar: React.ReactElement;
   children: React.ReactNode;
   bodyClassName?: string;
+  wrapClassName?: string;
 };
-const Index = ({ navBar, children, bodyClassName }: TPageBoxType) => {
+const Index = ({
+  navBar,
+  children,
+  bodyClassName,
+  wrapClassName,
+}: TPageBoxType) => {
+  const _className = cs(styles.pageContainer, wrapClassName);
+
   return (
     <View
       style={{
@@ -22,7 +31,7 @@ const Index = ({ navBar, children, bodyClassName }: TPageBoxType) => {
         scrollWithAnimation
         lowerThreshold={20}
         upperThreshold={20}
-        className="page-container"
+        className={_className}
         bounces={false}
         showScrollbar={false}
       >

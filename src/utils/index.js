@@ -97,3 +97,8 @@ export function getSystemInfo() {
 export function isFunction(fn) {
   return Object.prototype.toString.call(fn) === '[object Function]';
 }
+
+
+export const isDateEqual = (date1, date2) => {
+  return date1?.getTime?.() === date2?.getTime?.();
+};

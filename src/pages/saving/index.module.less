@@ -1,0 +1,101 @@
+.savingPageWrapBox {
+  background-color: #f7f7f7;
+  background-image: none;
+  .calendarWrap {
+    position: relative;
+    min-height: 306px;
+  }
+  .content {
+    padding: 12px;
+    .checkinButton {
+      background-color: #3f52b3;
+      padding: 18px 24px;
+      border-radius: 8px;
+      display: flex;
+      gap: 16px;
+
+      transition: transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+
+      color: white;
+      .planIconWrap {
+        border-radius: 50%;
+        width: 48px;
+        height: 48px;
+        > image {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .btnContent {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        > view:first-child {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          > text:first-child {
+            font-size: 18px;
+            font-weight: 600;
+          }
+        }
+
+        .boxCheck {
+          background-color: white;
+          width: 25px;
+          height: 25px;
+          margin-left: auto;
+          border-radius: 6px;
+          position: relative;
+
+          &.boxSelected {
+            background-color: #6475c5;
+            &::after {
+              content: "";
+              position: absolute;
+              background-image: url("../../assets/images/勾子.png");
+              background-size: cover;
+              background-repeat: no-repeat;
+              width: 28px;
+              height: 28px;
+              bottom: 3px;
+            }
+          }
+        }
+      }
+
+      // 点击态放大
+      &.active {
+        transform: scale(1.04);
+      }
+
+      // 抖动动画
+      &.shake {
+        animation: shake 0.6s;
+        transform-origin: center center;
+      }
+
+      @keyframes shake {
+        0%,
+        100% {
+          transform: scale(1) translateX(0);
+        }
+        15% {
+          transform: scale(0.9) translateX(-5px);
+        }
+        30% {
+          transform: scale(1.04) translateX(4px);
+        }
+        45% {
+          transform: scale(1) translateX(-4px);
+        }
+        60% {
+          transform: scale(1) translateX(2px);
+        }
+        75% {
+          transform: scale(1) translateX(-1px);
+        }
+      }
+    }
+  }
+}
