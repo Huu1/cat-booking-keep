@@ -31,7 +31,7 @@ interface ResponseData<T = any> {
   code: number;
   data: T;
   message: string;
-  status:number;
+  status: number;
 }
 
 // 拦截器接口
@@ -51,6 +51,7 @@ export class Request {
     baseUrl = "http://localhost:3000/api",
     defaultHeader = {
       "Content-Type": "application/json",
+      Authorization: Taro.getStorageSync("token"),
     }
   ) {
     this.baseUrl = baseUrl;
@@ -91,13 +92,12 @@ export class Request {
     });
   }
 
-
   private handleResponse<T>(
-    response: Taro.request.SuccessCallbackResult<ResponseData<T>>,
+    response: Taro.request.SuccessCallbackResult<ResponseData<T>>
   ): T {
     const result = response.data;
 
-    if (response.statusCode === 201||response.statusCode===200) {
+    if (response.statusCode === 201 || response.statusCode === 200) {
       if (result.status === 0) {
         return result.data;
       }
@@ -108,7 +108,6 @@ export class Request {
   public async request<T = any, D = any>(
     options: RequestOptions<D>
   ): Promise<T> {
-
     const {
       url,
       method = "GET",
@@ -118,10 +117,9 @@ export class Request {
       timeout = DEFAULT_TIMEOUT,
     } = options;
 
-    if (loading) {
-      this.showLoading();
-    }
-
+    // if (loading) {
+    //   this.showLoading();
+    // }
 
     try {
       const requestPromise = Taro.request<ResponseData<T>>({
@@ -139,21 +137,19 @@ export class Request {
         this.createTimeout(timeout),
       ]);
 
-      if (loading) {
-        this.hideLoading();
-      }
+      // if (loading) {
+      //   this.hideLoading();
+      // }
 
       // 处理 401 未授权的情况
-      if (
-        response.statusCode === 401
-      ) {
+      if (response.statusCode === 401) {
       }
 
       return this.handleResponse<T>(response);
     } catch (error) {
-      if (loading) {
-        this.hideLoading();
-      }
+      // if (loading) {
+      //   this.hideLoading();
+      // }
       return this.handleError(error);
     }
   }
@@ -183,7 +179,6 @@ export class Request {
       header,
     });
   }
-
 }
 
 export const request = new Request();

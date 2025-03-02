@@ -1,4 +1,6 @@
 /// <reference types="@tarojs/taro" />
+import '@taro-hooks/plugin-react';
+
 
 declare module '*.png';
 declare module '*.gif';
