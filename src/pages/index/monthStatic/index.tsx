@@ -19,20 +19,21 @@ const AmountBox = ({
   );
 };
 
+
 const Index = (props) => {
-  const { income, expense, net_surplus } = props;
+  const { totalIncome, totalExpense, balance } = props;
   return (
     <View className={styles.monthStatic}>
       <View>月支出</View>
-      <AmountBox value={expense} className={styles.expenseNumber} />
+      <AmountBox value={totalExpense} className={styles.expenseNumber} />
       <View className={styles.bottomRow}>
         <View>
           <Text>月收入</Text>
-          <AmountBox value={income} />
+          <AmountBox value={totalIncome} />
         </View>
         <View>
           <Text>月结余</Text>
-          <AmountBox value={net_surplus} />
+          <AmountBox value={balance} />
         </View>
       </View>
     </View>

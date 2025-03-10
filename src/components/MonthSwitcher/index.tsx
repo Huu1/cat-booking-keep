@@ -29,7 +29,7 @@ const Index = ({
         {"<"}
       </View>
 
-      <Text className={styles["month-text"]}>{formatDate(currentDate)}</Text>
+      <Text className={styles["month-text"]}>{formatDate(currentDate)?.text}</Text>
 
       <Text className={styles["arrow-button"]} onClick={handleNextMonth}>
         {">"}
@@ -41,7 +41,12 @@ const Index = ({
 export const formatDate = (date: Date) => {
   const year = date.getFullYear();
   const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  return `${year}-${month}`;
+
+  return {
+    text: `${year}-${month}`,
+    year:year.toString(),
+    month:month.toString(),
+  };
 };
 
 export default Index;

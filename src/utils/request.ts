@@ -51,7 +51,7 @@ export class Request {
     baseUrl = "http://localhost:3000/api",
     defaultHeader = {
       "Content-Type": "application/json",
-      Authorization: Taro.getStorageSync("token"),
+      Authorization: `Bearer ` + Taro.getStorageSync("token"),
     }
   ) {
     this.baseUrl = baseUrl;
@@ -81,7 +81,13 @@ export class Request {
     if (typeof error === "string") {
       throw new Error(error);
     }
-    throw new Error(error?.message || ERROR_MESSAGE.DEFAULT);
+    Taro.showToast({
+      title: error?.data,
+      mask: true,
+      icon:'error',
+      duration:3000
+    });
+    throw new Error(error?.data || ERROR_MESSAGE.DEFAULT);
   }
 
   private createTimeout(timeout: number): Promise<never> {
@@ -98,8 +104,10 @@ export class Request {
     const result = response.data;
 
     if (response.statusCode === 201 || response.statusCode === 200) {
-      if (result.status === 0) {
+      if (result.code === 200) {
         return result.data;
+      } else {
+        return this.handleError(response);
       }
     }
     return this.handleError(response);

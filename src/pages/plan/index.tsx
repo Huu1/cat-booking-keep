@@ -85,12 +85,13 @@ function Index() {
       // Step 1: 获取 code
       const { code } = await Taro.login();
       // Step 2: 发送 code 到服务端
-      const { token } = await request.post("/user/login", {
+      const { access_token } = await request.post("/auth/login/wechat", {
         code,
       });
-      if (token) {
+
+      if (access_token) {
         // Step 4: 存储 token
-        Taro.setStorageSync("token", token);
+        Taro.setStorageSync("token", access_token);
         Taro.showToast({ title: "登录成功" });
       }
     } catch (error) {

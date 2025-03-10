@@ -12,6 +12,9 @@ class NavBar extends Component {
     this.state = {
       configStyle: this.setStyle(globalSystemInfo)
     };
+    
+    // 在构造函数中调用高度回调
+    this.notifyHeightChange();
   }
   static options = {
     multipleSlots: true,
@@ -47,6 +50,29 @@ class NavBar extends Component {
       this.props.onSearch();
     }
   }
+  componentDidMount() {
+    // 组件挂载后通知父组件导航栏高度
+    this.notifyHeightChange();
+  }
+  
+  componentDidUpdate(prevProps) {
+    // 如果属性变化可能影响高度，重新通知父组件
+    if (prevProps.title !== this.props.title || 
+        prevProps.back !== this.props.back || 
+        prevProps.home !== this.props.home) {
+      this.notifyHeightChange();
+    }
+  }
+  
+  // 通知父组件导航栏高度的方法
+  notifyHeightChange() {
+    const { navBarHeight, navBarExtendHeight } = this.state.configStyle || {};
+    if (navBarHeight && this.props.onHeightChange && isFunction(this.props.onHeightChange)) {
+      const totalHeight = navBarHeight + (navBarExtendHeight || 0);
+      this.props.onHeightChange(totalHeight);
+    }
+  }
+
   static defaultProps = {
     extClass: "",
     background: "rgba(255,255,255,1)", //导航栏背景
@@ -57,7 +83,8 @@ class NavBar extends Component {
     back: false,
     home: false,
     iconTheme: "black",
-    delta: 1
+    delta: 1,
+    onHeightChange: null // 添加高度变化回调属性
   };
 
   state = {};
