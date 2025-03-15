@@ -105,7 +105,7 @@ const Layout: React.FC<LayoutProps> = ({
           {children}
         </View>
       </ScrollView>
-      {showTabBar && <TabBar current={currentTab} tabs={tabs} />}
+      {showTabBar && <TabBar current={currentTab as any} tabs={tabs} />}
     </View>
   );
 };

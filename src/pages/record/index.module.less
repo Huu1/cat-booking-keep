@@ -1,137 +1,25 @@
+@import "../../styles/variables.less";
+
 .recordContainer {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: #f5f5f5;
-  overflow: hidden; /* 防止整个页面出现滚动条 */
-}
-
-.categoriesScroll {
-  height: 400rpx; /* 设置一个固定高度，根据需要调整 */
-  background-color: white;
-  padding: 20rpx;
-  margin-bottom: 20rpx;
-}
-
-.categoriesGrid {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.amountSection {
-  padding: 30rpx;
-  display: flex;
-  align-items: center;
-  background-color: white;
-}
-
-.currencySymbol {
-  font-size: 40rpx;
-  color: #333;
-  margin-right: 10rpx;
-}
-
-.amountDisplay {
-  font-size: 60rpx;
-  font-weight: 500;
-  color: #333;
-}
-
-.dateNoteSection {
-  display: flex;
-  align-items: center;
-  padding: 20rpx 30rpx;
-  background-color: white;
-  margin-bottom: 20rpx;
-}
-
-.dateWrapper {
-  display: flex;
-  align-items: center;
-  margin-right: 20rpx;
-}
-
-.dateLabel {
-  font-size: 28rpx;
-  color: #666;
-}
-
-.noteInput {
-  flex: 1;
-  font-size: 28rpx;
-  color: #333;
-  padding: 10rpx 0;
-}
-
-.categoriesScroll {
-  flex: 1;
-  background-color: white;
+  overflow: hidden;
   padding: 20rpx;
 }
 
-.categoriesGrid {
-  display: flex;
-  flex-wrap: wrap;
+.switchBox {
+  width: 240rpx;
 }
 
-.categoryItem {
-  width: 20%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20rpx 0;
-}
-
-.categoryIcon {
-  width: 80rpx;
-  height: 80rpx;
-  border-radius: 50%;
-  background-color: #f0f0f0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 10rpx;
-}
-
-.selectedCategory .categoryIcon {
-  background-color: #ffe58f;
-}
-
-.categoryName {
-  font-size: 24rpx;
-  color: #333;
-}
-
-.keyboardSection {
-  background-color: #f0f0f0;
-  padding: 10rpx;
-}
-
-.keyboardRow {
-  display: flex;
-  margin-bottom: 10rpx;
-}
-
-.keyboardKey {
-  flex: 1;
-  height: 100rpx;
+.inputContainer {
   background-color: white;
-  margin: 5rpx;
-  border-radius: 10rpx;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 36rpx;
-  font-weight: 500;
+  margin-bottom: 20rpx;
+  border-radius: 24rpx;
 }
 
-.doneButton {
-  width: 100%;
-  height: 100%;
-  background-color: #ff6b6b;
-  color: white;
-  border-radius: 10rpx;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.divider {
+  height: 1px;
+  background-color: @border-color;
+  margin: 0 30rpx;
 }

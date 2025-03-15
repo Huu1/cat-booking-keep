@@ -48,7 +48,7 @@ export class Request {
   // private eventManager: RequestEventManager;
 
   constructor(
-    baseUrl = "http://192.168.0.102:3000/api",
+    baseUrl = "http://192.168.0.105:3000/api",
     defaultHeader = {
       "Content-Type": "application/json",
       Authorization: `Bearer ` + Taro.getStorageSync("token"),
@@ -63,31 +63,37 @@ export class Request {
     this.interceptors.push(interceptor);
   }
 
-  private showLoading() {
-    Taro.showLoading({
-      title: LOADING_TEXT,
-      mask: true,
-    });
-  }
-
-  private hideLoading() {
-    Taro.hideLoading();
-  }
-
   private handleError(error: any): never {
     if (error instanceof Error) {
       throw error;
     }
+
     if (typeof error === "string") {
-      throw new Error(error);
+      Taro.showToast({
+        title: error,
+        mask: true,
+        icon: "error",
+        duration: 3000,
+      });
+    } else if (typeof error === "object") {
+      // Handle object errors
+      const errorMessage =
+        error?.data?.message || error?.message || ERROR_MESSAGE.DEFAULT;
+      Taro.showToast({
+        title: errorMessage,
+        mask: true,
+        icon: "error",
+        duration: 3000,
+      });
     }
-    Taro.showToast({
-      title: error?.data,
-      mask: true,
-      icon:'error',
-      duration:3000
-    });
-    throw new Error(error?.data || ERROR_MESSAGE.DEFAULT);
+
+    // Create a more informative error message
+    const errorMsg =
+      typeof error === "object"
+        ? error?.data?.message || error?.message || JSON.stringify(error)
+        : error || ERROR_MESSAGE.DEFAULT;
+
+    throw new Error(errorMsg);
   }
 
   private createTimeout(timeout: number): Promise<never> {

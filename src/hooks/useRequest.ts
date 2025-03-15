@@ -64,6 +64,7 @@ function useRequest<TData, TParams extends any[] = any[]>(
   const retryCountRef = useRef(0);
   const loadingDelayTimerRef = useRef<NodeJS.Timeout>();
   const cancelRef = useRef<() => void>(() => {});
+  const isFirstRender = useRef(true); // 添加这一行
 
   // 清理函数
   const cleanup = () => {
@@ -197,11 +198,7 @@ function useRequest<TData, TParams extends any[] = any[]>(
 
   // 依赖刷新
   useEffect(() => {
-    // 跳过首次执行，避免与上面的自动执行重复
-    const shouldSkip = !manual && refreshDeps.length > 0;
-    
-    if (shouldSkip) {
-      const isFirstRender = useRef(true);
+    if (!manual && refreshDeps.length > 0) {
       if (isFirstRender.current) {
         isFirstRender.current = false;
         return;

@@ -1,341 +1,176 @@
-import React, { useState } from "react";
-import { View, Text, ScrollView, Input } from "@tarojs/components";
+import { useState, useCallback, useMemo, useEffect } from "react";
+import { View } from "@tarojs/components";
+import Taro from "@tarojs/taro";
 import Layout from "@/components/Layout";
 import NavBar from "@/components/Navbar";
-import IconFont from "@/components/Iconfont";
+import NumberKeyboard from "@/pages/record/components/NumberKeyboard";
 import styles from "./index.module.less";
 import useRequest from "@/hooks/useRequest";
-import { getCategories } from "./service";
+import { getCategories, saveRecord } from "./service";
+import Switcher from "@/components/Switcher";
+import CategoryList from "./components/CategoryList";
+import AmountDisplay from "./components/AmountDisplay";
+import DateNote from "./components/DateNote";
+import { SafeArea } from "@nutui/nutui-react-taro";
+import dayjs from "dayjs";
+
+// 在组件中使用
+const recordTypeOptions = [
+  { value: "expense", label: "支出" },
+  { value: "income", label: "收入" },
+];
 
 const Index = () => {
+
   const [amount, setAmount] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategoryId, setSelectedCategory] = useState<number | null>(
+    null
+  );
   const [note, setNote] = useState("");
-  const [date, setDate] = useState("03/10"); // 默认日期，可以根据实际需求修改
-  const [currentOperator, setCurrentOperator] = useState({
-    plus: true, // true 表示显示 +，false 表示显示 ×
-    minus: true, // true 表示显示 -，false 表示显示 ÷
+
+  // 修改日期状态，使用当前日期作为默认值
+  const [date, setDate] = useState(dayjs().format("YYYY/MM/DD HH:mm:ss"));
+
+  const [recordType, setRecordType] = useState("expense");
+
+  const { loading, run } = useRequest(saveRecord, {
+    manual: true,
+    onSuccess: (data) => {
+      console.log("记账成功", data);
+      Taro.redirectTo({
+        url: "/pages/index/index",
+      });
+    },
+    onError: (error) => {
+      console.log("记账失败", error);
+    },
   });
 
-  const { data: categories = [] } = useRequest(getCategories);
+  // 使用useCallback缓存函数引用
+  const handleCategorySelect = useCallback((category) => {
+    setSelectedCategory(category.id);
+  }, []);
 
-  // 处理数字键盘输入
-  // 添加新的状态
-  const [expression, setExpression] = useState({
-    firstNum: "",
-    operator: "",
-    secondNum: "",
-  });
+  // 添加 bookId 状态
+  const [bookId, setBookId] = useState<number | null>(null);
 
-  // 修改 handleKeyPress 函数
-  const handleKeyPress = (key) => {
-    if (key === "delete") {
-      setAmount((prev) => {
-        const newAmount = prev.slice(0, -1);
-        checkExpression(newAmount);
-        return newAmount;
-      });
-    } else if (key === "done") {
-      if (canCalculate()) {
-        const result = calculate();
-        setAmount(result.toString());
-        setExpression({ firstNum: "", operator: "", secondNum: "" });
-      } else {
-        console.log("记账完成", { amount, selectedCategory, note, date });
-      }
-    } else if (["+", "-", "×", "÷"].includes(key)) {
-      if (canCalculate()) {
-        // 如果已经可以计算，先计算结果
-        const result = calculate();
-        setAmount(result.toString() + key);
-        setExpression({
-          firstNum: result.toString(),
-          operator: key,
-          secondNum: "",
-        });
-      } else if (amount) {
-        setAmount((prev) => prev + key);
-        setExpression((prev) => ({
-          ...prev,
-          firstNum: amount,
-          operator: key,
-        }));
-      }
-    } else if (key === "again") {
-      setAmount("");
-      setSelectedCategory(null);
-      setNote("");
-      setExpression({ firstNum: "", operator: "", secondNum: "" });
-    } else {
+  useEffect(() => {
+    const instance = Taro.getCurrentInstance();
+    const eventChannel = instance?.page?.getOpenerEventChannel?.();
 
-        // 添加检查小数位数的辅助函数
-        const checkDecimalLimit = (value: string): boolean => {
-          const numbers = value.split(/[+\-×÷]/);
-          return numbers.some(num => {
-            const dotIndex = num.indexOf('.');
-            return dotIndex !== -1 && num.length - dotIndex > 3;
-          });
-        };
-        // 处理数字和小数点输入
-        if (key === "." && amount.includes(".")) return; // 防止多个小数点
-        if (key === "0" && amount === "0") return; // 防止多个前导零
-
-        const newAmount = amount === "0" && key !== "." ? key : amount + key;
-
-        // 检查是否有任何数字部分超过两位小数
-        if (key !== "." && checkDecimalLimit(newAmount)) {
-          return;
+    if (eventChannel) {
+      eventChannel.on(
+        "acceptDataFromOpenerPage",
+        (data: { bookId: number }) => {
+          setBookId(data.bookId);
         }
+      );
+    }
+  }, []);
 
-        if (amount === "0" && key !== ".") {
-          setAmount(key);
-        } else {
-          setAmount(newAmount);
-          checkExpression(newAmount);
+  // 在 handleDone 中使用 bookId
+  const handleDone = useCallback(
+    (result: string) => {
+      const params = {
+        amount: Number(result),
+        categoryId: selectedCategoryId!,
+        note,
+        recordDate: dayjs(date).format("YYYY-MM-DD HH:mm:ss"),
+        accountId: 1,
+        type: recordType,
+        bookId: bookId!, // 使用传递过来的 bookId，如果没有则使用默认值
+      };
+      run(params);
+    },
+    [amount, selectedCategoryId, note, date, bookId] // 添加 bookId 依赖
+  );
+
+  // 使用useCallback缓存函数引用
+  const handleAgain = useCallback(() => {
+    setSelectedCategory(null);
+    setNote("");
+  }, []);
+
+  // 使用useCallback缓存函数引用
+  const handleNoteChange = useCallback((value: string) => {
+    setNote(value);
+  }, []);
+
+  // 使用useCallback缓存函数引用
+  const handleRecordTypeChange = useCallback((value: string) => {
+    setRecordType(value);
+  }, []);
+
+  // 添加日期变更处理函数
+  const handleDateChange = useCallback((value: string) => {
+    setDate(value);
+  }, []);
+
+  const { data: categories = [] } = useRequest(
+    () => getCategories(recordType),
+    {
+      refreshDeps: [recordType],
+      onSuccess: (data) => {
+        !selectedCategoryId && setSelectedCategory(data?.[0]?.id);
+      },
+    }
+  );
+
+  // 使用useMemo缓存NavBar组件
+  const navBarComponent = useMemo(
+    () => (
+      <NavBar
+        title={
+          <Switcher
+            className={styles.switchBox}
+            options={recordTypeOptions}
+            value={recordType}
+            onChange={handleRecordTypeChange}
+          />
         }
-    }
-  };
-
-  // 添加辅助函数
-  const checkExpression = (value: string) => {
-    const match = value.match(/^([\d.]+)([+\-×÷])([\d.]*)$/);
-    if (match) {
-      setExpression({
-        firstNum: match[1],
-        operator: match[2],
-        secondNum: match[3] || "",
-      });
-    }
-  };
-
-  const canCalculate = () => {
-    return expression.firstNum && expression.operator && expression.secondNum;
-  };
-
-  const calculate = () => {
-    const num1 = parseFloat(expression.firstNum);
-    const num2 = parseFloat(expression.secondNum);
-    let result = 0;
-  
-    switch (expression.operator) {
-      case "+":
-        result = num1 + num2;
-        break;
-      case "-":
-        result = num1 - num2;
-        break;
-      case "×":
-        result = num1 * num2;
-        break;
-      case "÷":
-        result = num2 !== 0 ? num1 / num2 : 0;
-        break;
-    }
-  
-    // 保留两位小数
-    return Number(result.toFixed(2));
-  };
-
-  // 选择类别
-  const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
-  };
-
-  const handleOperatorToggle = (type: "plus" | "minus") => {
-    let newOperator = "";
-
-    if (type === "plus") {
-      newOperator = currentOperator.plus ? "×" : "+";
-    } else {
-      newOperator = currentOperator.minus ? "÷" : "-";
-    }
-
-    if (canCalculate()) {
-      // 如果可以计算，先计算结果
-      const result = calculate();
-      setAmount(result.toString() + newOperator);
-      setExpression({
-        firstNum: result.toString(),
-        operator: newOperator,
-        secondNum: "",
-      });
-    } else if (amount) {
-      // 如果有数字但不满足计算条件
-      setAmount((prev) => {
-        const lastChar = prev[prev.length - 1];
-        if (["+", "-", "×", "÷"].includes(lastChar)) {
-          return prev.slice(0, -1) + newOperator;
-        }
-        return prev + newOperator;
-      });
-      setExpression((prev) => ({
-        ...prev,
-        firstNum: amount,
-        operator: newOperator,
-        secondNum: "",
-      }));
-    }
-
-    setCurrentOperator((prev) => ({
-      ...prev,
-      [type]: !prev[type],
-      current: newOperator,
-    }));
-  };
+        back
+        color="#000"
+        background={"white"}
+      />
+    ),
+    [recordType, handleRecordTypeChange]
+  );
 
   return (
     <Layout
       currentTab="home"
       showTabBar={false}
-      navBar={<NavBar title="记账" back color="#000" background={"white"} />}
+      navBar={navBarComponent}
       bodyClassName={styles.recordContainer}
     >
-      <ScrollView scrollY className={styles.categoriesScroll}>
-        <View className={styles.categoriesGrid}>
-          {categories.map((category) => (
-            <View
-              key={category.id}
-              className={`${styles.categoryItem} ${
-                selectedCategory?.id === category.id
-                  ? styles.selectedCategory
-                  : ""
-              }`}
-              onClick={() => handleCategorySelect(category)}
-            >
-              <View className={styles.categoryIcon}>
-                <IconFont type={category.icon} size={24} />
-              </View>
-              <Text className={styles.categoryName}>{category.name}</Text>
-            </View>
-          ))}
-        </View>
-      </ScrollView>
+      <CategoryList
+        categories={categories}
+        selectedCategoryId={selectedCategoryId}
+        recordType={recordType}
+        onCategorySelect={handleCategorySelect}
+      />
 
-      <View className={styles.amountSection}>
-        <Text className={styles.currencySymbol}>¥</Text>
-        <Text className={styles.amountDisplay}>{amount || "0"}</Text>
-      </View>
-
-      <View className={styles.dateNoteSection}>
-        <View className={styles.dateWrapper}>
-          <Text className={styles.dateLabel}>{date}</Text>
-        </View>
-        <Input
-          className={styles.noteInput}
-          placeholder="请输入备注"
-          value={note}
-          onInput={(e) => setNote(e.detail.value)}
+      <View className={styles.inputContainer}>
+        <AmountDisplay amount={amount} recordType={recordType} />
+        <View className={styles.divider} />
+        <DateNote
+          note={note}
+          date={date}
+          onNoteChange={handleNoteChange}
+          onDateChange={handleDateChange}
         />
       </View>
 
-      <View className={styles.keyboardSection}>
-        <View className={styles.keyboardRow}>
-          <View
-            className={styles.keyboardKey}
-            onClick={() => handleKeyPress("1")}
-          >
-            1
-          </View>
-          <View
-            className={styles.keyboardKey}
-            onClick={() => handleKeyPress("2")}
-          >
-            2
-          </View>
-          <View
-            className={styles.keyboardKey}
-            onClick={() => handleKeyPress("3")}
-          >
-            3
-          </View>
-          <View
-            className={styles.keyboardKey}
-            onClick={() => handleKeyPress("delete")}
-          >
-            <IconFont type="icon-delete" size={20} />
-          </View>
-        </View>
-        <View className={styles.keyboardRow}>
-          <View
-            className={styles.keyboardKey}
-            onClick={() => handleKeyPress("4")}
-          >
-            4
-          </View>
-          <View
-            className={styles.keyboardKey}
-            onClick={() => handleKeyPress("5")}
-          >
-            5
-          </View>
-          <View
-            className={styles.keyboardKey}
-            onClick={() => handleKeyPress("6")}
-          >
-            6
-          </View>
-          <View
-            className={`${styles.keyboardKey} ${styles.operatorKey}`}
-            onClick={() => handleOperatorToggle("plus")}
-          >
-            {currentOperator.plus ? "+×" : "×+"}
-          </View>
-        </View>
-        <View className={styles.keyboardRow}>
-          <View
-            className={styles.keyboardKey}
-            onClick={() => handleKeyPress("7")}
-          >
-            7
-          </View>
-          <View
-            className={styles.keyboardKey}
-            onClick={() => handleKeyPress("8")}
-          >
-            8
-          </View>
-          <View
-            className={styles.keyboardKey}
-            onClick={() => handleKeyPress("9")}
-          >
-            9
-          </View>
-          <View
-            className={`${styles.keyboardKey} ${styles.operatorKey}`}
-            onClick={() => handleOperatorToggle("minus")}
-          >
-            {currentOperator.minus ? "-÷" : "÷-"}
-          </View>
-        </View>
-        <View className={styles.keyboardRow}>
-          <View
-            className={styles.keyboardKey}
-            onClick={() => handleKeyPress("again")}
-          >
-            再记
-          </View>
-          <View
-            className={styles.keyboardKey}
-            onClick={() => handleKeyPress("0")}
-          >
-            0
-          </View>
-          <View
-            className={styles.keyboardKey}
-            onClick={() => handleKeyPress(".")}
-          >
-            .
-          </View>
-          <View
-            className={styles.keyboardKey}
-            onClick={() => handleKeyPress("done")}
-          >
-            <View className={styles.doneButton}>
-              {canCalculate() ? "=" : "完成"}
-            </View>
-          </View>
-        </View>
-      </View>
+      <NumberKeyboard
+        amount={amount}
+        setAmount={setAmount}
+        recordType={recordType}
+        onDone={handleDone}
+        onAgain={handleAgain}
+      />
+
+      {/* 动态安全区域 */}
+      <SafeArea position="bottom" />
     </Layout>
   );
 };

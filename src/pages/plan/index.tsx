@@ -2,7 +2,6 @@ import { Button, Text, View } from "@tarojs/components";
 import "./index.scss";
 import PageContainer from "@/components/PageContainer";
 import NavBar from "@/components/Navbar";
-import { Calendar } from "@nutui/nutui-react-taro";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import MButton from "@/components/Button";
@@ -58,7 +57,7 @@ const StartDateBox = ({
       <SubTitleBox title="开始时间" />
       <View onClick={openSwitch}>
         {date}
-        <Calendar
+        {/* <Calendar
           // autoBackfill
           visible={isVisible}
           defaultValue={date}
@@ -67,7 +66,7 @@ const StartDateBox = ({
           showToday
           title="选择开始时间"
           confirmText="确认"
-        />
+        /> */}
       </View>
     </View>
   );

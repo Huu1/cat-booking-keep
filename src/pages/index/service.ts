@@ -11,6 +11,8 @@ export const getMonthlyStats = (
     month,
   });
 
+export const getDefaultBook = () => request.get("/books/default");
+
 export const getMonthlyStatsDetail = (
   type: "year" | "month" = "month",
   year: string,
@@ -24,5 +26,5 @@ export const getMonthlyStatsDetail = (
     month,
     includeRecords: true,
     page,
-    pageSize
+    pageSize,
   });

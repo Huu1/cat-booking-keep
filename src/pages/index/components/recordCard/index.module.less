@@ -1,0 +1,155 @@
+
+
+@import '@/styles/variables.less';
+
+.recordCard {
+  border-radius: 12px;
+  margin: 36rpx;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 2px;
+}
+
+.dateInfo {
+  display: flex;
+  align-items: center;
+}
+
+.date {
+  font-size: 14px;
+  color: @tertiary-text;
+  margin-right: 8px;
+}
+
+.weekday {
+  font-size: 14px;
+  color: @tertiary-text;
+}
+
+.amountInfo {
+  display: flex;
+  align-items: center;
+}
+
+.incomeItem, .expenseItem {
+  display: flex;
+  align-items: center;
+}
+
+.expenseItem {
+  margin-left: 16px;
+}
+
+.label {
+  font-size: 14px;
+  color: @tertiary-text;
+  margin-right: 4px;
+}
+
+.value {
+  font-size: 14px;
+  color: @primary-text;
+}
+
+.recordList {
+  border-radius: 32rpx;
+  overflow: hidden;
+}
+
+.recordItem {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  background-color: @background-white;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    height: 1px;
+    background-color: @border-color;
+    left: 14px;
+    right: 14px;
+    bottom: 1px;
+  }
+
+  &:last-child {
+    border-bottom: none;
+    &::before {
+      display: none;
+    }
+  }
+}
+
+.iconWrapper {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+
+  &.expenseIcon {
+    background-color: @expense-color;
+    color: @background-white;
+  }
+
+  &.incomeIcon {
+    background-color: @income-color;
+    color: @background-white;
+  }
+}
+
+.recordInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.category {
+  font-size: 14px;
+  color: @primary-text;
+  font-weight: 500;
+}
+
+.subCategory {
+  font-size: 12px;
+  color: @tertiary-text;
+  margin-top: 4px;
+}
+
+.amount {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.expense {
+  color: @expense-color;
+}
+
+.income {
+  color: @income-color;
+}
+
+.incomeValue, .expenseValue {
+  color: @tertiary-text;
+}
+
+.expandButton {
+  margin-left: 12px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+  color: @tertiary-text;
+
+  &.expanded {
+    transform: rotate(90deg);
+  }
+}

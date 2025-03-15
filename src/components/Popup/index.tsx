@@ -2,7 +2,7 @@ import React from "react";
 import { ITouchEvent, View } from "@tarojs/components";
 import cs from "classnames";
 import "./index.scss";
-import { Popup } from "@nutui/nutui-react-taro";
+// import { Popup } from "@nutui/nutui-react-taro";
 
 type MMButton = {
   children: React.ReactNode;
@@ -18,19 +18,19 @@ const Index = (props: MMButton) => {
     [className]: className,
   });
 
-  return (
-    <Popup
-      visible={props.visible}
-      style={{ height: "45%", borderRadius: 12 ,borderBottomLeftRadius:0,borderBottomRightRadius:0}}
-      position="bottom"
-      onClose={() => {
-        props.setVisible(false);
-      }}
-      className={`${_className}`}
-    >
-      <View className="popup-border"></View>
-      <View className={`popup-content ${contentClassName}`}>{children}</View>
-    </Popup>
+  return (<></>
+    // <Popup
+    //   visible={props.visible}
+    //   style={{ height: "45%", borderRadius: 12 ,borderBottomLeftRadius:0,borderBottomRightRadius:0}}
+    //   position="bottom"
+    //   onClose={() => {
+    //     props.setVisible(false);
+    //   }}
+    //   className={`${_className}`}
+    // >
+    //   <View className="popup-border"></View>
+    //   <View className={`popup-content ${contentClassName}`}>{children}</View>
+    // </Popup>
   );
 };
 

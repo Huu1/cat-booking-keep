@@ -1,8 +1,6 @@
 .homeWrapBox {
-  padding: 30rpx;
   display: flex;
   flex-direction: column;
-  // gap: 24rpx;
   flex: 1;
   padding-right: 0;
   padding-bottom: 0;
@@ -10,9 +8,9 @@
   .topTitle {
     display: flex;
     align-items: center;
-    margin-bottom: 22rpx;
     justify-content: space-between;
-    padding-right: 30rpx;
+    margin: 30rpx 22rpx;
+    padding-left: 28rpx;
     .wellcomeTitle {
       font-family: PingFang SC;
       font-weight: 500;
@@ -22,122 +20,7 @@
   }
 }
 
-.scrollContainer {
-  position: relative;
-  margin-top: 12px; /* 初始间隙大小 */
-  transition: margin-top 0.1s ease; /* 平滑过渡效果 */
-  flex: 1;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.scrolling {
-  margin-top: 1px; /* 滚动时没有间隙 */
-}
-
 .recordList {
   flex: 1;
   height: 100%;
-  // padding-bottom: 20px; /* 确保底部有足够空间 */
-}
-
-
-.loadingWrapper {
-  width: 100%;
-  padding: 16px 0;
-}
-
-.loadingMore {
-  text-align: center;
-  padding: 20px 0;
-  color: #999;
-  font-size: 24px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.loadingDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: #999;
-  margin: 0 4px;
-  display: inline-block;
-  animation: dotPulse 1.5s infinite ease-in-out;
-}
-
-.loadingDot:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.loadingDot:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes dotPulse {
-  0%,
-  100% {
-    transform: scale(0.8);
-    opacity: 0.5;
-  }
-  50% {
-    transform: scale(1.2);
-    opacity: 1;
-  }
-}
-
-.noMoreData {
-  text-align: center;
-  padding: 15px 0;
-  color: #999;
-  font-size: 16px; /* 将字体大小从24px减小到20px */
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.noMoreData::before,
-.noMoreData::after {
-  content: "";
-  display: block;
-  height: 1px;
-  width: 60px;
-  background: #e0e0e0;
-  position: relative;
-  margin: 0 15px;
-}
-
-.noData {
-  text-align: center;
-  padding: 40px 0;
-  color: #999;
-  font-size: 28px;
-}
-
-.addRecordButton {
-  position: fixed;
-  right: 30rpx; /* 从右侧边缘留出一定距离 */
-  /* bottom 值通过 JS 计算，不需要在这里设置 */
-  z-index: 100;
-}
-
-.addButtonInner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #4A6FDC; /* 主题色 */
-  color: white;
-  border-radius: 40rpx;
-  padding: 16rpx 40rpx;
-  box-shadow: 0 6rpx 16rpx rgba(74, 111, 220, 0.3);
-}
-
-.addButtonText {
-  margin-left: 8rpx;
-  font-size: 28rpx;
-  font-weight: 500;
 }
