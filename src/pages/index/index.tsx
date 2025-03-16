@@ -7,9 +7,7 @@ import MonthSwitcher, { formatDate } from "@/components/MonthSwitcher";
 import MonthStatic from "./components/monthStatic";
 import Layout from "@/components/Layout";
 import styles from "./index.module.less";
-import useRequest from "@/hooks/useRequest";
 import {
-  getDefaultBook,
   getMonthlyStats,
   getMonthlyStatsDetail,
 } from "./service";
@@ -18,6 +16,7 @@ import { useLoadMore } from "@/hooks/useLoadMore";
 import AddRecordButton from "./components/AddRecordButton";
 import Taro from "@tarojs/taro";
 import { useAppStore } from '@/store';
+import { useRequest } from "taro-hooks";
 
 // 设置 dayjs 使用中文
 dayjs.locale("zh-cn");
@@ -54,18 +53,30 @@ const Index = () => {
       const { year, month } = formatDate(currentDate);
       return getMonthlyStatsDetail(dateType, year, month, page, pageSize);
     },
-    onRefreshExtra: run,
+    // 将 run 包装成返回 Promise 的函数
+    onRefreshExtra: async () => {
+      return run();
+    },
   });
 
   // 首次加载和日期变化时重置列表
   useEffect(() => {
-
-
     if (currentDate) {
-      console.log(currentDate);
       reset();
     }
   }, [currentDate]);
+
+  // 添加事件监听，只在记账成功后刷新页面
+  useEffect(() => {
+    const handleRecordSuccess = () => {
+      reset();
+    };
+    // 使用相同的字符串事件名
+    Taro.eventCenter.on('reload_index_page', handleRecordSuccess);
+    return () => {
+      Taro.eventCenter.off('reload_index_page', handleRecordSuccess);
+    };
+  }, [handleRefresh]);
 
   const handleAddRecord = () => {
     Taro.navigateTo({
@@ -75,6 +86,13 @@ const Index = () => {
           bookId: defaultBook?.id,
         });
       },
+    });
+  };
+
+  // 添加处理记录点击的函数
+  const handleRecordClick = (id: number) => {
+    Taro.navigateTo({
+      url: `/pages/recordDetail/index?id=${id}`
     });
   };
 
@@ -114,6 +132,7 @@ const Index = () => {
           recordList={recordList}
           loading={loading}
           hasMore={hasMore}
+          handleClick={handleRecordClick}
         />
       </ScrollView>
 

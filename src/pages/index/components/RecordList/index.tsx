@@ -8,12 +8,14 @@ interface RecordListProps {
   recordList: any[];
   loading: boolean;
   hasMore: boolean;
+  handleClick: (recordId: number) => void;
 }
 
 const RecordList: React.FC<RecordListProps> = ({
   recordList,
   loading,
   hasMore,
+  handleClick
 }) => {
   // 使用 dayjs 将日期转换为星期几
   const getWeekday = (dateStr: string) => {
@@ -32,6 +34,7 @@ const RecordList: React.FC<RecordListProps> = ({
               income={dayRecord.income}
               expense={dayRecord.expense}
               records={dayRecord.records}
+              handleClick={handleClick}
             />
           ))}
 

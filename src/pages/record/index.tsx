@@ -5,7 +5,6 @@ import Layout from "@/components/Layout";
 import NavBar from "@/components/Navbar";
 import NumberKeyboard from "@/pages/record/components/NumberKeyboard";
 import styles from "./index.module.less";
-import useRequest from "@/hooks/useRequest";
 import { getCategories, saveRecord } from "./service";
 import Switcher from "@/components/Switcher";
 import CategoryList from "./components/CategoryList";
@@ -13,6 +12,7 @@ import AmountDisplay from "./components/AmountDisplay";
 import DateNote from "./components/DateNote";
 import { SafeArea } from "@nutui/nutui-react-taro";
 import dayjs from "dayjs";
+import { useRequest } from "taro-hooks";
 
 // 在组件中使用
 const recordTypeOptions = [
@@ -21,102 +21,211 @@ const recordTypeOptions = [
 ];
 
 const Index = () => {
-
-  const [amount, setAmount] = useState("");
-  const [selectedCategoryId, setSelectedCategory] = useState<number | null>(
-    null
-  );
-  const [note, setNote] = useState("");
-
-  // 修改日期状态，使用当前日期作为默认值
-  const [date, setDate] = useState(dayjs().format("YYYY/MM/DD HH:mm:ss"));
-
-  const [recordType, setRecordType] = useState("expense");
-
-  const { loading, run } = useRequest(saveRecord, {
-    manual: true,
-    onSuccess: (data) => {
-      console.log("记账成功", data);
-      Taro.redirectTo({
-        url: "/pages/index/index",
-      });
-    },
-    onError: (error) => {
-      console.log("记账失败", error);
-    },
+  // 基础状态管理
+  const [formState, setFormState] = useState({
+    amount: "",
+    note: "",
+    date: dayjs().format("YYYY/MM/DD HH:mm:ss"),
+    recordType: "expense" as "expense" | "income",
+    selectedCategoryId: null as number | null,
+    bookId: null as number | null,
   });
 
-  // 使用useCallback缓存函数引用
-  const handleCategorySelect = useCallback((category) => {
-    setSelectedCategory(category.id);
+  // 编辑模式状态管理
+  const [editState, setEditState] = useState({
+    isEditMode: false,
+    recordId: null as number | null,
+    initialized: false,
+    categorySetFromParams: false,
+  });
+
+  // 提交状态
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // 状态更新函数
+  const updateFormState = useCallback((updates: Partial<typeof formState>) => {
+    setFormState((prev) => ({ ...prev, ...updates }));
   }, []);
 
-  // 添加 bookId 状态
-  const [bookId, setBookId] = useState<number | null>(null);
+  // 获取分类列表
+  const { data: categories = [] } = useRequest(
+    () => getCategories(formState.recordType),
+    {
+      refreshDeps: [formState.recordType],
+      ready: !editState.isEditMode || editState.initialized,
+      onSuccess: (data) => {
+        if (!data?.length) return;
 
+        if (editState.isEditMode && editState.categorySetFromParams) {
+          const categoryExists = data.some(
+            (cat) => cat.id === formState.selectedCategoryId
+          );
+          if (!categoryExists) {
+            updateFormState({ selectedCategoryId: data[0].id });
+          }
+        } else if (!editState.isEditMode || !editState.categorySetFromParams) {
+          updateFormState({ selectedCategoryId: data[0].id });
+        }
+      },
+    }
+  );
+
+  // 初始化处理
   useEffect(() => {
     const instance = Taro.getCurrentInstance();
-    const eventChannel = instance?.page?.getOpenerEventChannel?.();
+    const params = instance?.router?.params || {};
 
+    if (params.id) {
+      const updates = {
+        amount: params.amount || "",
+        note: params.note || "",
+        recordType: (params.type as "expense" | "income") || "expense",
+        date: params.recordDate || formState.date,
+        bookId: params.bookId ? Number(params.bookId) : null,
+        selectedCategoryId: params.categoryId
+          ? Number(params.categoryId)
+          : null,
+      };
+
+      setEditState({
+        isEditMode: true,
+        recordId: Number(params.id),
+        initialized: true,
+        categorySetFromParams: !!params.categoryId,
+      });
+
+      updateFormState(updates);
+    }
+
+    // 处理从其他页面传递的 bookId
+    const eventChannel = instance?.page?.getOpenerEventChannel?.();
     if (eventChannel) {
       eventChannel.on(
         "acceptDataFromOpenerPage",
         (data: { bookId: number }) => {
-          setBookId(data.bookId);
+          updateFormState({ bookId: data.bookId });
         }
       );
     }
   }, []);
 
-  // 在 handleDone 中使用 bookId
-  const handleDone = useCallback(
-    (result: string) => {
-      const params = {
-        amount: Number(result),
-        categoryId: selectedCategoryId!,
-        note,
-        recordDate: dayjs(date).format("YYYY-MM-DD HH:mm:ss"),
-        accountId: 1,
-        type: recordType,
-        bookId: bookId!, // 使用传递过来的 bookId，如果没有则使用默认值
-      };
+  // 保存记录
+  const { loading, run } = useRequest(saveRecord, {
+    manual: true,
+    debounceWait: 300,
+    onBefore: () => setIsSubmitting(true),
+    onSuccess: (data, params: any) => {
+      Taro.showToast({
+        title: editState.isEditMode ? "修改成功" : "保存成功",
+        icon: "success",
+        duration: 1000,
+      });
+
+      // 编辑模式下直接返回，非编辑模式且有回调时执行回调
+      if (editState.isEditMode || !params?.[0]?.callback) {
+        Taro.eventCenter.trigger("reload_index_page");
+        setTimeout(() => Taro.navigateBack(), 1000);
+      } else {
+        params[0].callback?.();
+        updateFormState({ amount: "" });
+      }
+    },
+    onError: (error) => {
+      console.log("记账失败", error);
+      Taro.showToast({
+        title: editState.isEditMode ? "修改失败" : "记账失败",
+        icon: "error",
+        duration: 2000,
+      });
+    },
+    onFinally: () => setIsSubmitting(false),
+  });
+
+  // 提交处理
+  const submit = useCallback(
+    (params) => {
+      if (isSubmitting || !params.bookId || !params.accountId) {
+        !params.bookId &&
+          Taro.showToast({ title: "请选择账本", icon: "error" });
+        !params.accountId &&
+          Taro.showToast({ title: "请选择账户", icon: "error" });
+        return;
+      }
+
+      if (editState.isEditMode && editState.recordId) {
+        params.id = editState.recordId;
+      }
+
       run(params);
     },
-    [amount, selectedCategoryId, note, date, bookId] // 添加 bookId 依赖
+    [isSubmitting, editState.isEditMode, editState.recordId, run]
   );
 
-  // 使用useCallback缓存函数引用
-  const handleAgain = useCallback(() => {
-    setSelectedCategory(null);
-    setNote("");
-  }, []);
-
-  // 使用useCallback缓存函数引用
-  const handleNoteChange = useCallback((value: string) => {
-    setNote(value);
-  }, []);
-
-  // 使用useCallback缓存函数引用
-  const handleRecordTypeChange = useCallback((value: string) => {
-    setRecordType(value);
-  }, []);
-
-  // 添加日期变更处理函数
-  const handleDateChange = useCallback((value: string) => {
-    setDate(value);
-  }, []);
-
-  const { data: categories = [] } = useRequest(
-    () => getCategories(recordType),
-    {
-      refreshDeps: [recordType],
-      onSuccess: (data) => {
-        !selectedCategoryId && setSelectedCategory(data?.[0]?.id);
+  // 处理函数
+  const handlers = {
+    handleDone: useCallback(
+      (result: string) => {
+        submit({
+          amount: Number(result),
+          categoryId: formState.selectedCategoryId,
+          note: formState.note,
+          recordDate: dayjs(formState.date).format("YYYY-MM-DD HH:mm:ss"),
+          accountId: 1,
+          type: formState.recordType,
+          bookId: formState.bookId,
+        });
       },
-    }
-  );
+      [formState, submit]
+    ),
 
-  // 使用useMemo缓存NavBar组件
+    handleAgain: useCallback(
+      (result: string, callback: () => void) => {
+        // if (editState.isEditMode) return;
+
+        submit({
+          amount: Number(result),
+          categoryId: formState.selectedCategoryId,
+          note: formState.note,
+          recordDate: dayjs(formState.date).format("YYYY-MM-DD HH:mm:ss"),
+          accountId: 1,
+          type: formState.recordType,
+          bookId: formState.bookId,
+          callback,
+        });
+      },
+      [formState, editState.isEditMode, submit]
+    ),
+
+    handleCategorySelect: useCallback(
+      (category) => {
+        updateFormState({ selectedCategoryId: category.id });
+      },
+      [updateFormState]
+    ),
+
+    handleRecordTypeChange: useCallback(
+      (value: string) => {
+        updateFormState({ recordType: value as "expense" | "income" });
+      },
+      [updateFormState]
+    ),
+
+    handleNoteChange: useCallback(
+      (value: string) => {
+        updateFormState({ note: value });
+      },
+      [updateFormState]
+    ),
+
+    handleDateChange: useCallback(
+      (value: string) => {
+        updateFormState({ date: value });
+      },
+      [updateFormState]
+    ),
+  };
+
+  // 渲染 NavBar
   const navBarComponent = useMemo(
     () => (
       <NavBar
@@ -124,17 +233,35 @@ const Index = () => {
           <Switcher
             className={styles.switchBox}
             options={recordTypeOptions}
-            value={recordType}
-            onChange={handleRecordTypeChange}
+            value={formState.recordType}
+            onChange={handlers.handleRecordTypeChange}
           />
         }
         back
         color="#000"
-        background={"white"}
+        background="white"
       />
     ),
-    [recordType, handleRecordTypeChange]
+    [
+      formState.recordType,
+      editState.isEditMode,
+      handlers.handleRecordTypeChange,
+    ]
   );
+
+    // 添加一个专门处理 amount 更新的函数，支持函数式更新
+    const handleAmountChange = useCallback((value: string | ((prev: string) => string)) => {
+      if (typeof value === 'function') {
+        // 处理函数式更新
+        setFormState(prev => ({
+          ...prev,
+          amount: value(prev.amount)
+        }));
+      } else {
+        // 处理直接赋值
+        updateFormState({ amount: value });
+      }
+    }, [updateFormState]);
 
   return (
     <Layout
@@ -145,31 +272,35 @@ const Index = () => {
     >
       <CategoryList
         categories={categories}
-        selectedCategoryId={selectedCategoryId}
-        recordType={recordType}
-        onCategorySelect={handleCategorySelect}
+        selectedCategoryId={formState.selectedCategoryId}
+        recordType={formState.recordType}
+        onCategorySelect={handlers.handleCategorySelect}
       />
 
       <View className={styles.inputContainer}>
-        <AmountDisplay amount={amount} recordType={recordType} />
+        <AmountDisplay
+          amount={formState.amount}
+          recordType={formState.recordType}
+        />
         <View className={styles.divider} />
         <DateNote
-          note={note}
-          date={date}
-          onNoteChange={handleNoteChange}
-          onDateChange={handleDateChange}
+          note={formState.note}
+          date={formState.date}
+          onNoteChange={handlers.handleNoteChange}
+          onDateChange={handlers.handleDateChange}
         />
       </View>
 
       <NumberKeyboard
-        amount={amount}
-        setAmount={setAmount}
-        recordType={recordType}
-        onDone={handleDone}
-        onAgain={handleAgain}
+        amount={formState.amount}
+        setAmount={handleAmountChange}
+        recordType={formState.recordType}
+        onDone={handlers.handleDone}
+        onAgain={handlers.handleAgain}
+        disabled={isSubmitting}
+        isEditMode={editState.isEditMode} // 传递编辑模式状态
       />
 
-      {/* 动态安全区域 */}
       <SafeArea position="bottom" />
     </Layout>
   );

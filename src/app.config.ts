@@ -1,9 +1,8 @@
 export default defineAppConfig({
   pages: [
     'pages/index/index',
-    'pages/plan/index',
-    'pages/saving/index',
     'pages/record/index',
+    'pages/recordDetail/index',
   ],
   window: {
     backgroundTextStyle: 'light',

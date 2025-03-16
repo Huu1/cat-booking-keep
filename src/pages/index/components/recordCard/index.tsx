@@ -38,6 +38,7 @@ interface RecordCardProps {
   income: number;
   expense: number;
   records: Record[];
+  handleClick: (recordId: number) => void;
 }
 
 const RecordCard: React.FC<RecordCardProps> = ({
@@ -46,6 +47,7 @@ const RecordCard: React.FC<RecordCardProps> = ({
   income,
   expense,
   records,
+  handleClick
 }) => {
   // 格式化日期显示
   const formatDate = (dateStr: string) => {
@@ -104,7 +106,7 @@ const RecordCard: React.FC<RecordCardProps> = ({
       {isExpanded && (
         <View className={styles.recordList}>
           {records.map((record) => (
-            <View key={record.id} className={styles.recordItem}>
+            <View key={record.id} className={styles.recordItem} onClick={()=>handleClick(record.id)}>
               <View
                 className={`${styles.iconWrapper} ${
                   record.type === "expense"
