@@ -9,7 +9,7 @@ function App(props) {
   useEffect(() => {
     Taro.setStorageSync(
       "token",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic3VwZXJhZG1pbiIsInJvbGVzIjpbIui2hee6p-euoeeQhuWRmCJdLCJpYXQiOjE3NDE2OTcxNTgsImV4cCI6MTc0MjMwMTk1OH0.RJME7B1_1HxAsOzlopjgbhhDsuDNVdWEJkX7VcYE7to"
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic3VwZXJhZG1pbiIsInJvbGVzIjpbIui2hee6p-euoeeQhuWRmCJdLCJpYXQiOjE3NDIzMDIyODksImV4cCI6MTc0MjkwNzA4OX0.iagzu_sxCBrmjVSp2gxnqCI_7d1H4Q4kQA9dbuR--Gc"
     );
   }, []);
 

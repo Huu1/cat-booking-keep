@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text } from '@tarojs/components';
-import Taro from '@tarojs/taro';
-import IconFont from '@/components/Iconfont';
-import styles from './index.module.less';
+import React, { useEffect, useState } from "react";
+import { View, Text } from "@tarojs/components";
+import Taro from "@tarojs/taro";
+import IconFont from "@/components/Iconfont";
+import styles from "./index.module.less";
 
 interface TabItem {
   key: string;
@@ -23,8 +23,8 @@ const TabBar: React.FC<TabBarProps> = ({ current, tabs, onChange }) => {
   useEffect(() => {
     // 获取系统信息，计算安全区域
     const systemInfo = Taro.getSystemInfoSync();
-    const bottom = systemInfo.safeArea 
-      ? (systemInfo.screenHeight - systemInfo.safeArea.bottom) 
+    const bottom = systemInfo.safeArea
+      ? systemInfo.screenHeight - systemInfo.safeArea.bottom
       : 0;
     setSafeAreaBottom(bottom);
   }, []);
@@ -34,35 +34,42 @@ const TabBar: React.FC<TabBarProps> = ({ current, tabs, onChange }) => {
       if (onChange) {
         onChange(tab.key);
       }
-      Taro.switchTab({
-        url: tab.path
+      Taro.redirectTo({
+        url: tab.path,
       });
     }
   };
 
   return (
-    <View 
+    <View
       className={styles.tabBarContainer}
-      style={{ 
+      style={{
         paddingBottom: `${safeAreaBottom}px`,
-        height: safeAreaBottom > 0 ? `calc(56px + ${safeAreaBottom}px)` : '56px'
+        height:
+          safeAreaBottom > 0 ? `calc(56px + ${safeAreaBottom}px)` : "56px",
       }}
     >
-      {tabs.map(tab => (
-        <View 
-          key={tab.key} 
-          className={styles.tabItem} 
+      {tabs.map((tab) => (
+        <View
+          key={tab.key}
+          className={styles.tabItem}
           onClick={() => handleTabClick(tab)}
         >
-          <View className={`${styles.iconWrapper} ${current === tab.key ? styles.active : ''}`}>
-            <IconFont 
-              type={tab.iconType} 
-              size={22} 
-              color={current === tab.key ? '#ff6b81' : '#999999'} 
+          <View
+            className={`${styles.iconWrapper} ${
+              current === tab.key ? styles.active : ""
+            }`}
+          >
+            <IconFont
+              type={tab.iconType}
+              size={current === tab.key ? 24 : 22}
+              color={current === tab.key ? "red" : "#999999"}
             />
           </View>
-          <Text 
-            className={`${styles.tabTitle} ${current === tab.key ? styles.active : ''}`}
+          <Text
+            className={`${styles.tabTitle} ${
+              current === tab.key ? styles.active : ""
+            }`}
           >
             {tab.title}
           </Text>

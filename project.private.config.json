@@ -10,8 +10,8 @@
     "miniprogram": {
       "list": [
         {
-          "name": "pages/plan/index",
-          "pathName": "pages/plan/index",
+          "name": "账户",
+          "pathName": "pages/account/index",
           "query": "",
           "launchMode": "default",
           "scene": null

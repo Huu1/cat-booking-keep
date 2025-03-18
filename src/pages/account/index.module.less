@@ -1,0 +1,47 @@
+.container {
+  padding: 16px;
+  background-color: #f5f5f5;
+}
+
+.assetCard {
+  background: white;
+  border-radius: 22rpx;
+  padding: 28rpx;
+  margin-bottom: 16rpx;
+
+  .netAsset {
+    margin-bottom: 22rpx;
+    .labelWrapper {
+      display: flex;
+      align-items: center;
+      .label {
+        font-size: 18px;
+        color: #666;
+      }
+
+      .eyeIcon {
+        padding: 4px;
+      }
+    }
+
+    .amount {
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+    }
+  }
+
+  .totalAssets {
+    display: flex;
+    gap: 42rpx;
+    color: #999;
+    font-size: 14px;
+  }
+}
+
+.amountValue {
+  font-size: 22px;
+  &.hide {
+    font-size: 26px;
+  }
+}

@@ -10,7 +10,7 @@ class NavBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      configStyle: this.setStyle(globalSystemInfo)
+      configStyle: this.setStyle(globalSystemInfo),
     };
 
     // 在构造函数中调用高度回调
@@ -18,13 +18,13 @@ class NavBar extends Component {
   }
   static options = {
     multipleSlots: true,
-    addGlobalClass: true
+    addGlobalClass: true,
   };
   componentDidShow() {
     if (globalSystemInfo.ios) {
       globalSystemInfo = getSystemInfo();
       this.setState({
-        configStyle: this.setStyle(globalSystemInfo)
+        configStyle: this.setStyle(globalSystemInfo),
       });
     }
   }
@@ -35,7 +35,7 @@ class NavBar extends Component {
       const pages = Taro.getCurrentPages();
       if (pages.length >= 2) {
         Taro.navigateBack({
-          delta: this.props.delta
+          delta: this.props.delta,
         });
       }
     }
@@ -57,9 +57,11 @@ class NavBar extends Component {
 
   componentDidUpdate(prevProps) {
     // 如果属性变化可能影响高度，重新通知父组件
-    if (prevProps.title !== this.props.title ||
-        prevProps.back !== this.props.back ||
-        prevProps.home !== this.props.home) {
+    if (
+      prevProps.title !== this.props.title ||
+      prevProps.back !== this.props.back ||
+      prevProps.home !== this.props.home
+    ) {
       this.notifyHeightChange();
     }
   }
@@ -67,7 +69,11 @@ class NavBar extends Component {
   // 通知父组件导航栏高度的方法
   notifyHeightChange() {
     const { navBarHeight, navBarExtendHeight } = this.state.configStyle || {};
-    if (navBarHeight && this.props.onHeightChange && isFunction(this.props.onHeightChange)) {
+    if (
+      navBarHeight &&
+      this.props.onHeightChange &&
+      isFunction(this.props.onHeightChange)
+    ) {
       const totalHeight = navBarHeight + (navBarExtendHeight || 0);
       this.props.onHeightChange(totalHeight);
     }
@@ -84,7 +90,8 @@ class NavBar extends Component {
     home: false,
     iconTheme: "black",
     delta: 1,
-    onHeightChange: null // 添加高度变化回调属性
+    onHeightChange: null, // 添加高度变化回调属性
+    backTitle:''
   };
 
   state = {};
@@ -96,7 +103,7 @@ class NavBar extends Component {
       capsulePosition,
       navBarExtendHeight,
       ios,
-      windowWidth
+      windowWidth,
     } = systemInfo;
     const { back, home, title, color } = this.props;
     let rightDistance = windowWidth - capsulePosition.right; //胶囊按钮右侧到屏幕右侧的边距
@@ -108,7 +115,7 @@ class NavBar extends Component {
       `height:${navBarHeight + navBarExtendHeight}px`,
       `padding-top:${statusBarHeight}px`,
       `padding-right:${leftWidth}px`,
-      `padding-bottom:${navBarExtendHeight}px`
+      `padding-bottom:${navBarExtendHeight}px`,
     ].join(";");
     let navBarLeft = [];
     if ((back && !home) || (!back && home)) {
@@ -116,13 +123,13 @@ class NavBar extends Component {
         `width:${capsulePosition.width}px`,
         `height:${capsulePosition.height}px`,
         `margin-left:0px`,
-        `margin-right:${rightDistance}px`
+        `margin-right:${rightDistance}px`,
       ].join(";");
     } else if ((back && home) || title) {
       navBarLeft = [
         `width:${capsulePosition.width}px`,
         `height:${capsulePosition.height}px`,
-        `margin-left:${rightDistance}px`
+        `margin-left:${rightDistance}px`,
       ].join(";");
     } else {
       navBarLeft = [`width:auto`, `margin-left:0px`].join(";");
@@ -134,7 +141,7 @@ class NavBar extends Component {
       capsulePosition,
       navBarExtendHeight,
       ios,
-      rightDistance
+      rightDistance,
     };
   }
 
@@ -146,7 +153,7 @@ class NavBar extends Component {
       capsulePosition,
       navBarExtendHeight,
       ios,
-      rightDistance
+      rightDistance,
     } = this.state.configStyle;
     const {
       title,
@@ -157,7 +164,8 @@ class NavBar extends Component {
       searchBar,
       searchText,
       iconTheme,
-      extClass
+      extClass,
+      backTitle
     } = this.props;
     let nav_bar__center = null;
     if (title) {
@@ -194,12 +202,19 @@ class NavBar extends Component {
           style={`background:${background};${navigationbarinnerStyle};`}
         >
           <View className="lzh-nav-bar__left" style={navBarLeft}>
-            {back && !home && (
-              <View
-                onClick={this.handleBackClick.bind(this)}
-                className={`lzh-nav-bar__button lzh-nav-bar__btn_goback ${iconTheme}`}
-              />
-            )}
+            {back &&
+              !home &&
+              (typeof back === "boolean" ? (
+                <>
+                  <View
+                    onClick={this.handleBackClick.bind(this)}
+                    className={`lzh-nav-bar__button lzh-nav-bar__btn_goback ${iconTheme}`}
+                  />
+                  {backTitle}
+                </>
+              ) : (
+                back
+              ))}
             {!back && home && (
               <View
                 onClick={this.handleGoHomeClick.bind(this)}
@@ -241,4 +256,3 @@ class NavBar extends Component {
 }
 
 export default NavBar;
-

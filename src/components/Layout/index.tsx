@@ -14,6 +14,12 @@ const tabs = [
     path: "/pages/index/index",
   },
   {
+    key: "account",
+    title: "资产",
+    iconType: "icon-wodezichan",
+    path: "/pages/account/index",
+  },
+  {
     key: "stats",
     title: "统计",
     iconType: "icon-tongji",
@@ -57,7 +63,7 @@ const Layout: React.FC<LayoutProps> = ({
   // 包装 navBar 元素，添加高度回调
   const wrappedNavBar = React.isValidElement(navBar)
     ? React.cloneElement(navBar, {
-      // @ts-ignore
+        // @ts-ignore
         onHeightChange: handleNavBarHeightChange,
       })
     : navBar;
@@ -68,12 +74,15 @@ const Layout: React.FC<LayoutProps> = ({
 
     if (showTabBar) {
       // 获取底部安全区域高度
-      const safeAreaBottom = systemInfo.safeArea ? (systemInfo.screenHeight - systemInfo.safeArea.bottom) : 0;
+      const safeAreaBottom = systemInfo.safeArea
+        ? systemInfo.screenHeight - systemInfo.safeArea.bottom
+        : 0;
       // 标准底部导航栏高度 + 安全区域高度
       const tabBarHeight = 56 + safeAreaBottom;
 
       // 使用实际的导航栏高度计算内容区域高度
-      const calculatedHeight = systemInfo.windowHeight - tabBarHeight - navBarHeight;
+      const calculatedHeight =
+        systemInfo.windowHeight - tabBarHeight - navBarHeight;
       setContentHeight(`${calculatedHeight}px`);
     } else {
       // 不显示TabBar时，内容区域高度 = 屏幕高度 - 导航栏高度
@@ -99,7 +108,7 @@ const Layout: React.FC<LayoutProps> = ({
           className={bodyClassName}
           style={{
             height: contentHeight,
-            overflow: 'auto'
+            overflow: "auto",
           }}
         >
           {children}

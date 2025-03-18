@@ -48,7 +48,7 @@ export class Request {
   // private eventManager: RequestEventManager;
 
   constructor(
-    baseUrl = "http://192.168.0.105:3000/api",
+    baseUrl = "http://192.168.0.104:3000/api",
     defaultHeader = {
       "Content-Type": "application/json",
       Authorization: `Bearer ` + Taro.getStorageSync("token"),
