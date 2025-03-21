@@ -10,15 +10,15 @@
     "miniprogram": {
       "list": [
         {
-          "name": "账户",
-          "pathName": "pages/account/index",
+          "name": "添加账户",
+          "pathName": "pages/addAccount/index",
           "query": "",
           "launchMode": "default",
           "scene": null
         },
         {
-          "name": "pages/saving/index",
-          "pathName": "pages/saving/index",
+          "name": "账户",
+          "pathName": "pages/accountType/index",
           "query": "",
           "launchMode": "default",
           "scene": null

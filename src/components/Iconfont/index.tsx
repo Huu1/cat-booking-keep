@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text } from '@tarojs/components';
 import './iconfont.less';
+import './iconfont2.less';
 
 interface IconFontProps {
   type: string;

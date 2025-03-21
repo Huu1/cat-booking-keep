@@ -51,13 +51,24 @@ const Index = () => {
     );
   };
 
+  const handleAddAccount = () => {
+    Taro.navigateTo({
+      url: '/pages/accountType/index'
+    });
+  };
+
   return (
     <Layout
       currentTab="account"
       navBar={
         <NavBar
           back={
-            <IconFont style={{ marginLeft: 20 }} type="icon-jia1" color="red" />
+            <IconFont 
+              style={{ marginLeft: 20 }} 
+              type="icon-jia1" 
+              color="red" 
+              onClick={handleAddAccount}
+            />
           }
           title="资产"
           color="#000"

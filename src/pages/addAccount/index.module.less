@@ -1,0 +1,164 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f5f5;
+}
+
+.content {
+  flex: 1;
+  padding: 16px;
+}
+
+.bottomButton {
+  padding: 16px;
+  // background: #fff;
+  // border-top: 1px solid #f5f5f5;
+}
+
+.submitBtn {
+  height: 44px;
+  line-height: 44px;
+  text-align: center;
+  background: #1890ff;
+  color: #fff;
+  border-radius: 22px;
+  font-size: 16px;
+}
+
+.accountTypeCard {
+  background: white;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.accountTypeItem {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+
+  .accountIcon {
+    width: 40px;
+    height: 40px;
+    background: #FFF5E6;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+  }
+
+  .accountTypeName {
+    flex: 1;
+    font-size: 16px;
+    color: #333;
+  }
+}
+
+.inputCard {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.inputItem {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #f5f5f5;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .inputLabel {
+    width: 80px;
+    font-size: 14px;
+    color: #333;
+  }
+
+  .inputField {
+    flex: 1;
+    font-size: 14px;
+    color: #333;
+  }
+
+  .placeholder {
+    color: #999;
+  }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: #999;
+}
+
+.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: #999;
+}
+
+.actionButtons {
+  display: flex;
+  justify-content: space-around;
+  border-radius: 22rpx;
+  margin-bottom: 32rpx;
+  gap: 22rpx;
+}
+
+.actionButton {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  padding: 22rpx 0;
+  border-radius: 22rpx;
+}
+
+.actionText {
+  font-size: 12px;
+  margin-top: 8px;
+  color: #333;
+}
+
+.detailCard {
+  background-color: #fff;
+  border-radius: 22rpx;
+  overflow: hidden;
+}
+
+.detailItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.detailItem:last-child {
+  border-bottom: none;
+}
+
+.itemLabel {
+  font-size: 14px;
+  color: #333;
+}
+
+.itemValue {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #666;
+}
+
+.itemValue text:not(:last-child) {
+  margin-right: 8px;
+}
