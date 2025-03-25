@@ -10,25 +10,25 @@ const tabs = [
   {
     key: "home",
     title: "首页",
-    iconType: "icon-home",
+    iconType: "icon-weijianzichanbiao",
     path: "/pages/index/index",
   },
   {
     key: "account",
     title: "资产",
-    iconType: "icon-wodezichan",
+    iconType: "icon-yinhangqia",
     path: "/pages/account/index",
   },
   {
     key: "stats",
     title: "统计",
-    iconType: "icon-tongji",
+    iconType: "icon-zichanfuzhaibiao",
     path: "/pages/stats/index",
   },
   {
     key: "profile",
     title: "我的",
-    iconType: "icon-wode",
+    iconType: "icon-geren",
     path: "/pages/profile/index",
   },
 ];

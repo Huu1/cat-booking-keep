@@ -25,18 +25,19 @@ const Index = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [dateType] = useState<"year" | "month">("month");
 
+  const { defaultBook } = useAppStore();
+
   const { data, run } = useRequest(
     () => {
       const { year, month } = formatDate(currentDate);
-      return getMonthlyStats(dateType, year, month);
+      return getMonthlyStats(dateType, year, month, defaultBook?.id);
     },
     {
-      refreshDeps: [currentDate],
+      refreshDeps: [currentDate, defaultBook?.id],
       manual: true,
+      ready: !!defaultBook?.id, // 添加ready参数
     }
   );
-
-  const { defaultBook } = useAppStore();
 
   // 使用新的 useLoadMore hook
   const {
@@ -49,22 +50,22 @@ const Index = () => {
     reset,
   } = useLoadMore({
     pageSize: 5,
+    ready: !!defaultBook?.id, // 添加ready参数，只有当defaultBook存在时才开始加载
     fetchData: async (page, pageSize) => {
       const { year, month } = formatDate(currentDate);
-      return getMonthlyStatsDetail(dateType, year, month, page, pageSize);
+      return getMonthlyStatsDetail(dateType, year, month, page, pageSize, defaultBook?.id);
     },
-    // 将 run 包装成返回 Promise 的函数
     onRefreshExtra: async () => {
       return run();
     },
   });
 
-  // 首次加载和日期变化时重置列表
+  // 首次加载和日期变化或账本变化时重置列表
   useEffect(() => {
     if (currentDate) {
       reset();
     }
-  }, [currentDate]);
+  }, [currentDate, defaultBook?.id]); // 添加defaultBook.id作为依赖
 
   // 添加事件监听，只在记账成功后刷新页面
   useEffect(() => {
@@ -96,10 +97,17 @@ const Index = () => {
     });
   };
 
+  // 添加跳转到账本页面的函数
+  const handleBookClick = () => {
+    Taro.navigateTo({
+      url: '/pages/books/index'
+    });
+  };
+
   return (
     <Layout
       currentTab="home"
-      navBar={<NavBar title="首页" color="#000" background={"white"} />}
+      navBar={<NavBar title="首页" color="#000"  />}
       bodyClassName={styles.homeWrapBox}
     >
       <ScrollView
@@ -114,13 +122,15 @@ const Index = () => {
         refresherEnabled={true}
         refresherThreshold={100}
         refresherDefaultStyle="black"
-        refresherBackground="#f4f4f4"
+        refresherBackground="transparent"
         refresherTriggered={refreshing}
         onRefresherRefresh={handleRefresh}
         onScrollToLower={handleLoadMore}
       >
         <View className={styles.topTitle}>
-          <View className={styles.wellcomeTitle}>{defaultBook?.name}</View>
+          <View className={styles.wellcomeTitle} onClick={handleBookClick}>
+            {defaultBook?.name}
+          </View>
           <MonthSwitcher
             currentDate={currentDate}
             setCurrentDate={setCurrentDate}

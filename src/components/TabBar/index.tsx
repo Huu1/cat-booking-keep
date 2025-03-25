@@ -62,8 +62,8 @@ const TabBar: React.FC<TabBarProps> = ({ current, tabs, onChange }) => {
           >
             <IconFont
               type={tab.iconType}
-              size={current === tab.key ? 24 : 22}
-              color={current === tab.key ? "red" : "#999999"}
+              size={22}
+              color={current === tab.key ? "#4285f4" : "#999999"}
             />
           </View>
           <Text

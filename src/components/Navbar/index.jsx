@@ -81,7 +81,7 @@ class NavBar extends Component {
 
   static defaultProps = {
     extClass: "",
-    background: "#f27166", //导航栏背景
+    background: "linear-gradient(135deg, fade(#f27166, 5%) 0%, fade(#53cc7e, 5%) 100%)", //导航栏背景
     color: "#000000",
     title: "",
     searchText: "点我搜索",
@@ -105,13 +105,13 @@ class NavBar extends Component {
       ios,
       windowWidth,
     } = systemInfo;
-    const { back, home, title, color } = this.props;
+    const { back, home, title, color ,background} = this.props;
     let rightDistance = windowWidth - capsulePosition.right; //胶囊按钮右侧到屏幕右侧的边距
     let leftWidth = windowWidth - capsulePosition.left; //胶囊按钮左侧到屏幕右侧的边距
 
     let navigationbarinnerStyle = [
       `color:${color}`,
-      //`background:${background}`,
+      // `background:${'#fef27e'}`,
       `height:${navBarHeight + navBarExtendHeight}px`,
       `padding-top:${statusBarHeight}px`,
       `padding-right:${leftWidth}px`,

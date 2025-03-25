@@ -28,7 +28,10 @@
     "dev:qq": "npm run build:qq -- --watch",
     "dev:jd": "npm run build:jd -- --watch",
     "dev:quickapp": "npm run build:quickapp -- --watch",
-    "test": "jest"
+    "test": "jest",
+    "generate-icons": "node scripts/generateIconList.js",
+    "prebuild": "npm run generate-icons",
+    "predev": "npm run generate-icons"
   },
   "browserslist": [
     "last 3 versions",

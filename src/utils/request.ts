@@ -1,5 +1,5 @@
 import Taro from "@tarojs/taro";
-
+import config from "@/config";
 // 常量定义
 const DEFAULT_TIMEOUT = 60000; // 默认超时时间 60s
 const LOADING_TEXT = "加载中...";
@@ -48,7 +48,7 @@ export class Request {
   // private eventManager: RequestEventManager;
 
   constructor(
-    baseUrl = "http://192.168.0.103:3000/api",
+    baseUrl = config.api.baseUrl,
     defaultHeader = {
       "Content-Type": "application/json",
       Authorization: `Bearer ` + Taro.getStorageSync("token"),

@@ -12,6 +12,7 @@ interface PaginationData<T> {
 
 interface UseLoadMoreOptions<T> {
   pageSize?: number;
+  ready?: boolean; // 添加ready参数
   fetchData: (page: number, pageSize: number) => Promise<PaginationData<T>>;
   onRefreshExtra?: () => Promise<void>;
 }
@@ -29,6 +30,7 @@ interface UseLoadMoreResult<T> {
 
 export function useLoadMore<T>({
   pageSize = 10,
+  ready = true, // 设置默认值为true
   fetchData,
   onRefreshExtra,
 }: UseLoadMoreOptions<T>): UseLoadMoreResult<T> {
@@ -76,7 +78,7 @@ export function useLoadMore<T>({
 
   // 处理下拉刷新
   const handleRefresh = async () => {
-    if (loading || requestLock.current) return;
+    if (!ready || loading || requestLock.current) return; // 添加ready检查
 
     requestLock.current = true;
     setRefreshing(true);
@@ -104,7 +106,7 @@ export function useLoadMore<T>({
 
   // 初始化加载数据（不显示刷新动画）
   const initLoad = async () => {
-    if (isInitialized || loading || requestLock.current) return;
+    if (!ready || isInitialized || loading || requestLock.current) return; // 添加ready检查
 
     requestLock.current = true;
     setLoading(true);
@@ -129,7 +131,7 @@ export function useLoadMore<T>({
 
   // 处理上拉加载更多
   const handleLoadMore = async () => {
-    if (!hasMore || loading || requestLock.current) return;
+    if (!ready || !hasMore || loading || requestLock.current) return; // 添加ready检查
 
     requestLock.current = true;
     setLoading(true);
@@ -169,7 +171,7 @@ export function useLoadMore<T>({
 
   // 重置并重新加载数据
   const reset = async () => {
-    if (requestLock.current) return;
+    if (!ready || requestLock.current) return; // 添加ready检查
 
     requestLock.current = true;
     setIsInitialized(false);

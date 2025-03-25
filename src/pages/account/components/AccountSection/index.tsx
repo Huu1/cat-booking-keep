@@ -25,12 +25,14 @@ interface AccountSectionProps {
   data: AccountGroup;
   isAmountVisible: boolean;
   formatAmount: (amount: string, t?: boolean) => React.ReactNode;
+  onAccountClick?: (account: Account) => void; // 添加点击回调属性
 }
 
 const AccountSection: React.FC<AccountSectionProps> = ({
   data,
   isAmountVisible,
   formatAmount,
+  onAccountClick,
 }) => {
   const [isExpanded, setIsExpanded] = useState(true);
 
@@ -64,7 +66,11 @@ const AccountSection: React.FC<AccountSectionProps> = ({
         <View className={styles.section}>
           <View className={styles.accountList}>
             {data.accounts?.map((account) => (
-              <View key={account.id} className={styles.accountItem}>
+              <View 
+                key={account.id} 
+                className={styles.accountItem}
+                onClick={() => onAccountClick?.(account)} // 添加点击事件
+              >
                 <View
                   className={styles.accountIcon}
                   style={{ backgroundColor: "#FFF5E6" }}

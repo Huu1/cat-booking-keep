@@ -196,7 +196,6 @@ const RecordDetail = () => {
 
   return (
     <Layout
-      currentTab="home"
       showTabBar={false}
       navBar={<NavBar title="账单详情" back color="#000" background="white" />}
       bodyClassName={styles.container}

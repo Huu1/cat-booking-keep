@@ -7,4 +7,16 @@
 @income-color: #53cc7e;
 @background-white: white;
 @primary-background: #f4f4f4;
+@primary-color:#fdfcd6;
 
+@gradient-background: linear-gradient(180deg, #fdfcd6 0%, #f6f6f4 28%, #f4f4f4 30%, #f4f4f4 100%);
+
+.expenseIcon() {
+  background-color: fade(@expense-color, 100%);
+  color: white;
+}
+
+.incomeIcon() {
+  background-color: fade(@income-color, 100%);
+  color: white;
+}

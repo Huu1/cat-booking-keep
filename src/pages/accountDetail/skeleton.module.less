@@ -1,0 +1,147 @@
+@import "../../styles/variables.less";
+
+.skeletonContainer {
+  // padding: 16px;
+}
+
+// 通用骨架屏动画
+.skeletonPulse {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: pulse 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+@keyframes pulse {
+  0% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+// 账户卡片骨架
+.accountCardSkeleton {
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.accountIconSkeleton {
+  .skeletonPulse();
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  margin-right: 16px;
+}
+
+.accountInfoSkeleton {
+  flex: 1;
+}
+
+.accountNameSkeleton {
+  .skeletonPulse();
+  height: 20px;
+  width: 120px;
+  margin-bottom: 8px;
+}
+
+.accountBalanceSkeleton {
+  .skeletonPulse();
+  height: 24px;
+  width: 150px;
+}
+
+// 月度卡片骨架
+.monthCardSkeleton {
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.monthHeaderSkeleton {
+  padding: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.monthTitleSkeleton {
+  .skeletonPulse();
+  height: 20px;
+  width: 150px;
+  margin-bottom: 12px;
+}
+
+.monthSummarySkeleton {
+  display: flex;
+  gap: 16px;
+}
+
+.flowItemSkeleton {
+  .skeletonPulse();
+  height: 16px;
+  width: 80px;
+}
+
+// 日记录骨架
+.dailyStatSkeleton {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.dailyHeaderSkeleton {
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.dateSkeleton {
+  .skeletonPulse();
+  height: 16px;
+  width: 80px;
+}
+
+.summarySkeleton {
+  .skeletonPulse();
+  height: 16px;
+  width: 120px;
+}
+
+// 记录项骨架
+.recordItemSkeleton {
+  padding: 16px;
+  display: flex;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.recordIconSkeleton {
+  .skeletonPulse();
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  margin-right: 12px;
+}
+
+.recordInfoSkeleton {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+}
+
+.recordTypeSkeleton {
+  .skeletonPulse();
+  height: 16px;
+  width: 100px;
+}
+
+.recordAmountSkeleton {
+  .skeletonPulse();
+  height: 16px;
+  width: 80px;
+}

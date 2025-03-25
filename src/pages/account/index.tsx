@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text } from "@tarojs/components";
 import styles from "./index.module.less";
 import NavBar from "@/components/Navbar";
@@ -27,7 +27,7 @@ const Index = () => {
     });
   };
 
-  const { data = [] } = useRequest(getAccounts);
+  const { data = [] ,run:run_getAccounts} = useRequest(getAccounts);
 
   const {
     data: summary = {
@@ -35,7 +35,20 @@ const Index = () => {
       totalAssets: "0.00",
       totalLiabilities: "0.00",
     },
+    run: run_getAccountsSummary,
   } = useRequest(getAccountsSummary);
+
+  useEffect(() => {
+    const handleRecordSuccess = () => {
+      run_getAccounts();
+      run_getAccountsSummary();
+    };
+    // 使用相同的字符串事件名
+    Taro.eventCenter.on('account_index_page', handleRecordSuccess);
+    return () => {
+      Taro.eventCenter.off('account_index_page', handleRecordSuccess);
+    };
+  }, []);
 
   // 格式化金额显示
   const formatAmount = (amount: string, showXXX: boolean = true) => {
@@ -57,16 +70,23 @@ const Index = () => {
     });
   };
 
+  // 处理账户点击，跳转到详情页
+  const handleAccountClick = (account) => {
+    Taro.navigateTo({
+      url: `/pages/accountDetail/index?id=${account.id}`
+    });
+  };
+
   return (
     <Layout
       currentTab="account"
       navBar={
         <NavBar
           back={
-            <IconFont 
-              style={{ marginLeft: 20 }} 
-              type="icon-jia1" 
-              color="red" 
+            <IconFont
+              style={{ marginLeft: 20 }}
+              type="icon-jia1"
+              color="red"
               onClick={handleAddAccount}
             />
           }
@@ -93,6 +113,7 @@ const Index = () => {
             data={item}
             isAmountVisible={isAmountVisible}
             formatAmount={formatAmount}
+            onAccountClick={handleAccountClick} // 添加点击回调
           />
         ))}
       </View>

@@ -13,6 +13,7 @@ import DateNote from "./components/DateNote";
 import { SafeArea } from "@nutui/nutui-react-taro";
 import dayjs from "dayjs";
 import { useRequest } from "taro-hooks";
+import AccountSelector from "./components/AccountSelector";
 
 // 在组件中使用
 const recordTypeOptions = [
@@ -29,6 +30,7 @@ const Index = () => {
     recordType: "expense" as "expense" | "income",
     selectedCategoryId: null as number | null,
     bookId: null as number | null,
+    accountId: null as number | null,
   });
 
   // 编辑模式状态管理
@@ -82,6 +84,7 @@ const Index = () => {
         recordType: (params.type as "expense" | "income") || "expense",
         date: params.recordDate || formState.date,
         bookId: params.bookId ? Number(params.bookId) : null,
+        accountId: params.accountId ? Number(params.accountId) : null,
         selectedCategoryId: params.categoryId
           ? Number(params.categoryId)
           : null,
@@ -170,7 +173,7 @@ const Index = () => {
           categoryId: formState.selectedCategoryId,
           note: formState.note,
           recordDate: dayjs(formState.date).format("YYYY-MM-DD HH:mm:ss"),
-          accountId: 1,
+          accountId: formState.accountId,
           type: formState.recordType,
           bookId: formState.bookId,
         });
@@ -187,7 +190,7 @@ const Index = () => {
           categoryId: formState.selectedCategoryId,
           note: formState.note,
           recordDate: dayjs(formState.date).format("YYYY-MM-DD HH:mm:ss"),
-          accountId: 1,
+          accountId: formState.accountId,
           type: formState.recordType,
           bookId: formState.bookId,
           callback,
@@ -223,6 +226,13 @@ const Index = () => {
       },
       [updateFormState]
     ),
+
+    handleAccountChange: useCallback(
+      (value: number) => {
+        updateFormState({ accountId: value });
+      },
+      [updateFormState]
+    ),
   };
 
   // 渲染 NavBar
@@ -249,19 +259,22 @@ const Index = () => {
     ]
   );
 
-    // 添加一个专门处理 amount 更新的函数，支持函数式更新
-    const handleAmountChange = useCallback((value: string | ((prev: string) => string)) => {
-      if (typeof value === 'function') {
+  // 添加一个专门处理 amount 更新的函数，支持函数式更新
+  const handleAmountChange = useCallback(
+    (value: string | ((prev: string) => string)) => {
+      if (typeof value === "function") {
         // 处理函数式更新
-        setFormState(prev => ({
+        setFormState((prev) => ({
           ...prev,
-          amount: value(prev.amount)
+          amount: value(prev.amount),
         }));
       } else {
         // 处理直接赋值
         updateFormState({ amount: value });
       }
-    }, [updateFormState]);
+    },
+    [updateFormState]
+  );
 
   return (
     <Layout
@@ -276,6 +289,10 @@ const Index = () => {
         recordType={formState.recordType}
         onCategorySelect={handlers.handleCategorySelect}
       />
+
+      <View>
+        <AccountSelector selectedAccountId={formState.accountId as any} onSelect={handlers.handleAccountChange} />
+      </View>
 
       <View className={styles.inputContainer}>
         <AmountDisplay

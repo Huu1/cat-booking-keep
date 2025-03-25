@@ -7,13 +7,15 @@ import NavBar from "@/components/Navbar";
 import IconFont from "@/components/Iconfont";
 import styles from "./index.module.less";
 import { useRequest } from "taro-hooks";
-import { addAccount } from "./service";
+import { addAccount, getAccount, updateAccount } from "./service";
 
 const AddAccount = () => {
   const [accountName, setAccountName] = useState("");
   const [description, setDescription] = useState("");
   const [balance, setBalance] = useState("");
   const [templateInfo, setTemplateInfo] = useState<any>(null);
+  const [isEdit, setIsEdit] = useState(false);
+  const [accountId, setAccountId] = useState<string | null>(null);
 
   // 获取路由参数
   useEffect(() => {
@@ -22,34 +24,66 @@ const AddAccount = () => {
     // @ts-ignore
     const eventChannel = instance?.page?.getOpenerEventChannel();
 
-    // 从路由参数或事件通道获取数据
-    eventChannel?.on("acceptDataFromOpenerPage", (data) => {
-      setTemplateInfo({
-        id: params.templateId || data.templateId,
-        icon: params.icon || data.icon,
-        name: params.name || data.name,
+    // 判断是否为编辑模式
+    if (params.id) {
+      setIsEdit(true);
+      setAccountId(params.id);
+      // 获取账户详情
+      fetchAccountDetail(params.id);
+    } else {
+      // 从路由参数或事件通道获取数据
+      eventChannel?.on("acceptDataFromOpenerPage", (data) => {
+        setTemplateInfo({
+          id: params.templateId || data.templateId,
+          icon: params.icon || data.icon,
+          name: params.name || data.name,
+        });
       });
-    });
+    }
   }, []);
 
-  const { loading, run: save } = useRequest(addAccount, {
+  // 获取账户详情
+  const { run: fetchAccountDetail } = useRequest(getAccount, {
     manual: true,
     onSuccess: (data) => {
-      Taro.showToast({
-        title: "创建成功",
-        icon: "success",
-      });
-      Taro.redirectTo({
-        url: '/pages/account/index'
-      });
-    },
-    onError: (error) => {
-      Taro.showToast({
-        title: "创建失败",
-        icon: "none",
+      // 填充表单数据
+      setAccountName(data.name || "");
+      setDescription(data.description || "");
+      setBalance(data.balance || "");
+      setTemplateInfo({
+        id: data.templateId,
+        icon: data.icon,
+        name: data.templateName,
       });
     },
   });
+
+  const { loading, run: save } = useRequest(
+    (params) => (isEdit ? updateAccount(params) : addAccount(params)),
+    {
+      manual: true,
+      onSuccess: () => {
+        Taro.eventCenter.trigger("account_index_page");
+
+        if (isEdit) {
+          Taro.eventCenter.trigger("account_detail_page");
+          Taro.navigateBack({
+            delta: 1,
+          });
+        } else {
+          Taro.navigateBack({
+            delta: 2,
+          });
+        }
+      },
+      onError: () => {
+        Taro.showToast({
+          title: isEdit ? "更新失败" : "创建失败",
+          icon: "error",
+        });
+      },
+    }
+  );
 
   // 处理账户名称变更
   const handleNameChange = (e) => {
@@ -89,12 +123,18 @@ const AddAccount = () => {
       return;
     }
 
-    save({
+    const params: any = {
       name: accountName,
       description: description,
       templateId: templateInfo?.id,
       balance,
-    });
+    };
+
+    if (isEdit && accountId) {
+      params.id = accountId;
+    }
+
+    save(params);
   };
 
   return (
@@ -102,7 +142,7 @@ const AddAccount = () => {
       showTabBar={false}
       navBar={
         <NavBar
-          title="添加账户"
+          title={isEdit ? "编辑账户" : "添加账户"}
           back
           color="#000"
           background="white"
@@ -179,7 +219,7 @@ const AddAccount = () => {
             size="large"
             onClick={handleSubmit}
           >
-            保存
+            {isEdit ? "更新" : "保存"}
           </Button>
         </View>
 

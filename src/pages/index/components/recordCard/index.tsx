@@ -47,7 +47,7 @@ const RecordCard: React.FC<RecordCardProps> = ({
   income,
   expense,
   records,
-  handleClick
+  handleClick,
 }) => {
   // 格式化日期显示
   const formatDate = (dateStr: string) => {
@@ -106,7 +106,11 @@ const RecordCard: React.FC<RecordCardProps> = ({
       {isExpanded && (
         <View className={styles.recordList}>
           {records.map((record) => (
-            <View key={record.id} className={styles.recordItem} onClick={()=>handleClick(record.id)}>
+            <View
+              key={record.id}
+              className={styles.recordItem}
+              onClick={() => handleClick(record.id)}
+            >
               <View
                 className={`${styles.iconWrapper} ${
                   record.type === "expense"
@@ -118,11 +122,18 @@ const RecordCard: React.FC<RecordCardProps> = ({
               </View>
               <View className={styles.recordInfo}>
                 <Text className={styles.category}>{record.category.name}</Text>
-                {record.recordDate && (
-                  <Text className={styles.subCategory}>
-                    {dayjs(record.recordDate).format("HH:mm")}
-                  </Text>
-                )}
+                <Text>
+                  {record.recordDate && (
+                    <Text className={styles.subCategory}>
+                      {dayjs(record.recordDate).format("HH:mm")}
+                    </Text>
+                  )}
+                  {record.note && (
+                    <Text className={styles.subCategory}>
+                      {` · ${record.note}`}
+                    </Text>
+                  )}
+                </Text>
               </View>
               <Text
                 className={`${styles.amount} ${

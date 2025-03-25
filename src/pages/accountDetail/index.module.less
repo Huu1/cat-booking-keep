@@ -1,0 +1,253 @@
+
+@import "../../styles/variables.less";
+
+.container {
+  background-color: #f5f5f5;
+  padding: 16px;
+}
+
+.monthCard {
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.monthHeader {
+  padding: 16px;
+  position: relative;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.monthTitle {
+  margin-bottom: 8px;
+  display: flex;
+  .monthName {
+    font-size: 18px;
+    font-weight: 500;
+    color: #333;
+    margin-right: 6rpx;
+  }
+
+  .dateRange {
+    display: inline-flex;
+    font-size: 10px;
+    color: #999;
+    background-color: #f3f3f3;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 8px;
+    align-self: center; // 添加这行，让元素高度由内容决定
+    display: inline-block; // 添加这行，确保元素不会被拉伸
+  }
+}
+
+
+
+.monthSummary {
+  display: flex;
+  gap: 16px;
+}
+
+.flowItem {
+  display: flex;
+  align-items: center;
+}
+
+.flowLabel {
+  font-size: 14px;
+  color: #999;
+  margin-right: 4px;
+}
+
+.flowAmount {
+  font-weight: 500;
+  margin-left: 4px;
+
+  // 支出金额颜色
+  .flowItem:first-child & {
+    color: @expense-color;
+  }
+
+  // 收入金额颜色
+  .flowItem:last-child & {
+    color: @income-color;
+  }
+}
+
+.arrowIcon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.recordItem {
+  padding: 12px;
+  padding-bottom: 6px;
+  padding-left: 0;
+  margin-left: 16px;
+  display: flex;
+  border-bottom: 1px solid #f0f0f0;
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.recordDate {
+  width: 60px;
+  margin-right: 12px;
+}
+
+.dailyHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 12px;
+  padding-left: 0px;
+  border-bottom: 1px solid @border-color;
+  margin-left: 16px; // 添加左边距
+}
+
+.dateWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.date {
+  font-size: 10px;
+  color: @secondary-text;
+}
+
+.weekday {
+  font-size: 12px;
+  color: @secondary-text;
+  margin-left: 4px;
+}
+
+.dailySummary {
+  display: flex;
+  gap: 12px;
+}
+
+.expenseAmount {
+  font-size: 12px;
+  color: @secondary-text;
+}
+
+.incomeAmount {
+  font-size: 12px;
+  color: @secondary-text;
+}
+
+.recordContent {
+  flex: 1;
+  display: flex;
+}
+
+.recordIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  &.expenseCategoryIcon {
+    .expenseIcon();
+  }
+  &.incomeCategoryIcon {
+    .incomeIcon();
+  }
+}
+
+.recordInfo {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+}
+
+.recordLeft, .recordRight {
+  display: flex;
+  flex-direction: column;
+}
+
+.recordType {
+  font-size: 16px;
+  color: @primary-text;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.recordNote {
+  font-size: 12px;
+  color: @secondary-text;
+}
+
+.recordAmount {
+  font-size: 14px;
+  font-weight: 500;
+  text-align: right;
+  margin-bottom: 4px;
+}
+
+.recordTime {
+  font-size: 12px;
+  color: @tertiary-text;
+  text-align: right;
+}
+
+.recordMain {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.recordType {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.recordAmount {
+  font-size: 12px;
+  color: #333;
+}
+
+.recordSub {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.recordDesc {
+  font-size: 14px;
+  color: #999;
+}
+
+.recordTime {
+  font-size: 12px;
+  color: #999;
+}
+
+.recordBalance {
+  font-size: 12px;
+  color: #999;
+}
+
+
+.emptyContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  // background-color: white;
+  border-radius: 12px;
+  margin-top: 16px;
+}
+
+.emptyText {
+  color: #999;
+  font-size: 16px;
+}

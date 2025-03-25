@@ -1,5 +1,5 @@
-import { Text, View } from "@tarojs/components";
 import React from "react";
+import { Text, View } from "@tarojs/components";
 import styles from "./index.module.less";
 import cs from "classnames";
 
@@ -11,6 +11,7 @@ const AmountBox = ({
   className?: string;
 }) => {
   const _className = cs(styles.amountBox, className);
+
   return (
     <View className={_className}>
       <Text>¥</Text>
@@ -22,9 +23,12 @@ const AmountBox = ({
 
 const Index = (props) => {
   const { totalIncome, totalExpense, balance } = props;
+
+
   return (
     <View className={styles.monthStatic}>
       <View>总支出</View>
+
       <AmountBox value={totalExpense} className={styles.expenseNumber} />
       <View className={styles.bottomRow}>
         <View>
