@@ -1,0 +1,107 @@
+.popupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.popupContent {
+  background-color: #fff;
+  position: fixed;
+  transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  max-width: 100%;
+  max-height: 100%;
+  opacity: 0;
+}
+
+.contentVisible {
+  opacity: 1;
+}
+
+.positionBottom {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transform: translateY(100%);
+}
+
+.positionTop {
+  top: 0;
+  left: 0;
+  right: 0;
+  transform: translateY(-100%);
+}
+
+.positionLeft {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+}
+
+.positionRight {
+  top: 0;
+  bottom: 0;
+  right: 0;
+  transform: translateX(100%);
+}
+
+.positionCenter {
+  transform: scale(0.8);
+}
+
+.visible .positionBottom {
+  transform: translateY(0);
+}
+
+.visible .positionTop {
+  transform: translateY(0);
+}
+
+.visible .positionLeft {
+  transform: translateX(0);
+}
+
+.visible .positionRight {
+  transform: translateX(0);
+}
+
+.visible .positionCenter {
+  transform: scale(1);
+}
+
+.round {
+  &.positionBottom {
+    border-radius: 16px 16px 0 0;
+  }
+
+  &.positionTop {
+    border-radius: 0 0 16px 16px;
+  }
+
+  &.positionLeft {
+    border-radius: 0 16px 16px 0;
+  }
+
+  &.positionRight {
+    border-radius: 16px 0 0 16px;
+  }
+
+  &.positionCenter {
+    border-radius: 16px;
+  }
+}

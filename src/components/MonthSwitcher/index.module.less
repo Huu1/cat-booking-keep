@@ -4,29 +4,43 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  // background-color: #C4FBFF;
-  border-radius: 20rpx;
-  padding: 0 12rpx;
+  background: linear-gradient(135deg, #fffee6 0%, #fffbf0 100%);
+  border-radius: 28rpx;
+  padding: 0 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(255, 230, 100, 0.2);
 
   .arrow-button {
-    width: 40rpx;
-    height: 40rpx;
-    background-color: white;
+    width: 44rpx;
+    height: 44rpx;
+    // background-color: white;
     border-radius: 50%;
-    transition: all 0.3s;
-    line-height: 32rpx;
-    text-align: center;
-    color: #2A2A2A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    color: #333;
+    // box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.05);
 
     &:active {
-      background-color: #e6e6e6;
+      // background-color: #f8f8f8;
+      transform: scale(0.95);
     }
   }
 
   .month-text {
     font-family: PingFang SC;
     font-weight: 500;
-    font-size: 25rpx;
-    color: #2a2a2a;
+    font-size: 30rpx;
+    color: #222;
+    letter-spacing: 1rpx;
   }
 }
+
+.icon-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }

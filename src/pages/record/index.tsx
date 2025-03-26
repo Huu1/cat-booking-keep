@@ -13,7 +13,8 @@ import DateNote from "./components/DateNote";
 import { SafeArea } from "@nutui/nutui-react-taro";
 import dayjs from "dayjs";
 import { useRequest } from "taro-hooks";
-import AccountSelector from "./components/AccountSelector";
+import AccountSelector from "./components/AcccountSelector";
+import BookSelector from "./components/BookSelector";
 
 // 在组件中使用
 const recordTypeOptions = [
@@ -233,6 +234,13 @@ const Index = () => {
       },
       [updateFormState]
     ),
+
+    handleBookChange: useCallback(
+      (value: number) => {
+        updateFormState({ bookId: value });
+      },
+      [updateFormState]
+    ),
   };
 
   // 渲染 NavBar
@@ -249,7 +257,7 @@ const Index = () => {
         }
         back
         color="#000"
-        background="white"
+        // background="white"
       />
     ),
     [
@@ -290,8 +298,10 @@ const Index = () => {
         onCategorySelect={handlers.handleCategorySelect}
       />
 
-      <View>
+      <View className={styles.actrionPanel}>
         <AccountSelector selectedAccountId={formState.accountId as any} onSelect={handlers.handleAccountChange} />
+
+        <BookSelector selectedBookId={formState.bookId as any} onSelect={handlers.handleBookChange} />
       </View>
 
       <View className={styles.inputContainer}>

@@ -1,9 +1,5 @@
 import { request } from "@/utils/request";
 
-// 获取所有账本
-export const getBooks = () => {
-  return request.get("/books");
-};
 
 // 添加账本
 export const addBook = (data) => {

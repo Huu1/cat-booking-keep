@@ -1,37 +1,60 @@
-import React from "react";
-import { ITouchEvent, View } from "@tarojs/components";
-import cs from "classnames";
-import "./index.scss";
-// import { Popup } from "@nutui/nutui-react-taro";
+import { View } from "@tarojs/components";
+import { ReactNode, useEffect } from "react";
+import styles from "./index.module.less";
 
-type MMButton = {
-  children: React.ReactNode;
-  className?: string;
-  contentClassName?: string;
+interface PopupProps {
   visible: boolean;
-  setVisible: (v: boolean) => void;
-};
-const Index = (props: MMButton) => {
-  const { children, className = "", contentClassName } = props;
+  position?: "bottom" | "top" | "left" | "right" | "center";
+  round?: boolean;
+  onClose: () => void;
+  children: ReactNode;
+  style?: React.CSSProperties;
+}
 
-  const _className = cs("mm-popup", {
-    [className]: className,
-  });
+const Popup: React.FC<PopupProps> = ({
+  visible,
+  position = "bottom",
+  round = false,
+  onClose,
+  children,
+  style = {},
+}) => {
+  // 防止滚动穿透
+  useEffect(() => {
+    if (visible) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [visible]);
 
-  return (<></>
-    // <Popup
-    //   visible={props.visible}
-    //   style={{ height: "45%", borderRadius: 12 ,borderBottomLeftRadius:0,borderBottomRightRadius:0}}
-    //   position="bottom"
-    //   onClose={() => {
-    //     props.setVisible(false);
-    //   }}
-    //   className={`${_className}`}
-    // >
-    //   <View className="popup-border"></View>
-    //   <View className={`popup-content ${contentClassName}`}>{children}</View>
-    // </Popup>
+  return (
+    <View
+      className={`${styles.popupOverlay} ${visible ? styles.visible : ""}`}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+      catchMove
+    >
+      <View
+        className={`
+          ${styles.popupContent}
+          ${styles[`position${position.charAt(0).toUpperCase() + position.slice(1)}`]}
+          ${round ? styles.round : ""}
+          ${visible ? styles.contentVisible : ""}
+        `}
+        style={style}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {children}
+      </View>
+    </View>
   );
 };
 
-export default Index;
+export default Popup;

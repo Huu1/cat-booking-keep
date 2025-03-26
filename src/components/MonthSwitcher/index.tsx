@@ -1,6 +1,7 @@
 import { Text, View } from "@tarojs/components";
 import React, { useState } from "react";
 import styles from "./index.module.less";
+import IconFont from "../Iconfont";
 
 const Index = ({
   currentDate,
@@ -26,14 +27,20 @@ const Index = ({
   return (
     <View className={styles["month-switcher"]}>
       <View className={styles["arrow-button"]} onClick={handlePrevMonth}>
-        {"<"}
+        <View className={styles["icon-wrapper"]}>
+          <IconFont type="icon-zuo" size={16} color="#898989"  />
+        </View>
       </View>
 
-      <Text className={styles["month-text"]}>{formatDate(currentDate)?.text}</Text>
-
-      <Text className={styles["arrow-button"]} onClick={handleNextMonth}>
-        {">"}
+      <Text className={styles["month-text"]}>
+        {formatDate(currentDate)?.text}
       </Text>
+
+      <View className={styles["arrow-button"]} onClick={handleNextMonth}>
+        <View className={styles["icon-wrapper"]}>
+          <IconFont type="icon-youbian" color="#898989" size={16} />
+        </View>
+      </View>
     </View>
   );
 };
@@ -44,8 +51,8 @@ export const formatDate = (date: Date) => {
 
   return {
     text: `${year}-${month}`,
-    year:year.toString(),
-    month:month.toString(),
+    year: year.toString(),
+    month: month.toString(),
   };
 };
 

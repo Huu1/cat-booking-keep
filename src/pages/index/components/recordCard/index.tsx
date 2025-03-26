@@ -62,7 +62,10 @@ const RecordCard: React.FC<RecordCardProps> = ({
 
   return (
     <View className={styles.recordCard}>
-      <View className={styles.cardHeader}>
+      <View
+        className={styles.cardHeader}
+        onClick={() => setIsExpanded(!isExpanded)}
+      >
         <View className={styles.dateInfo}>
           <Text className={styles.date}>{formatDate(date)}</Text>
           <Text className={styles.weekday}>{weekday}</Text>
@@ -94,10 +97,8 @@ const RecordCard: React.FC<RecordCardProps> = ({
             className={`${styles.expandButton} ${
               isExpanded ? styles.expanded : ""
             }`}
-            onClick={() => setIsExpanded(!isExpanded)}
           >
-            {/* <IconFont type="icon-arrow-down" size={16} /> */}
-            {">"}
+            <IconFont type="icon-youbian" size={12} />
           </View>
         </View>
       </View>
@@ -118,7 +119,7 @@ const RecordCard: React.FC<RecordCardProps> = ({
                     : styles.incomeIcon
                 }`}
               >
-                <IconFont type={record.category.icon} size={20} />
+                <IconFont type={record.category.icon} size={32} />
               </View>
               <View className={styles.recordInfo}>
                 <Text className={styles.category}>{record.category.name}</Text>

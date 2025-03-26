@@ -34,7 +34,7 @@ const CategoryList: React.FC<CategoryListProps> = ({
                   : ""
               }`}
             >
-              <IconFont type={category.icon} size={24} />
+              <IconFont type={category.icon} size={36} />
             </View>
             <Text className={styles.categoryName}>{category.name}</Text>
           </View>

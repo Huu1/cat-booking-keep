@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
-import { View, Text, Image } from "@tarojs/components";
-import { Popup, SafeArea } from "@nutui/nutui-react-taro";
+import { useState } from "react";
+import { View, Text, ScrollView } from "@tarojs/components";
+import { SafeArea } from "@nutui/nutui-react-taro";
 import IconFont from "@/components/Iconfont";
+import Popup from "@/components/Popup"; // 引入自定义的 Popup 组件
 import styles from "./index.module.less";
 import { useRequest } from "taro-hooks";
 import { getAccountList } from "@/pages/addAccount/service";
@@ -18,7 +19,7 @@ interface Account {
 
 interface AccountSelectorProps {
   selectedAccountId?: number;
-  onSelect: (accountId: number|null) => void;
+  onSelect: (accountId: number | null) => void;
 }
 
 const AccountSelector: React.FC<AccountSelectorProps> = ({
@@ -31,8 +32,9 @@ const AccountSelector: React.FC<AccountSelectorProps> = ({
   const { data: accountList = [] } = useRequest(getAccountList);
 
   // 根据ID查找当前选中的账户
-  const selectedAccount =
-    accountList.find((account) => account.id === selectedAccountId)
+  const selectedAccount = accountList.find(
+    (account) => account.id === selectedAccountId
+  );
 
   const handleOpen = () => {
     setVisible(true);
@@ -47,24 +49,31 @@ const AccountSelector: React.FC<AccountSelectorProps> = ({
     handleClose();
   };
 
+
+
   return (
     <>
       <View className={styles.accountSelector} onClick={handleOpen}>
-        <View className={styles.accountIcon}>
-          <IconFont
-            type={selectedAccount?.icon || "icon-wallet"}
-            size={20}
-            color="#fff"
-          />
-        </View>
+        {selectedAccount ? (
+          <View className={styles.accountIcon}>
+            <IconFont
+              type={selectedAccount?.icon || "icon-wallet"}
+              size={20}
+              color="#fff"
+            />
+          </View>
+        ) : (
+          <></>
+        )}
+
         <Text className={styles.accountName}>
-          {selectedAccount?.name || "请选择账户"}
+          {selectedAccount?.name || "选择账户"}
         </Text>
         <View
           className={styles.deleteAccountWrap}
           onClick={(e) => {
             e.stopPropagation();
-            onSelect(null)
+            onSelect(null);
           }}
         >
           <IconFont type="icon-shanchu" size={10} color="#999" />
@@ -76,7 +85,7 @@ const AccountSelector: React.FC<AccountSelectorProps> = ({
         position="bottom"
         round
         onClose={handleClose}
-        style={{ height: "50vh" }}
+        style={{ height: "50vh", display: "flex", flexDirection: "column" }}
       >
         <View className={styles.popupHeader}>
           <View className={styles.closeBtn}></View>
@@ -92,7 +101,11 @@ const AccountSelector: React.FC<AccountSelectorProps> = ({
           </View>
         </View>
 
-        <View className={styles.accountListContainer}>
+        <ScrollView
+          className={styles.accountListContainer}
+          scrollY
+          scrollWithAnimation
+        >
           <View className={styles.accountList}>
             {accountList.map((account) => (
               <View
@@ -101,14 +114,7 @@ const AccountSelector: React.FC<AccountSelectorProps> = ({
                 onClick={() => handleSelect(account)}
               >
                 <View className={styles.accountInfo}>
-                  <View
-                    className={styles.accountLogo}
-                    style={
-                      {
-                        // backgroundColor: "#f8b64c",
-                      }
-                    }
-                  >
+                  <View className={styles.accountLogo}>
                     <IconFont type={account.icon} size={34} color="#fff" />
                   </View>
                   <View className={styles.accountDetail}>
@@ -128,7 +134,9 @@ const AccountSelector: React.FC<AccountSelectorProps> = ({
             ))}
           </View>
           <SafeArea position="bottom" />
-        </View>
+        </ScrollView>
+
+
       </Popup>
     </>
   );

@@ -10,7 +10,7 @@ import { useRequest } from "taro-hooks";
 import { deleteBook, getBooks, setDefaultBookApi } from "./service";
 import { useAppStore } from "@/store";
 
-interface Book {
+export interface Book {
   id: number;
   name: string;
   color: string;
@@ -151,7 +151,7 @@ const Books = () => {
   return (
     <Layout
       showTabBar={false}
-      navBar={<NavBar title="我的账本" back color="#000" background="white" />}
+      navBar={<NavBar title="我的账本" back color="#000" background="" />}
       bodyClassName={styles.container}
     >
       <View className={styles.bookList}>

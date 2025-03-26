@@ -3,6 +3,7 @@ import { Text } from "@tarojs/components";
 import "./accountIcon.less";
 import "./commonIcon.less";
 import "./bookIcon.less";
+import "./category.less";
 
 interface IconFontProps {
   type: string;

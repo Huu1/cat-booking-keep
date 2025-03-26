@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { View, Text, Input, ScrollView } from "@tarojs/components";
 import Taro from "@tarojs/taro";
-import { SafeArea, Button } from "@nutui/nutui-react-taro";
+import { SafeArea } from "@nutui/nutui-react-taro";
 import Layout from "@/components/Layout";
 import NavBar from "@/components/Navbar";
 import IconFont from "@/components/Iconfont";
 import styles from "./index.module.less";
 import { useRequest } from "taro-hooks";
 import { addBook, getBookDetail, updateBook } from "./service";
-import { getIcons, useIcons } from "@/utils/iconUtils";
+import { getIcons } from "@/utils/iconUtils";
 
 interface Book {
   id?: number;
@@ -138,7 +138,7 @@ const AddBook = () => {
           title={isEdit ? "编辑账本" : "新建账本"}
           back
           color="#000"
-          background="white"
+          // background="white"
           right={
             <Text
               style={{ color: "#1890ff", fontSize: "14px" }}
