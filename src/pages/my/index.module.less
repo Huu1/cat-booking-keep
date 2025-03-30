@@ -1,20 +1,17 @@
 .myPageContainer {
-  // background: linear-gradient(180deg, #1677ff 0%, #f0f7ff 300px, #f5f5f5 100%);
 }
 
 .container {
-  padding: 0 30rpx;
-  padding-bottom: 100rpx;
+  padding: 16px 16px 40px;
 }
 
-// 用户卡片样式
-.userCard {
-  margin-top: 20rpx;
-  padding: 40rpx;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 24rpx;
-  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.08);
-  backdrop-filter: blur(10px);
+// 用户信息卡片
+.profileCard {
+  background: linear-gradient(135deg, #ffffff 0%, #f5f7fa 100%);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .userInfo {
@@ -23,77 +20,86 @@
 }
 
 .avatar {
-  width: 120rpx;
-  height: 120rpx;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  border: 4rpx solid #fff;
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.userDetails {
-  margin-left: 30rpx;
+.userMeta {
+  margin-left: 16px;
   flex: 1;
 }
 
 .username {
-  font-size: 36rpx;
+  font-size: 16px;
   font-weight: 600;
   color: #333;
-  margin-bottom: 16rpx;
+  margin-bottom: 8px;
 }
 
 .userStats {
   display: flex;
   align-items: center;
-  margin-top: 16rpx;
+  margin-top: 8px;
 }
 
 .statItem {
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 .statValue {
-  font-size: 32rpx;
+  font-size: 16px;
   font-weight: 600;
   color: #1677ff;
 }
 
 .statLabel {
-  font-size: 24rpx;
+  font-size: 12px;
   color: #999;
-  margin-top: 4rpx;
+  margin-top: 2px;
 }
 
 .statDivider {
-  width: 2rpx;
-  height: 40rpx;
+  width: 1px;
+  height: 20px;
   background-color: #eee;
-  margin: 0 30rpx;
+  margin: 0 16px;
 }
 
-// 菜单区域样式
-.sectionTitle {
-  font-size: 28rpx;
-  font-weight: 500;
+// 菜单组样式
+.menuGroup {
+  margin-bottom: 16px;
+}
+
+.menuHeader {
+  display: flex;
+  align-items: center;
+  padding: 0 4px 8px;
+}
+
+.menuTitle {
+  font-size: 14px;
   color: #666;
-  margin: 40rpx 0 16rpx 16rpx;
+  margin-left: 6px;
+  font-weight: 500;
 }
 
 .menuSection {
   background-color: #fff;
-  border-radius: 24rpx;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
 .menuItem {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 32rpx 24rpx;
-  border-bottom: 1rpx solid #f5f5f5;
+  padding: 14px 16px;
+  border-bottom: 1px solid #f5f5f5;
 
   &:last-child {
     border-bottom: none;
@@ -105,47 +111,44 @@
   align-items: center;
 }
 
-.iconWrapper {
-  width: 80rpx;
-  height: 80rpx;
-  border-radius: 20rpx;
+.iconContainer {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 24rpx;
+  margin-right: 12px;
 }
 
 .menuText {
-  font-size: 28rpx;
+  font-size: 14px;
   color: #333;
-  font-weight: 500;
-}
-
-.badge {
-  background-color: #ff4d4f;
-  border-radius: 16rpx;
-  padding: 4rpx 12rpx;
-}
-
-.badgeText {
-  color: #fff;
-  font-size: 22rpx;
-  font-weight: 500;
 }
 
 .switchBtn {
-  transform: scale(0.9);
+  transform: scale(0.8);
 }
 
-// 页脚样式
+.newBadge {
+  background-color: #ff4d4f;
+  border-radius: 10px;
+  padding: 2px 6px;
+
+  text {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+  }
+}
+
+// 页脚
 .footer {
-  margin-top: 60rpx;
-  display: flex;
-  justify-content: center;
-  padding: 30rpx 0;
+  text-align: center;
+  margin-top: 24px;
 }
 
-.footerText {
-  font-size: 24rpx;
+.version {
+  font-size: 12px;
   color: #999;
 }

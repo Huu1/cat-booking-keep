@@ -16,7 +16,7 @@ const tabs = [
   {
     key: "account",
     title: "资产",
-    iconType: "icon-yinhangqia",
+    iconType: "icon-zichan",
     path: "/pages/account/index",
   },
   {

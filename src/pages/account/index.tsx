@@ -10,8 +10,11 @@ import AccountSection from "./components/AccountSection";
 import Taro from "@tarojs/taro";
 import AssetCard from "./components/AssetCard";
 import IconFont from "@/components/Iconfont";
+import { useAppStore } from "@/store";
 
 const Index = () => {
+  const { user } = useAppStore();
+
   // 从本地存储读取状态，默认为 true
   const [isAmountVisible, setIsAmountVisible] = useState(() => {
     const stored = Taro.getStorageSync("isAmountVisible");
@@ -27,7 +30,9 @@ const Index = () => {
     });
   };
 
-  const { data = [] ,run:run_getAccounts} = useRequest(getAccounts);
+  const { data = [], run: run_getAccounts } = useRequest(getAccounts, {
+    ready: !!user,
+  });
 
   const {
     data: summary = {
@@ -36,7 +41,9 @@ const Index = () => {
       totalLiabilities: "0.00",
     },
     run: run_getAccountsSummary,
-  } = useRequest(getAccountsSummary);
+  } = useRequest(getAccountsSummary, {
+    ready: !!user,
+  });
 
   useEffect(() => {
     const handleRecordSuccess = () => {
@@ -44,9 +51,9 @@ const Index = () => {
       run_getAccountsSummary();
     };
     // 使用相同的字符串事件名
-    Taro.eventCenter.on('account_index_page', handleRecordSuccess);
+    Taro.eventCenter.on("account_index_page", handleRecordSuccess);
     return () => {
-      Taro.eventCenter.off('account_index_page', handleRecordSuccess);
+      Taro.eventCenter.off("account_index_page", handleRecordSuccess);
     };
   }, []);
 
@@ -66,14 +73,14 @@ const Index = () => {
 
   const handleAddAccount = () => {
     Taro.navigateTo({
-      url: '/pages/accountType/index'
+      url: "/pages/accountType/index",
     });
   };
 
   // 处理账户点击，跳转到详情页
   const handleAccountClick = (account) => {
     Taro.navigateTo({
-      url: `/pages/accountDetail/index?id=${account.id}`
+      url: `/pages/accountDetail/index?id=${account.id}`,
     });
   };
 
@@ -83,13 +90,15 @@ const Index = () => {
       navBar={
         <NavBar
           back={
-            <IconFont
-              style={{ marginLeft: 20 }}
-              type="icon-a-mti-tianjiamti-xinzeng"
-              // color="#f27166"
-              size={20}
-              onClick={handleAddAccount}
-            />
+            user && (
+              <IconFont
+                style={{ marginLeft: 20 }}
+                type="icon-a-mti-tianjiamti-xinzeng"
+                // color="#f27166"
+                size={20}
+                onClick={handleAddAccount}
+              />
+            )
           }
           title="资产"
           color="#000"

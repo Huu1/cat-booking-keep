@@ -1,5 +1,6 @@
 import Taro from "@tarojs/taro";
 import config from "@/config";
+import { useAppStore } from "@/store";
 // 常量定义
 const DEFAULT_TIMEOUT = 60000; // 默认超时时间 60s
 const LOADING_TEXT = "加载中...";
@@ -45,7 +46,6 @@ export class Request {
   private baseUrl: string;
   private defaultHeader: Record<string, string>;
   private interceptors: Interceptor[] = [];
-  // private eventManager: RequestEventManager;
 
   constructor(
     baseUrl = config.api.baseUrl,
@@ -56,6 +56,18 @@ export class Request {
   ) {
     this.baseUrl = baseUrl;
     this.defaultHeader = defaultHeader;
+
+    // 添加默认拦截器
+    this.use({
+      request: (config) => {
+        // 每次请求前刷新 token
+        config.header = {
+          ...config.header,
+          Authorization: `Bearer ${Taro.getStorageSync("token")}`,
+        };
+        return config;
+      },
+    });
   }
 
   // 添加拦截器
@@ -112,6 +124,9 @@ export class Request {
     if (response.statusCode === 201 || response.statusCode === 200) {
       if (result.code === 200) {
         return result.data;
+      } else if (result.code === 401) {
+        useAppStore.getState().logout();
+        return result.data;
       } else {
         return this.handleError(response);
       }
@@ -123,26 +138,25 @@ export class Request {
     options: RequestOptions<D>
   ): Promise<T> {
     const {
-      url,
-      method = "GET",
-      data,
-      header = {},
-      loading = true,
       timeout = DEFAULT_TIMEOUT,
     } = options;
 
-    // if (loading) {
-    //   this.showLoading();
-    // }
+    // 执行请求拦截器
+    let currentOptions = { ...options };
+    for (const interceptor of this.interceptors) {
+      if (interceptor.request) {
+        currentOptions = interceptor.request(currentOptions);
+      }
+    }
 
     try {
       const requestPromise = Taro.request<ResponseData<T>>({
-        url: `${this.baseUrl}${url}`,
-        method,
-        data,
+        url: `${this.baseUrl}${currentOptions.url}`,
+        method: currentOptions.method,
+        data: currentOptions.data,
         header: {
           ...this.defaultHeader,
-          ...header,
+          ...currentOptions.header,
         },
       });
 
@@ -151,19 +165,22 @@ export class Request {
         this.createTimeout(timeout),
       ]);
 
-      // if (loading) {
-      //   this.hideLoading();
-      // }
-
-      // 处理 401 未授权的情况
-      if (response.statusCode === 401) {
+      // 执行响应拦截器
+      let currentResponse = response;
+      for (const interceptor of this.interceptors) {
+        if (interceptor.response) {
+          currentResponse = interceptor.response(currentResponse);
+        }
       }
 
-      return this.handleResponse<T>(response);
+      return this.handleResponse<T>(currentResponse);
     } catch (error) {
-      // if (loading) {
-      //   this.hideLoading();
-      // }
+      // 执行错误拦截器
+      for (const interceptor of this.interceptors) {
+        if (interceptor.error) {
+          interceptor.error(error);
+        }
+      }
       return this.handleError(error);
     }
   }

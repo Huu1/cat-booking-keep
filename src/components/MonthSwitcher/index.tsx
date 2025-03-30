@@ -28,7 +28,7 @@ const Index = ({
     <View className={styles["month-switcher"]}>
       <View className={styles["arrow-button"]} onClick={handlePrevMonth}>
         <View className={styles["icon-wrapper"]}>
-          <IconFont type="icon-mti-jiantouzuo" size={14} color="#898989"  />
+          <IconFont type="icon-zuo" size={20} color="#898989"  />
         </View>
       </View>
 
@@ -38,7 +38,7 @@ const Index = ({
 
       <View className={styles["arrow-button"]} onClick={handleNextMonth}>
         <View className={styles["icon-wrapper"]}>
-          <IconFont type="icon-right" color="#898989" size={14} />
+          <IconFont type="icon-you" color="#898989" size={20} />
         </View>
       </View>
     </View>

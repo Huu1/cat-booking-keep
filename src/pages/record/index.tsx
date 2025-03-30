@@ -23,6 +23,7 @@ const recordTypeOptions = [
 ];
 
 const Index = () => {
+
   // 基础状态管理
   const [formState, setFormState] = useState({
     amount: "",

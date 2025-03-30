@@ -10,7 +10,7 @@ export const getMonthlyStats = (
     type,
     year,
     month,
-    bookId
+    bookId,
   });
 
 export const getDefaultBook = () => request.get("/books/default");
@@ -30,5 +30,6 @@ export const getMonthlyStatsDetail = (
     includeRecords: true,
     page,
     pageSize,
-    bookId
+    bookId,
   });
+export const getCurrentUser = () => request.get("/users/profile");

@@ -7,15 +7,12 @@ import MonthSwitcher, { formatDate } from "@/components/MonthSwitcher";
 import MonthStatic from "./components/monthStatic";
 import Layout from "@/components/Layout";
 import styles from "./index.module.less";
-import {
-  getMonthlyStats,
-  getMonthlyStatsDetail,
-} from "./service";
+import { getMonthlyStats, getMonthlyStatsDetail } from "./service";
 import RecordList from "./components/RecordList";
 import { useLoadMore } from "@/hooks/useLoadMore";
 import AddRecordButton from "./components/AddRecordButton";
 import Taro from "@tarojs/taro";
-import { useAppStore } from '@/store';
+import { useAppStore } from "@/store";
 import { useRequest } from "taro-hooks";
 
 // 设置 dayjs 使用中文
@@ -25,7 +22,7 @@ const Index = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [dateType] = useState<"year" | "month">("month");
 
-  const { defaultBook } = useAppStore();
+  const { defaultBook, user } = useAppStore();
 
   const { data, run } = useRequest(
     () => {
@@ -53,7 +50,14 @@ const Index = () => {
     ready: !!defaultBook?.id, // 添加ready参数，只有当defaultBook存在时才开始加载
     fetchData: async (page, pageSize) => {
       const { year, month } = formatDate(currentDate);
-      return getMonthlyStatsDetail(dateType, year, month, page, pageSize, defaultBook?.id);
+      return getMonthlyStatsDetail(
+        dateType,
+        year,
+        month,
+        page,
+        pageSize,
+        defaultBook?.id
+      );
     },
     onRefreshExtra: async () => {
       return run();
@@ -73,13 +77,20 @@ const Index = () => {
       reset();
     };
     // 使用相同的字符串事件名
-    Taro.eventCenter.on('reload_index_page', handleRecordSuccess);
+    Taro.eventCenter.on("reload_index_page", handleRecordSuccess);
     return () => {
-      Taro.eventCenter.off('reload_index_page', handleRecordSuccess);
+      Taro.eventCenter.off("reload_index_page", handleRecordSuccess);
     };
   }, [handleRefresh]);
 
   const handleAddRecord = () => {
+    if (!user) {
+      Taro.navigateTo({
+        url: "/pages/login/index",
+      });
+      return;
+    }
+
     Taro.navigateTo({
       url: "/pages/record/index",
       success: function (res) {
@@ -93,21 +104,21 @@ const Index = () => {
   // 添加处理记录点击的函数
   const handleRecordClick = (id: number) => {
     Taro.navigateTo({
-      url: `/pages/recordDetail/index?id=${id}`
+      url: `/pages/recordDetail/index?id=${id}`,
     });
   };
 
   // 添加跳转到账本页面的函数
   const handleBookClick = () => {
     Taro.navigateTo({
-      url: '/pages/books/index'
+      url: "/pages/books/index",
     });
   };
 
   return (
     <Layout
       currentTab="home"
-      navBar={<NavBar title="" color="#000"  />}
+      navBar={<NavBar title="" color="#000" />}
       bodyClassName={styles.homeWrapBox}
     >
       <ScrollView

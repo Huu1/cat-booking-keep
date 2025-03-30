@@ -23,6 +23,7 @@ import AssetTrendsCard from "./AssetTrendsCard";
 import FilterPopup from "./FilterPopup";
 import { getAccountList } from "../addAccount/service";
 import { getBooks } from "../books/service";
+import { useAppStore } from "@/store";
 
 // 日期类型选项
 const dateTypeOptions = [
@@ -36,8 +37,14 @@ export type TDateType = "week" | "month" | "year" | "range";
 
 // 在 Statistics 组件内添加状态
 const Statistics = () => {
-  const { data: accountList = [] } = useRequest(getAccountList);
-  const { data: bookList = [] } = useRequest(getBooks);
+  const { user } = useAppStore();
+
+  const { data: accountList = [] } = useRequest(getAccountList, {
+    ready: !!user,
+  });
+  const { data: bookList = [] } = useRequest(getBooks, {
+    ready: !!user,
+  });
 
   // 当前选中的日期类型
   const [dateType, setDateType] = useState<TDateType>("week");
@@ -94,7 +101,15 @@ const Statistics = () => {
       return getStatistics(dateType, currentDate, "", "", bookIds, accountIds);
     },
     {
-      refreshDeps: [dateType, currentDate, startDate, endDate,bookIds,accountIds],
+      refreshDeps: [
+        dateType,
+        currentDate,
+        startDate,
+        endDate,
+        bookIds,
+        accountIds,
+      ],
+      ready: !!user,
     }
   );
 
@@ -202,9 +217,14 @@ const Statistics = () => {
           onChange={handleDateTypeChange}
           className={styles.dateSwitcher}
         />
-        <View className={styles.filterIcon} onClick={() => setShowFilter(true)}>
-          <IconFont type="icon-mti-shaixuan" size={16} color="#666" />
-        </View>
+        {user && (
+          <View
+            className={styles.filterIcon}
+            onClick={() => setShowFilter(true)}
+          >
+            <IconFont type="icon-mti-shaixuan" size={16} color="#666" />
+          </View>
+        )}
       </View>
 
       {/* 使用抽离出的日期导航组件 */}

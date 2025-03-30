@@ -1,6 +1,6 @@
-export default {
+export default defineAppConfig({
   pages: [
-    "pages/index/index",
+    'pages/index/index',
     "pages/record/index",
     "pages/account/index",
     "pages/accountType/index",
@@ -11,6 +11,7 @@ export default {
     "pages/addBook/index",
     "pages/my/index",
     "pages/statistics/index",
+    'pages/login/index',  // 添加登录页面
   ],
   window: {
     backgroundTextStyle: "dark",
@@ -25,4 +26,4 @@ export default {
   externalStyleSheets: [
     '//at.alicdn.com/t/c/font_4866695_uetnhwq310a.css'
   ]
-};
+});

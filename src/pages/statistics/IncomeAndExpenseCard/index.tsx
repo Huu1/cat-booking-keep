@@ -6,13 +6,14 @@ import ExpenseIncomeChart from "./ExpenseIncomeChart";
 import { useRequest } from "taro-hooks";
 import { getIncomeAndExpenseTrend } from "../service";
 import { TDateType } from "..";
+import { useAppStore } from "@/store";
 
 const Index = ({
   dateType,
   currentDate,
-  style={},
+  style = {},
   bookIds,
-  accountIds
+  accountIds,
 }: {
   dateType: TDateType;
   currentDate: Date;
@@ -20,21 +21,23 @@ const Index = ({
   bookIds?: number[];
   accountIds?: number[];
 }) => {
+  const { user } = useAppStore();
+
   // // 添加一个状态来控制显示支出还是收入 收入支出
   const [showType, setshowType] = React.useState<"expense" | "income">(
     "expense"
   );
 
-  const { data=[] } = useRequest(
-    () => getIncomeAndExpenseTrend(dateType, currentDate,bookIds,accountIds),
+  const { data = [] } = useRequest(
+    () => getIncomeAndExpenseTrend(dateType, currentDate, bookIds, accountIds),
     {
-      refreshDeps: [dateType, currentDate,bookIds,accountIds],
-      ready:dateType!=='range'
+      refreshDeps: [dateType, currentDate, bookIds, accountIds],
+      ready: !!user && dateType !== "range",
     }
   );
 
   return (
-    <View className={styles.Card} style={{...style}}>
+    <View className={styles.Card} style={{ ...style }}>
       <CategoryHeader
         showType={showType}
         options={[]}
@@ -44,11 +47,7 @@ const Index = ({
       />
 
       <View className={styles.chartWrapper}>
-        <ExpenseIncomeChart
-          title=""
-          data={data}
-          dateType={dateType}
-        />
+        <ExpenseIncomeChart title="" data={data} dateType={dateType} />
       </View>
     </View>
   );

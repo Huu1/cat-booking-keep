@@ -73,7 +73,7 @@ const gradientColors = generateGradientColors(50);
 // 导出CSS渐变色，以便其他组件使用
 export const cssGradients = gradientColors.css;
 
-const getOption = (data: TData = [], title: string) => {
+const getOption = (data: TData = [], title: string='0') => {
   // 数据预处理：设置最小和最大阈值
   const processData = (rawData: TData) => {
     if (!rawData || rawData.length === 0) return [];
