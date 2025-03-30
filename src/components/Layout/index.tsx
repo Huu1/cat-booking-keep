@@ -20,16 +20,16 @@ const tabs = [
     path: "/pages/account/index",
   },
   {
-    key: "stats",
+    key: "statistics",
     title: "统计",
     iconType: "icon-zichanfuzhaibiao",
-    path: "/pages/stats/index",
+    path: "/pages/statistics/index",
   },
   {
-    key: "profile",
+    key: "my",
     title: "我的",
     iconType: "icon-geren",
-    path: "/pages/profile/index",
+    path: "/pages/my/index",
   },
 ];
 

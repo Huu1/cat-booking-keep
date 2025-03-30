@@ -10,10 +10,10 @@ interface MonthHeaderProps {
   onToggle: (month: string) => void;
 }
 
-const MonthHeader: React.FC<MonthHeaderProps> = ({ 
-  month, 
+const MonthHeader: React.FC<MonthHeaderProps> = ({
+  month,
   isExpanded = false,
-  onToggle 
+  onToggle
 }) => {
   return (
     <View
@@ -41,8 +41,8 @@ const MonthHeader: React.FC<MonthHeaderProps> = ({
       </View>
       <View className={styles.arrowIcon}>
         <IconFont
-          type={isExpanded ? "icon-xia" : "icon-you"}
-          size={20}
+          type={isExpanded ? "icon-down" : "icon-right"}
+          size={14}
           color="#999"
         />
       </View>

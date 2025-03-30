@@ -123,7 +123,7 @@ const AccountDetail = () => {
           title="账户详情"
           back
           color="#000"
-          background="white"
+          // background="white"
           right={
             <Text
               style={{ color: "#1890ff", fontSize: "14px" }}

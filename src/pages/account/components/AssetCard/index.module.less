@@ -1,35 +1,70 @@
 .assetCard {
-  background: white;
-  border-radius: 22rpx;
-  padding: 28rpx;
-  margin-bottom: 16rpx;
+  background: linear-gradient(135deg, #fff590 0%, #fdfcd6 100%);
+  border-radius: 32rpx;
+  padding: 32rpx 28rpx;
+  // margin: 30rpx;
+  box-shadow: 0 6rpx 16rpx rgba(0, 0, 0, 0.04);
+  font-family: PingFang SC;
+  // border: 1px solid rgba(255, 230, 100, 0.3);
 
   .netAsset {
-    margin-bottom: 22rpx;
+    margin-bottom: 32rpx;
+
     .labelWrapper {
       display: flex;
       align-items: center;
+
       .label {
-        font-size: 18px;
+        font-size: 30rpx;
+        font-weight: 500;
         color: #666;
+        letter-spacing: 1rpx;
       }
 
       .eyeIcon {
-        padding: 4px;
+        padding: 8rpx;
+        margin-left: 10rpx;
       }
     }
 
     .amount {
-      font-size: 28px;
+      font-size: 56rpx;
       font-weight: bold;
-      color: #333;
+      color: #222222;
+      margin-top: 14rpx;
+      letter-spacing: 0.5rpx;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
     }
   }
 
   .totalAssets {
     display: flex;
-    gap: 42rpx;
-    color: #999;
-    font-size: 14px;
+    justify-content: space-between;
+    padding: 20rpx 0 10rpx;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  .assetItem, .liabilityItem {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8rpx;
+  }
+
+  .assetLabel, .liabilityLabel {
+    font-size: 26rpx;
+    color: #666;
+  }
+
+  .assetValue {
+    font-size: 34rpx;
+    font-weight: 500;
+    // color: #53cc7e;
+  }
+
+  .liabilityValue {
+    font-size: 34rpx;
+    font-weight: 500;
+    // color: #f27166;
   }
 }

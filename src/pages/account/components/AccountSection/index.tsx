@@ -42,12 +42,16 @@ const AccountSection: React.FC<AccountSectionProps> = ({
 
   return (
     <React.Fragment>
-      <View className={styles.sectionTitle} onClick={toggleExpand}>
+      <View
+        className={`${styles.sectionTitle} ${
+          !isExpanded ? styles.roundedFull : ""
+        }`}
+        onClick={toggleExpand}
+      >
         <Text className={styles.titleText}>{data.title}</Text>
         <View className={styles.titleRight}>
           {isAmountVisible ? (
             <Text className={styles.titleAount}>
-              {" "}
               余额：{formatAmount(data.totalBalance)}
             </Text>
           ) : (
@@ -55,8 +59,8 @@ const AccountSection: React.FC<AccountSectionProps> = ({
           )}
 
           <IconFont
-            type={isExpanded ? "icon-xia" : "icon-you"}
-            size={18}
+            type={isExpanded ? "icon-down" : "icon-right"}
+            size={12}
             style={{ marginTop: 2 }}
             color="#999"
           />
@@ -66,24 +70,31 @@ const AccountSection: React.FC<AccountSectionProps> = ({
         <View className={styles.section}>
           <View className={styles.accountList}>
             {data.accounts?.map((account) => (
-              <View 
-                key={account.id} 
+              <View
+                key={account.id}
                 className={styles.accountItem}
-                onClick={() => onAccountClick?.(account)} // 添加点击事件
+                onClick={() => onAccountClick?.(account)}
               >
-                <View
-                  className={styles.accountIcon}
-                  style={{ backgroundColor: "#FFF5E6" }}
-                >
-                  <IconFont type={account.icon} size={24} />
-                </View>
-                <View className={styles.accountInfo}>
-                  <View className={styles.accountName}>{account.name}</View>
-                  <View className={styles.accountNote}>
-                    {account.description}
+                <View className={styles.accountLeft}>
+                  <View className={styles.accountIcon}>
+                    <IconFont type={account.icon} size={24} color="#666" />
                   </View>
-                  <View className={styles.accountType}>
-                    {account?.template?.name}
+                  <View className={styles.accountInfo}>
+                    <View className={styles.accountName}>{account.name}</View>
+                    {(account.description || account?.template?.name) && (
+                      <View className={styles.accountMeta}>
+                        {account?.template?.name && (
+                          <Text className={styles.accountType}>
+                            {account?.template?.name}
+                          </Text>
+                        )}
+                        {account.description && (
+                          <Text className={styles.accountNote}>
+                            {account.description}
+                          </Text>
+                        )}
+                      </View>
+                    )}
                   </View>
                 </View>
                 <Text className={styles.accountAmount}>

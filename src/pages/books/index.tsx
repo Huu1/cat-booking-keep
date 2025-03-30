@@ -178,7 +178,7 @@ const Books = () => {
                     size={22}
                     color="#4285f4"
                     className={styles.moreIcon}
-                    onClick={(e) => handleMoreClick(e, book)}
+                    onClick={((e) => handleMoreClick(e, book)) as any}
                   />
                 </View>
 

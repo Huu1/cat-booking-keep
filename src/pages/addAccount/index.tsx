@@ -145,7 +145,7 @@ const AddAccount = () => {
           title={isEdit ? "编辑账户" : "添加账户"}
           back
           color="#000"
-          background="white"
+          // background="white"
           right={
             <Text
               style={{ color: "#1890ff", fontSize: "14px" }}

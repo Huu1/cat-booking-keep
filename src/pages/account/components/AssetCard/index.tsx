@@ -28,7 +28,7 @@ const AssetCard: React.FC<AssetCardProps> = ({
           <IconFont
             type={isAmountVisible ? "icon-xianshikejian" : "icon-yincang"}
             size={22}
-            color="#999"
+            color="#666"
             onClick={onToggleVisibility}
             className={styles.eyeIcon}
           />
@@ -38,8 +38,14 @@ const AssetCard: React.FC<AssetCardProps> = ({
         </Text>
       </View>
       <View className={styles.totalAssets}>
-        <Text>总资产 {formatAmount(totalAssets)}</Text>
-        <Text>总负债 {formatAmount(totalLiabilities)}</Text>
+        <View className={styles.assetItem}>
+          <Text className={styles.assetLabel}>总资产</Text>
+          <Text className={styles.assetValue}>{formatAmount(totalAssets)}</Text>
+        </View>
+        <View className={styles.assetItem}>
+          <Text className={styles.liabilityLabel}>总负债</Text>
+          <Text className={styles.liabilityValue}>{formatAmount(totalLiabilities)}</Text>
+        </View>
       </View>
     </View>
   );

@@ -98,7 +98,7 @@ const RecordCard: React.FC<RecordCardProps> = ({
               isExpanded ? styles.expanded : ""
             }`}
           >
-            <IconFont type="icon-youbian" size={12} />
+            <IconFont type="icon-right" size={13} />
           </View>
         </View>
       </View>

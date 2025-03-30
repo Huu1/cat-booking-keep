@@ -26,7 +26,7 @@ const Index = () => {
 
   return (
     <Layout
-      navBar={<NavBar title="选择类型" back color="#000" background="white" />}
+      navBar={<NavBar title="选择类型" back color="#000"  />}
       bodyClassName={styles.container}
       showTabBar={false}
     >

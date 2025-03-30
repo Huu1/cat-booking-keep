@@ -2,6 +2,7 @@ import { isFunction, getSystemInfo } from "@/utils";
 import { Component } from "react";
 import Taro from "@tarojs/taro";
 import { View } from "@tarojs/components";
+import IconFont from "../Iconfont";
 // import "./index.scss";
 
 let globalSystemInfo = getSystemInfo();
@@ -81,7 +82,8 @@ class NavBar extends Component {
 
   static defaultProps = {
     extClass: "",
-    background: "linear-gradient(135deg, fade(#f27166, 5%) 0%, fade(#53cc7e, 5%) 100%)", //导航栏背景
+    background:
+      "linear-gradient(135deg, fade(#f27166, 5%) 0%, fade(#53cc7e, 5%) 100%)", //导航栏背景
     color: "#000000",
     title: "",
     searchText: "点我搜索",
@@ -91,7 +93,7 @@ class NavBar extends Component {
     iconTheme: "black",
     delta: 1,
     onHeightChange: null, // 添加高度变化回调属性
-    backTitle:''
+    backTitle: "",
   };
 
   state = {};
@@ -105,7 +107,7 @@ class NavBar extends Component {
       ios,
       windowWidth,
     } = systemInfo;
-    const { back, home, title, color ,background} = this.props;
+    const { back, home, title, color, background } = this.props;
     let rightDistance = windowWidth - capsulePosition.right; //胶囊按钮右侧到屏幕右侧的边距
     let leftWidth = windowWidth - capsulePosition.left; //胶囊按钮左侧到屏幕右侧的边距
 
@@ -165,7 +167,7 @@ class NavBar extends Component {
       searchText,
       iconTheme,
       extClass,
-      backTitle
+      backTitle,
     } = this.props;
     let nav_bar__center = null;
     if (title) {
@@ -206,11 +208,12 @@ class NavBar extends Component {
               !home &&
               (typeof back === "boolean" ? (
                 <>
-                  <View
+                  {/* <View
                     onClick={this.handleBackClick.bind(this)}
                     className={`lzh-nav-bar__button lzh-nav-bar__btn_goback ${iconTheme}`}
                   />
-                  {backTitle}
+                  {backTitle} */}
+                  <IconFont type="icon-icon_back_green"  style={{marginLeft:16}} size={22} onClick={this.handleBackClick.bind(this)} />
                 </>
               ) : (
                 back

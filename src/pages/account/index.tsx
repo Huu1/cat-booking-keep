@@ -85,14 +85,15 @@ const Index = () => {
           back={
             <IconFont
               style={{ marginLeft: 20 }}
-              type="icon-jia1"
-              color="red"
+              type="icon-a-mti-tianjiamti-xinzeng"
+              // color="#f27166"
+              size={20}
               onClick={handleAddAccount}
             />
           }
           title="资产"
           color="#000"
-          background="white"
+          // background="white"
         />
       }
       bodyClassName={styles.homeWrapBox}

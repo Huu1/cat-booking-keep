@@ -107,7 +107,7 @@ const Index = () => {
   return (
     <Layout
       currentTab="home"
-      navBar={<NavBar title="首页" color="#000"  />}
+      navBar={<NavBar title="" color="#000"  />}
       bodyClassName={styles.homeWrapBox}
     >
       <ScrollView

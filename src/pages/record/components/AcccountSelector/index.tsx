@@ -7,7 +7,7 @@ import styles from "./index.module.less";
 import { useRequest } from "taro-hooks";
 import { getAccountList } from "@/pages/addAccount/service";
 
-interface Account {
+export interface Account {
   id: number;
   name: string;
   icon: string;
@@ -76,7 +76,7 @@ const AccountSelector: React.FC<AccountSelectorProps> = ({
             onSelect(null);
           }}
         >
-          <IconFont type="icon-shanchu" size={10} color="#999" />
+          <IconFont type="icon-close" size={10} color="#999" />
         </View>
       </View>
 
@@ -92,7 +92,7 @@ const AccountSelector: React.FC<AccountSelectorProps> = ({
           <Text className={styles.popupTitle}>选择账户</Text>
           <View className={styles.rightAction}>
             <IconFont
-              type="icon-shanchu"
+              type="icon-close"
               size={20}
               color="#4285f4"
               onClick={handleClose}

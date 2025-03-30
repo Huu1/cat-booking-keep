@@ -68,7 +68,7 @@ const BookSelector: React.FC<BookSelectorProps> = ({
           <Text className={styles.popupTitle}>选择账本</Text>
           <View className={styles.rightAction}>
             <IconFont
-              type="icon-shanchu"
+              type="icon-close"
               size={20}
               color="#4285f4"
               onClick={handleClose}

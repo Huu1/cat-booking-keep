@@ -60,6 +60,11 @@ export default defineConfig<'webpack5'>(async (merge, { command, mode }) => {
       },
       webpackChain(chain) {
         chain.resolve.plugin('tsconfig-paths').use(TsconfigPathsPlugin)
+        chain.plugin('miniCssExtractPlugin')
+        .tap(args => {
+          args[0].ignoreOrder = true;
+          return args;
+        });
       }
     },
     h5: {

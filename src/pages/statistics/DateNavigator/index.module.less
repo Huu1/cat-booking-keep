@@ -1,0 +1,71 @@
+.dateNavigator {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 16px 40px;
+  min-height: 60px;
+  box-sizing: border-box;
+
+  .navButton {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: #4285f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(66, 133, 244, 0.2);
+    flex-shrink: 0;
+  }
+
+  .currentDate {
+    flex: 1;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 10px;
+  }
+}
+
+.rangeDatePicker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  .datePickerItem {
+    flex: 1;
+    max-width: 160px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    .datePickerContent {
+      display: flex;
+      align-items: center;
+      gap: 8rpx;
+      // background-color: #f5f5f5;
+
+      .dateText {
+        flex: 1;
+        font-size: 14px;
+        color: #333;
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  .rangeSeparator {
+    font-size: 28rpx;
+    color: #666;
+    flex: 1;
+    text-align: center;
+  }
+}
