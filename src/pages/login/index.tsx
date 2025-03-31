@@ -4,6 +4,7 @@ import Taro from "@tarojs/taro";
 import { useAppStore } from "@/store";
 import styles from "./index.module.less";
 import { request } from "@/utils/request";
+import IconFont from "@/components/Iconfont";
 
 const Login = () => {
   const [isAgreed, setIsAgreed] = useState(false);
@@ -11,6 +12,7 @@ const Login = () => {
 
   const [confirmLoading, setConfirmLoading] = useState(false);
 
+  // 处理登录逻辑
   const handleLogin = async () => {
     setConfirmLoading(true);
     try {
@@ -24,9 +26,10 @@ const Login = () => {
       if (access_token) {
         // Step 4: 存储 token
         Taro.setStorageSync("token", access_token);
+
         Taro.showToast({
           title: "登录成功",
-          duration: 1500,
+          duration: 2000,
           success() {
             getUserInfo().then(() => {
               Taro.redirectTo({
@@ -46,27 +49,28 @@ const Login = () => {
 
   const handleWechatLogin = async () => {
     if (confirmLoading) return;
+
     if (!isAgreed) {
-      Taro.showToast({
-        title: "请先同意用户协议和隐私政策",
-        icon: "none",
+      // 如果未勾选协议，弹出确认框
+      Taro.showModal({
+        title: '温馨提示',
+        content: '登录即表示您已同意《用户协议》和《隐私协议》',
+        confirmText: '同意',
+        confirmColor: '#FFB800',
+        cancelText: '取消',
+        success: function(res) {
+          if (res.confirm) {
+            // 用户点击确定，自动勾选并登录
+            setIsAgreed(true);
+            handleLogin();
+          }
+        }
       });
       return;
     }
 
+    // 已勾选协议，直接登录
     handleLogin();
-
-    // try {
-    //   await getUserInfo();
-    //   Taro.switchTab({
-    //     url: '/pages/index/index'
-    //   });
-    // } catch (error) {
-    //   Taro.showToast({
-    //     title: '登录失败，请重试',
-    //     icon: 'none'
-    //   });
-    // }
   };
 
   const handleCancel = () => {
@@ -88,20 +92,22 @@ const Login = () => {
   return (
     <View className={styles.loginContainer}>
       <View className={styles.logoSection}>
-        {/* <Image
+        <Image
           className={styles.logo}
-          src='/assets/images/勾子.png'
+          src='/assets/images/logo.png'
           mode='aspectFit'
-        /> */}
-        <Text className={styles.appName}>记账</Text>
+        />
+        <Text className={styles.appName}>365猫记账</Text>
+        <Text className={styles.appSlogan}>轻松记账，智慧生活</Text>
       </View>
 
       <View className={styles.actionSection}>
         <View className={styles.wechatBtn} onClick={handleWechatLogin}>
-          微信登录
+          <IconFont type="icon-wechat" size={28} color="#333" style={{ marginRight: '12rpx' }} />
+          微信一键登录
         </View>
         <View className={styles.cancelBtn} onClick={handleCancel}>
-          取消登录
+          暂不登录
         </View>
       </View>
 

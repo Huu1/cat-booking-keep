@@ -22,7 +22,7 @@ const AmountBox = ({
 
 
 const Index = (props) => {
-  const { totalIncome, totalExpense, balance } = props;
+  const { totalIncome=0, totalExpense=0, balance=0 } = props;
 
 
   return (

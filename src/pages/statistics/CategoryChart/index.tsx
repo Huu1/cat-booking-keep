@@ -133,7 +133,7 @@ const getOption = (data: TData = [], title: string='0') => {
       },
       confine: true, // 确保tooltip始终在可视区域内
       backgroundColor: 'rgba(50, 50, 50, 0.8)',
-      borderColor: 'rgba(50, 50, 50, 0.8)',
+      // borderColor: 'rgba(50, 50, 50, 0.8)',
       borderWidth: 0,
       textStyle: {
         color: '#fff',

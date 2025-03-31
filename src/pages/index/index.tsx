@@ -91,6 +91,11 @@ const Index = () => {
       return;
     }
 
+    // 添加手机震动反馈
+    Taro.vibrateShort({
+      type: 'medium'
+    });
+
     Taro.navigateTo({
       url: "/pages/record/index",
       success: function (res) {

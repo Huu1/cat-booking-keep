@@ -181,14 +181,14 @@ const RecordDetail = () => {
         <Text className={styles.itemLabel}>{label}</Text>
         <View className={styles.itemValue}>
           <Text>{value || "无"}</Text>
-          {onClick && (
+          {/* {onClick && (
             <IconFont
               type="icon-you"
               style={{ marginTop: 2 }}
               size={16}
               color="#999"
             />
-          )}
+          )} */}
         </View>
       </View>
     );
@@ -207,19 +207,19 @@ const RecordDetail = () => {
           {/* 操作按钮 */}
           <View className={styles.actionButtons}>
             <View className={styles.actionButton} onClick={handleEdit}>
-              <IconFont type="icon-bianji" size={26} color="#0086F6" />
+              <IconFont type="icon-bianji" size={24} color="#0086F6" />
               <Text className={styles.actionText} style={{ color: "#0086F6" }}>
                 编辑
               </Text>
             </View>
             <View className={styles.actionButton} onClick={handleDelete}>
-              <IconFont type="icon-shanchu2" size={26} color="#FF5252" />
+              <IconFont type="icon-top1" size={24} color="#FF5252" />
               <Text className={styles.actionText} style={{ color: "#FF5252" }}>
                 删除
               </Text>
             </View>
-            <View className={styles.actionButton} onClick={handleRefund}>
-              <IconFont type="icon-tuikuan" size={26} color="#2196F3" />
+            {/* <View className={styles.actionButton} onClick={handleRefund}>
+              <IconFont type="icon-tuikuan" size={24} color="#2196F3" />
               <Text className={styles.actionText} style={{ color: "#2196F3" }}>
                 退款
               </Text>
@@ -228,11 +228,11 @@ const RecordDetail = () => {
               className={styles.actionButton}
               onClick={handleSaveAsTemplate}
             >
-              <IconFont type="icon-mobanshezhi" size={26} color="#FF9800" />
+              <IconFont type="icon-mti-fuzhi" size={24} color="#FF9800" />
               <Text className={styles.actionText} style={{ color: "#FF9800" }}>
                 存为模板
               </Text>
-            </View>
+            </View> */}
           </View>
 
           {/* 详情信息 */}

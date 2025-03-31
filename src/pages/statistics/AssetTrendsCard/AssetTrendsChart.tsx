@@ -39,7 +39,7 @@ const getOption = (data: AssetTrendsData = [], title: string ,dateType:TDateType
         const date = data[params[0].dataIndex].date;
         let formattedDate;
         let suffix = '';
-        
+
         switch(dateType) {
           case 'week':
             formattedDate = dayjs(date).format('MM月DD日');
@@ -57,7 +57,7 @@ const getOption = (data: AssetTrendsData = [], title: string ,dateType:TDateType
             formattedDate = dayjs(date).format('YYYY年MM月DD日');
             suffix = ' ' + params[0].name;
         }
-        
+
         let result = formattedDate + suffix + '\n';
         params.forEach(item => {
           result += item.seriesName + ': ¥' + item.value.toFixed(2) + '\n';
@@ -66,7 +66,7 @@ const getOption = (data: AssetTrendsData = [], title: string ,dateType:TDateType
       },
       confine: true, // 确保tooltip始终在可视区域内
       backgroundColor: 'rgba(50, 50, 50, 0.8)',
-      borderColor: 'rgba(50, 50, 50, 0.8)',
+      // borderColor: 'rgba(50, 50, 50, 0.8)',
       borderWidth: 0,
       textStyle: {
         color: '#fff',

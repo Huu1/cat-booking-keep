@@ -40,7 +40,7 @@ const getOption = (data: ExpenseIncomeData = [], title: string, dateType: TDateT
       },
       confine: true,
       backgroundColor: 'rgba(50, 50, 50, 0.8)',
-      borderColor: 'rgba(50, 50, 50, 0.8)',
+      // borderColor: 'rgba(50, 50, 50, 0.8)',
       borderWidth: 0,
       textStyle: {
         color: '#fff',
@@ -51,7 +51,7 @@ const getOption = (data: ExpenseIncomeData = [], title: string, dateType: TDateT
         const date = data[params[0].dataIndex].date;
         let formattedDate;
         let suffix = '';
-        
+
         switch(dateType) {
           case 'week':
             formattedDate = dayjs(date).format('MM月DD日');
@@ -73,7 +73,7 @@ const getOption = (data: ExpenseIncomeData = [], title: string, dateType: TDateT
             formattedDate = dayjs(date).format('YYYY年MM月DD日');
             suffix = params[0].name;
         }
-        
+
         let result = formattedDate + (suffix ? ' ' + suffix : '') + '\n';
         params.forEach(item => {
           const prefix = item.seriesName === '收入' ? '+' : '-';
@@ -217,7 +217,7 @@ const Index = ({ data, title, dateType }: { data: ExpenseIncomeData; title: stri
   React.useEffect(() => {
     setOption(getOption(data, title, dateType));
   }, [data, title, dateType]);
-  
+
   return <CustomEcharts option={option}  />;
 };
 

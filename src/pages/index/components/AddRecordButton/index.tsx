@@ -27,7 +27,7 @@ const AddRecordButton = ({ onAddRecord }: AddRecordButtonProps) => {
       onClick={onAddRecord}
     >
       <View className={styles.addButtonInner}>
-        <IconFont type="icon-add" size={24} color="#fff" />
+        <IconFont type="icon-tianjia" size={20} color="#333" />
         <Text className={styles.addButtonText}>记一笔</Text>
       </View>
     </View>

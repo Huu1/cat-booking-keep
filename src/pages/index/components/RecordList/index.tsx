@@ -15,12 +15,31 @@ const RecordList: React.FC<RecordListProps> = ({
   recordList,
   loading,
   hasMore,
-  handleClick
+  handleClick,
 }) => {
   // 使用 dayjs 将日期转换为星期几
   const getWeekday = (dateStr: string) => {
     return dayjs(dateStr).format("dddd");
   };
+
+  // 计算所有记录的总数
+  const getTotalRecordsCount = () => {
+    return recordList.reduce((total, dayRecord) => {
+      return total + (dayRecord.records?.length || 0);
+    }, 0);
+  };
+
+  if (loading) {
+    return (
+      <View className={styles.loadingWrapper}>
+        <View className={styles.loadingMore}>
+          <View className={styles.loadingDot}></View>
+          <View className={styles.loadingDot}></View>
+          <View className={styles.loadingDot}></View>
+        </View>
+      </View>
+    );
+  }
 
   return (
     <>
@@ -47,9 +66,8 @@ const RecordList: React.FC<RecordListProps> = ({
                 <View className={styles.loadingDot}></View>
               </View>
             )}
-
             {/* 没有更多数据提示 - 只在非加载状态下显示 */}
-            {!hasMore && !loading && (
+            {!hasMore && !loading && (getTotalRecordsCount() >= 6) && (
               <View className={styles.noMoreData}>没有更多数据了</View>
             )}
           </View>

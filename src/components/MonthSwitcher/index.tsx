@@ -1,7 +1,7 @@
 import { Text, View } from "@tarojs/components";
-import React, { useState } from "react";
 import styles from "./index.module.less";
 import IconFont from "../Iconfont";
+import dayjs from "dayjs";
 
 const Index = ({
   currentDate,
@@ -12,15 +12,13 @@ const Index = ({
 }) => {
   // 切换上月
   const handlePrevMonth = () => {
-    const newDate = new Date(currentDate);
-    newDate.setMonth(newDate.getMonth() - 1);
+    const newDate = dayjs(currentDate).subtract(1, 'month').toDate();
     setCurrentDate(newDate);
   };
 
   // 切换下月
   const handleNextMonth = () => {
-    const newDate = new Date(currentDate);
-    newDate.setMonth(newDate.getMonth() + 1);
+    const newDate = dayjs(currentDate).add(1, 'month').toDate();
     setCurrentDate(newDate);
   };
 
@@ -46,13 +44,13 @@ const Index = ({
 };
 
 export const formatDate = (date: Date) => {
-  const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const year = dayjs(date).year();
+  const month = dayjs(date).format('MM');
 
   return {
     text: `${year}-${month}`,
     year: year.toString(),
-    month: month.toString(),
+    month: month,
   };
 };
 

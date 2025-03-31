@@ -26,8 +26,8 @@ const AccountSection: React.FC<AccountSectionProps> = ({ data, onTemplateClick }
         <Text className={styles.titleText}>{data.title}</Text>
         <View className={styles.titleRight}>
           <IconFont
-            type={isExpanded ? "icon-xia" : "icon-you"}
-            size={18}
+            type={isExpanded ? "icon-down" : "icon-right"}
+            size={14}
             style={{ marginTop: 2 }}
             color="#999"
           />
@@ -37,8 +37,8 @@ const AccountSection: React.FC<AccountSectionProps> = ({ data, onTemplateClick }
         <View className={styles.section}>
           <View className={styles.accountList}>
             {data.templates?.map((template) => (
-              <View 
-                key={template.id} 
+              <View
+                key={template.id}
                 className={styles.accountItem}
                 onClick={() => onTemplateClick?.(template)}
               >
@@ -52,8 +52,8 @@ const AccountSection: React.FC<AccountSectionProps> = ({ data, onTemplateClick }
                   <View className={styles.accountName}>{template.name}</View>
                 </View>
                 <IconFont
-                  type="icon-you"
-                  size={18}
+                  type="icon-right"
+                  size={14}
                   style={{ marginTop: 2 }}
                   color="#999"
                 />

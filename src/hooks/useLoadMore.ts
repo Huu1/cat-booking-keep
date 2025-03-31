@@ -47,13 +47,13 @@ export function useLoadMore<T>({
   // 处理分页数据的公共函数
   const handlePaginationData = (data: PaginationData<T>, currentPage: number) => {
     const { pagination, details } = data;
-    
+
     if (pagination) {
       const totalPages = pagination.totalPages || 1;
       setTotalPages(totalPages);
       setHasMore(currentPage < totalPages);
     }
-    
+
     return details || [];
   };
 
@@ -179,6 +179,12 @@ export function useLoadMore<T>({
     setHasMore(true);
     setList([]);
 
+    // 添加延迟设置loading的逻辑
+    let loadingTimer: NodeJS.Timeout | null = null;
+    loadingTimer = setTimeout(() => {
+      setLoading(true);
+    }, 300);
+
     try {
       await executeRefreshExtra();
 
@@ -190,8 +196,13 @@ export function useLoadMore<T>({
     } catch (error) {
       handleError(error, "重置失败:");
     } finally {
+      // 清除定时器
+      if (loadingTimer) {
+        clearTimeout(loadingTimer);
+      }
       requestLock.current = false;
       setIsInitialized(true);
+      setLoading(false);
     }
   };
 

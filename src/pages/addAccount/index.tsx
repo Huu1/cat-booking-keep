@@ -208,16 +208,18 @@ const AddAccount = () => {
               />
             </View>
           </View>
-        </View>
 
-        {/* 底部确认按钮 */}
-        <View className={styles.bottomButton}>
           <Button
             loading={loading}
             block
-            type="primary"
             size="large"
             onClick={handleSubmit}
+            style={{
+              backgroundColor: "#FFE300",
+              color: "#333",
+              border: "none",
+              marginTop: 12,
+            }}
           >
             {isEdit ? "更新" : "保存"}
           </Button>

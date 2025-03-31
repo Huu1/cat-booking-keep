@@ -2,21 +2,29 @@
   position: fixed;
   right: 30rpx;
   z-index: 100;
+  transition: transform 0.2s ease;
+}
+
+.addRecordButton:active {
+  transform: scale(0.95);
 }
 
 .addButtonInner {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #4A6FDC;
-  color: white;
+  background: linear-gradient(135deg, #FFE300 0%, #FFB800 100%);
+  color: #333;
   border-radius: 40rpx;
-  padding: 16rpx 40rpx;
-  box-shadow: 0 6rpx 16rpx rgba(74, 111, 220, 0.3);
+  padding: 14rpx 32rpx;
+  padding-left: 28rpx;
+  box-shadow: 0 8rpx 20rpx rgba(255, 200, 0, 0.3);
+  transition: all 0.3s ease;
 }
 
 .addButtonText {
-  margin-left: 8rpx;
-  font-size: 28rpx;
-  font-weight: 500;
+  margin-left: 16rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  letter-spacing: 1px;
 }

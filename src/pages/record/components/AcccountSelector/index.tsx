@@ -94,7 +94,7 @@ const AccountSelector: React.FC<AccountSelectorProps> = ({
             <IconFont
               type="icon-close"
               size={20}
-              color="#4285f4"
+              color="#666"
               onClick={handleClose}
               className={styles.closeIcon}
             />
@@ -110,19 +110,25 @@ const AccountSelector: React.FC<AccountSelectorProps> = ({
             {accountList.map((account) => (
               <View
                 key={account.id}
-                className={styles.accountItem}
+                className={`${styles.accountItem} ${selectedAccountId === account.id ? styles.selectedAccount : ''}`}
                 onClick={() => handleSelect(account)}
               >
                 <View className={styles.accountInfo}>
-                  <View className={styles.accountLogo}>
-                    <IconFont type={account.icon} size={34} color="#fff" />
+                  <View 
+                    className={styles.accountLogo}
+                    style={{ 
+                      background: `linear-gradient(135deg, #FFE300 0%, #FFB800 100%)`,
+                      boxShadow: '0 4rpx 8rpx rgba(255, 200, 0, 0.2)'
+                    }}
+                  >
+                    <IconFont type={account.icon} size={30} color="#333" />
                   </View>
                   <View className={styles.accountDetail}>
                     <Text className={styles.accountItemName}>
                       {account.name}
                     </Text>
                     <Text className={styles.accountType}>
-                      {account.template?.name}
+                      {account.template?.name || '普通账户'}
                     </Text>
                   </View>
                 </View>
@@ -130,6 +136,11 @@ const AccountSelector: React.FC<AccountSelectorProps> = ({
                   {parseFloat(account.balance) < 0 ? "-" : ""}¥
                   {Math.abs(parseFloat(account.balance)).toFixed(2)}
                 </Text>
+                {selectedAccountId === account.id && (
+                  <View className={styles.selectedIndicator}>
+                    <IconFont type="icon-check" size={16} color="#FFB800" />
+                  </View>
+                )}
               </View>
             ))}
           </View>

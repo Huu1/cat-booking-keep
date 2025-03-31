@@ -1,5 +1,5 @@
-import { View, Text, Image, Switch } from "@tarojs/components";
-import { useState } from "react";
+import { View, Text, Image, Switch, ScrollView } from "@tarojs/components";
+import { useState, useRef, useEffect } from "react";
 import Taro from "@tarojs/taro";
 import IconFont from "@/components/Iconfont";
 import Layout from "@/components/Layout";
@@ -9,12 +9,9 @@ import { useAppStore } from "@/store";
 
 const Index = () => {
   const { user } = useAppStore();
+  const [scrollTop, setScrollTop] = useState(0);
+  const [headerHeight, setHeaderHeight] = useState(200);
 
-  // 音效和震动的状态
-  const [soundEnabled, setSoundEnabled] = useState(true);
-  const [vibrationEnabled, setVibrationEnabled] = useState(true);
-
-  // 处理菜单项点击
   const handleMenuClick = (type: string) => {
     switch (type) {
       case "group":
@@ -45,160 +42,121 @@ const Index = () => {
     }
   };
 
+  const handleScroll = (e) => {
+    setScrollTop(e.detail.scrollTop);
+  };
+
   return (
     <Layout
-      currentTab="my"
-      navBar={<NavBar title="个人中心" background="transparent" />}
       bodyClassName={styles.myPageContainer}
     >
-      <View className={styles.container}>
-        {/* 用户信息区域 */}
-        <View className={styles.profileCard}>
-          {user ? (
+      <View className={styles.headerBg} style={{
+        transform: `scale(${1 + scrollTop * 0.001})`,
+        opacity: 1 - scrollTop * 0.005
+      }} />
+
+      <ScrollView
+        className={styles.scrollView}
+        scrollY
+        enhanced
+        showScrollbar={false}
+        onScroll={handleScroll}
+      >
+        <View className={styles.container}>
+          {/* 用户信息卡片 */}
+          <View className={styles.profileCard}>
             <View className={styles.userInfo}>
               <Image
                 className={styles.avatar}
-                src="https://img.yzcdn.cn/vant/cat.jpeg"
+                src={user?.avatar || 'https://img.yzcdn.cn/vant/cat.jpeg'}
                 mode="aspectFill"
               />
               <View className={styles.userMeta}>
-                <Text className={styles.username}>{user?.username}</Text>
-                <View className={styles.userStats}>
-                  <View className={styles.statItem}>
-                    <Text className={styles.statValue}>365</Text>
-                    <Text className={styles.statLabel}>记账天数</Text>
+                <Text className={styles.username}>{user?.nickname || '未登录'}</Text>
+                {!user ? (
+                  <View className={styles.loginBtn} onClick={() => Taro.navigateTo({ url: '/pages/login/index' })}>
+                    点击登录
                   </View>
-                  <View className={styles.statDivider} />
-                  <View className={styles.statItem}>
-                    <Text className={styles.statValue}>1024</Text>
-                    <Text className={styles.statLabel}>记账笔数</Text>
+                ) : (
+                  <View className={styles.userStats}>
+                    <View className={styles.statItem}>
+                      <Text className={styles.statValue}>0</Text>
+                      <Text className={styles.statLabel}>记账天数</Text>
+                    </View>
+                    <View className={styles.statDivider} />
+                    <View className={styles.statItem}>
+                      <Text className={styles.statValue}>0</Text>
+                      <Text className={styles.statLabel}>记账笔数</Text>
+                    </View>
                   </View>
-                </View>
+                )}
               </View>
-            </View>
-          ) : (
-            <View>请登录</View>
-          )}
-        </View>
-
-        {/* 功能菜单区域 */}
-        <View className={styles.menuGroup}>
-          <View className={styles.menuHeader}>
-            <IconFont type="icon-community" size={16} color="#666" />
-            <Text className={styles.menuTitle}>社区与支持</Text>
-          </View>
-          <View className={styles.menuSection}>
-            <View
-              className={styles.menuItem}
-              onClick={() => handleMenuClick("group")}
-            >
-              <View className={styles.menuLeft}>
-                <View
-                  className={styles.iconContainer}
-                  style={{ background: "rgba(95, 184, 120, 0.1)" }}
-                >
-                  <IconFont type="icon-weixin" size={20} color="#5fb878" />
-                </View>
-                <Text className={styles.menuText}>加入微信群</Text>
-              </View>
-              <IconFont type="icon-youbian" size={14} color="#ccc" />
-            </View>
-
-            <View
-              className={styles.menuItem}
-              onClick={() => handleMenuClick("survey")}
-            >
-              <View className={styles.menuLeft}>
-                <View
-                  className={styles.iconContainer}
-                  style={{ background: "rgba(250, 173, 20, 0.1)" }}
-                >
-                  <IconFont
-                    type="icon-wenjuantoupiao"
-                    size={20}
-                    color="#faad14"
-                  />
-                </View>
-                <Text className={styles.menuText}>参与问卷</Text>
-              </View>
-              <IconFont type="icon-youbian" size={14} color="#ccc" />
-            </View>
-
-            <View
-              className={styles.menuItem}
-              onClick={() => handleMenuClick("about")}
-            >
-              <View className={styles.menuLeft}>
-                <View
-                  className={styles.iconContainer}
-                  style={{ background: "rgba(24, 144, 255, 0.1)" }}
-                >
-                  <IconFont type="icon-guanyu" size={20} color="#1890ff" />
-                </View>
-                <Text className={styles.menuText}>关于我们</Text>
-              </View>
-              <IconFont type="icon-youbian" size={14} color="#ccc" />
             </View>
           </View>
-        </View>
 
-        {/* 设置区域 */}
-        <View className={styles.menuGroup}>
-          <View className={styles.menuHeader}>
-            <IconFont type="icon-setting" size={16} color="#666" />
-            <Text className={styles.menuTitle}>设置</Text>
-          </View>
-          <View className={styles.menuSection}>
-            <View className={styles.menuItem}>
-              <View className={styles.menuLeft}>
-                <View
-                  className={styles.iconContainer}
-                  style={{ background: "rgba(250, 140, 22, 0.1)" }}
-                >
-                  <IconFont
-                    type="icon-yinxiao-dianji"
-                    size={20}
-                    color="#fa8c16"
-                  />
-                </View>
-                <Text className={styles.menuText}>音效</Text>
-              </View>
-              <Switch
-                checked={soundEnabled}
-                onChange={(e) => setSoundEnabled(e.detail.value)}
-                color="#1677ff"
-                className={styles.switchBtn}
-              />
+          {/* 功能菜单 */}
+          <View className={styles.menuGroup}>
+            <View className={styles.menuHeader}>
+              <IconFont type="icon-setting" size={16} color="#666" />
+              <Text className={styles.menuTitle}>账户管理</Text>
             </View>
-
-            <View className={styles.menuItem}>
-              <View className={styles.menuLeft}>
-                <View
-                  className={styles.iconContainer}
-                  style={{ background: "rgba(114, 46, 209, 0.1)" }}
-                >
-                  <IconFont
-                    type="icon-zhendongchuanganqi"
-                    size={20}
-                    color="#722ed1"
-                  />
+            <View className={styles.menuSection}>
+              <View className={styles.menuItem} onClick={() => Taro.navigateTo({ url: '/pages/accounts/index' })}>
+                <View className={styles.menuLeft}>
+                  <View className={styles.iconContainer} style={{ backgroundColor: '#E6F7FF' }}>
+                    <IconFont type="icon-wallet" size={20} color="#1890FF" />
+                  </View>
+                  <Text className={styles.menuText}>我的账户</Text>
                 </View>
-                <Text className={styles.menuText}>震动</Text>
+                <IconFont type="icon-you" size={16} color="#CCCCCC" />
               </View>
-              <Switch
-                checked={vibrationEnabled}
-                onChange={(e) => setVibrationEnabled(e.detail.value)}
-                color="#1677ff"
-                className={styles.switchBtn}
-              />
+              <View className={styles.menuItem} onClick={() => Taro.navigateTo({ url: '/pages/books/index' })}>
+                <View className={styles.menuLeft}>
+                  <View className={styles.iconContainer} style={{ backgroundColor: '#FFF7E6' }}>
+                    <IconFont type="icon-book" size={20} color="#FA8C16" />
+                  </View>
+                  <Text className={styles.menuText}>我的账本</Text>
+                </View>
+                <IconFont type="icon-you" size={16} color="#CCCCCC" />
+              </View>
             </View>
           </View>
-        </View>
 
-        <View className={styles.footer}>
-          <Text className={styles.version}>记账 v1.0.0</Text>
+          <View className={styles.menuGroup}>
+            <View className={styles.menuHeader}>
+              <IconFont type="icon-app" size={16} color="#666" />
+              <Text className={styles.menuTitle}>应用设置</Text>
+            </View>
+            <View className={styles.menuSection}>
+              <View className={styles.menuItem} onClick={() => handleMenuClick('about')}>
+                <View className={styles.menuLeft}>
+                  <View className={styles.iconContainer} style={{ backgroundColor: '#E6FFFB' }}>
+                    <IconFont type="icon-info" size={20} color="#13C2C2" />
+                  </View>
+                  <Text className={styles.menuText}>关于我们</Text>
+                </View>
+                <IconFont type="icon-you" size={16} color="#CCCCCC" />
+              </View>
+              <View className={styles.menuItem} onClick={() => handleMenuClick('group')}>
+                <View className={styles.menuLeft}>
+                  <View className={styles.iconContainer} style={{ backgroundColor: '#F6FFED' }}>
+                    <IconFont type="icon-weixin" size={20} color="#52C41A" />
+                  </View>
+                  <Text className={styles.menuText}>加入微信群</Text>
+                </View>
+                <View className={styles.newBadge}>
+                  <Text>新</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+
+          {/* 页脚 */}
+          <View className={styles.footer}>
+            <Text className={styles.version}>365猫记账 v1.0.0</Text>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </Layout>
   );
 };

@@ -70,7 +70,7 @@ const BookSelector: React.FC<BookSelectorProps> = ({
             <IconFont
               type="icon-close"
               size={20}
-              color="#4285f4"
+              color="#666"
               onClick={handleClose}
               className={styles.closeIcon}
             />
