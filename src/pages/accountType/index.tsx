@@ -12,13 +12,15 @@ const Index = () => {
   const { data = [] } = useRequest(getAccountTempletes);
 
   const handleTemplateClick = (template) => {
+
     Taro.navigateTo({
       url: '/pages/addAccount/index',
       success: function(res) {
         res.eventChannel.emit('acceptDataFromOpenerPage', {
           templateId: template.id,
           icon: template.icon,
-          name: template.name
+          name: template.name,
+          accountType: template.type,
         });
       }
     });

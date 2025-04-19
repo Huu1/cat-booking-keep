@@ -7,7 +7,7 @@ import NavBar from "@/components/Navbar";
 import IconFont from "@/components/Iconfont";
 import styles from "./index.module.less";
 import { useRequest } from "taro-hooks";
-import { addBook, getBookDetail, updateBook } from "./service";
+import { addBook, getBookDetail, getBookimages, updateBook } from "./service";
 import { getIcons } from "@/utils/iconUtils";
 
 interface Book {
@@ -15,6 +15,7 @@ interface Book {
   name: string;
   icon: string;
   color: string;
+  background?: string; // 添加封面图片字段
 }
 
 // 颜色选项
@@ -41,6 +42,12 @@ const AddBook = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [bookId, setBookId] = useState<number | null>(null);
 
+  // const { data: coverImages = [] } = useRequest(getBookimages);
+
+  // 添加背景图片相关状态
+  const [coverImage, setCoverImage] = useState<string>();
+  // const [showCoverSelector, setShowCoverSelector] = useState(false);
+
   // 获取路由参数
   useEffect(() => {
     const instance = Taro.getCurrentInstance();
@@ -60,6 +67,7 @@ const AddBook = () => {
       setBookName(data.name || "");
       setSelectedColor(data.color || "#F8D949");
       setSelectedIcon(data.icon || "icon-canyin");
+      setCoverImage(data.background || ""); // 设置封面图片
     },
   });
 
@@ -108,7 +116,7 @@ const AddBook = () => {
 
   // 提交表单
   const handleSubmit = () => {
-    if(loading) return;
+    if (loading) return;
     if (!bookName.trim()) {
       Taro.showToast({
         title: "请输入账本名称",
@@ -121,6 +129,7 @@ const AddBook = () => {
       name: bookName,
       icon: selectedIcon,
       color: selectedColor,
+      // background: coverImage, // 添加封面图片
     };
 
     if (isEdit && bookId) {
@@ -156,10 +165,7 @@ const AddBook = () => {
         <View className={styles.inputSection}>
           <View className={styles.sectionHeader}>
             <Text className={styles.sectionTitle}>图标和名称</Text>
-            <View
-              className={styles.saveButton}
-              onClick={handleSubmit}
-            >
+            <View className={styles.saveButton} onClick={handleSubmit}>
               保存账本
             </View>
           </View>
@@ -180,6 +186,62 @@ const AddBook = () => {
             />
           </View>
         </View>
+
+        {/* <View className={styles.bgSection}>
+          <View className={styles.sectionHeader}>
+            <Text className={styles.sectionTitle}>背景</Text>
+          </View>
+          <View className={styles.bgCard}>
+            <View
+              className={styles.coverPreview}
+              onClick={() => setShowCoverSelector(true)}
+              style={
+                coverImage ? { backgroundImage: `url(${coverImage})` } : {}
+              }
+            >
+              {!coverImage && (
+                <Text className={styles.coverPlaceholder}>选择封面</Text>
+              )}
+              <View className={styles.editCoverBtn}>选择图片</View>
+            </View>
+          </View>
+        </View> */}
+
+        {/* 封面选择弹窗 */}
+        {/* {showCoverSelector && (
+          <View
+            className={styles.coverSelectorOverlay}
+            onClick={() => setShowCoverSelector(false)}
+          >
+            <View
+              className={styles.coverSelectorContainer}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <View className={styles.coverSelectorHeader}>
+                <Text className={styles.coverSelectorTitle}>选择账本封面</Text>
+                <View
+                  className={styles.coverSelectorClose}
+                  onClick={() => setShowCoverSelector(false)}
+                >
+                  <IconFont type="icon-close" size={20} color="#333" />
+                </View>
+              </View>
+              <View className={styles.coverGrid}>
+                {coverImages.map((img, index) => (
+                  <View
+                    key={index}
+                    className={`${styles.coverItem} `}
+                    style={{ backgroundImage: `url(${img.value})` }}
+                    onClick={() => {
+                      setCoverImage(img.value);
+                      setShowCoverSelector(false);
+                    }}
+                  ></View>
+                ))}
+              </View>
+            </View>
+          </View>
+        )} */}
 
         {/* 颜色选择 */}
         <View className={styles.colorSection}>

@@ -64,9 +64,9 @@
 }
 
 .colorItem {
-  width: 48px;
-  height: 48px;
-  border-radius: 24px;
+  width: calc(20% - 16px);  /* 一行5个，每个占20%宽度，减去margin */
+  aspect-ratio: 1;  /* 保持正方形 */
+  border-radius: 50%;  /* 保持圆形 */
   margin: 8px;
   display: flex;
   justify-content: center;
@@ -91,9 +91,9 @@
 }
 
 .iconItem {
-  width: 48px;
-  height: 48px;
-  border-radius: 24px;
+  width: calc(20% - 16px);  /* 一行5个，每个占20%宽度，减去margin */
+  aspect-ratio: 1;  /* 保持正方形 */
+  border-radius: 50%;  /* 保持圆形 */
   margin: 8px;
   background-color: #f5f5f5;
   display: flex;
@@ -127,8 +127,8 @@
 }
 
 .bookIcon {
-  width: 48px;
-  height: 48px;
+  width: 42px;
+  height: 42px;
   border-radius: 24px;
   background-color: #FFF9E0;
   display: flex;
@@ -222,3 +222,104 @@
 .saveButton:active {
   background-color: rgba(66, 133, 244, 0.1);
 }
+
+
+.bgSection {
+  margin-bottom: 24px;
+}
+
+.bgCard {
+  background-color: white;
+  border-radius: 12px;
+  // padding: 16px;
+}
+
+.coverPreview {
+  width: 100%;
+  height: 160px;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.coverPlaceholder {
+  color: #999;
+  font-size: 16px;
+}
+
+.editCoverBtn {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
+.coverSelectorOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.coverSelectorContainer {
+  width: 100%;
+  background-color: white;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  padding: 20px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.coverSelectorHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.coverSelectorTitle {
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+}
+
+.coverSelectorClose {
+  padding: 4px;
+}
+
+.coverGrid {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -8px;
+}
+
+.coverItem {
+  width: calc(50% - 16px);
+  margin: 8px;
+  height: 80px;
+  border-radius: 8px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+

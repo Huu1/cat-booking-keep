@@ -65,7 +65,7 @@ const RecordDetail = () => {
   }, []);
 
   // 获取记录详情
-  const { loading, run: fetchDetail } = useRequest(getRecordDetail, {
+  const { loading, run: fetchDetail ,refresh} = useRequest(getRecordDetail, {
     manual: true,
     onSuccess: (data) => {
       setRecordDetail(data);
@@ -79,6 +79,17 @@ const RecordDetail = () => {
       });
     },
   });
+
+  useEffect(() => {
+    const handleRecordSuccess = () => {
+      refresh();
+    };
+    // 使用相同的字符串事件名
+    Taro.eventCenter.on("reload_record_detail_page", handleRecordSuccess);
+    return () => {
+      Taro.eventCenter.off("reload_record_detail_page", handleRecordSuccess);
+    };
+  }, []);
 
   // 删除记录
   const { loading: deleteLoading, run: runDelete } = useRequest(deleteRecord, {
@@ -116,6 +127,8 @@ const RecordDetail = () => {
   const handleEdit = () => {
     if (!recordDetail) return;
 
+    console.log('recordDetail',recordDetail);
+
     Taro.navigateTo({
       url: `/pages/record/index?id=${recordId}&type=${
         recordDetail.type
@@ -123,7 +136,7 @@ const RecordDetail = () => {
         recordDetail.recordDate
       }&bookId=${recordDetail.book.id}&categoryId=${
         recordDetail.category.id
-      }&accountId=${recordDetail.account.id}`,
+      }&accountId=${recordDetail.account?.id}&images=${recordDetail.images??[]}`,
     });
   };
 
@@ -279,7 +292,7 @@ const RecordDetail = () => {
 
             {renderDetailItem(
               "账户",
-              recordDetail.account.name || "默认账户",
+              recordDetail?.account?.name || "未选择账户",
               undefined,
               () => {
                 // Taro.navigateTo({ url: "/pages/accounts/index" });

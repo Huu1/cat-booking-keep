@@ -1,157 +1,204 @@
-import { View, Text, Image, Switch, ScrollView } from "@tarojs/components";
-import { useState, useRef, useEffect } from "react";
+import { View, Text, Image, ScrollView, Button, Input } from "@tarojs/components";
 import Taro from "@tarojs/taro";
 import IconFont from "@/components/Iconfont";
 import Layout from "@/components/Layout";
-import NavBar from "@/components/Navbar";
 import styles from "./index.module.less";
 import { useAppStore } from "@/store";
+import { updateUser } from "./service";
 
 const Index = () => {
-  const { user } = useAppStore();
-  const [scrollTop, setScrollTop] = useState(0);
-  const [headerHeight, setHeaderHeight] = useState(200);
+  const { user, logout, updateUserInfo } = useAppStore();
 
-  const handleMenuClick = (type: string) => {
+  const handleLogin = () => {
+    Taro.navigateTo({
+      url: "/pages/login/index",
+    });
+  };
+
+  const handleLogout = () => {
+    Taro.showModal({
+      title: "提示",
+      content: "确定要退出登录吗？",
+      success: function (res) {
+        if (res.confirm) {
+          logout();
+        }
+      },
+    });
+  };
+
+  const handleMenuClick = (type) => {
     switch (type) {
-      case "group":
-        Taro.showToast({
-          title: "加入微信群",
-          icon: "none",
-        });
-        break;
-      case "survey":
-        Taro.showToast({
-          title: "参与问卷",
-          icon: "none",
-        });
-        break;
       case "about":
-        Taro.navigateTo({
-          url: "/pages/about/index",
-        });
+        Taro.navigateTo({ url: "/pages/about/index" });
         break;
-      case "upgrade":
-        Taro.showToast({
-          title: "升级到APP",
-          icon: "none",
-        });
+      case "feedback":
+        Taro.navigateTo({ url: "/pages/feedback/index" });
         break;
       default:
         break;
     }
   };
 
-  const handleScroll = (e) => {
-    setScrollTop(e.detail.scrollTop);
+  const onChooseAvatar = (e) => {
+    const { avatarUrl } = e.detail;
+    if(!user) return;
+    if (avatarUrl) {
+      updateUser({
+        avatar: avatarUrl,
+      });
+    }
+    updateUserInfo({
+      ...user,
+      avatar: avatarUrl,
+    });
+  };
+
+  const handleNicknameChange = (e) => {
+    const { value } = e.detail;
+    if(!user) return;
+    if (value) {
+      updateUser({
+        nickname: value
+      });
+      updateUserInfo({
+        ...user,
+        nickname: value
+      });
+    }
   };
 
   return (
     <Layout
+      currentTab="my"
+      // navBar={<NavBar title="个人中心" background="transparent" color="#fff" />}
       bodyClassName={styles.myPageContainer}
     >
-      <View className={styles.headerBg} style={{
-        transform: `scale(${1 + scrollTop * 0.001})`,
-        opacity: 1 - scrollTop * 0.005
-      }} />
+      <View className={styles.headerBg} />
 
-      <ScrollView
-        className={styles.scrollView}
-        scrollY
-        enhanced
-        showScrollbar={false}
-        onScroll={handleScroll}
-      >
+      <ScrollView className={styles.scrollView} scrollY>
         <View className={styles.container}>
           {/* 用户信息卡片 */}
           <View className={styles.profileCard}>
-            <View className={styles.userInfo}>
-              <Image
-                className={styles.avatar}
-                src={user?.avatar || 'https://img.yzcdn.cn/vant/cat.jpeg'}
-                mode="aspectFill"
-              />
-              <View className={styles.userMeta}>
-                <Text className={styles.username}>{user?.nickname || '未登录'}</Text>
-                {!user ? (
-                  <View className={styles.loginBtn} onClick={() => Taro.navigateTo({ url: '/pages/login/index' })}>
-                    点击登录
+            {user ? (
+              <View className={styles.userInfo}>
+                <View className={styles.avatarContainer}>
+                  <Button
+                    open-type="chooseAvatar"
+                    onChooseAvatar={onChooseAvatar}
+                    className={styles.avatarButton}
+                  >
+                    <Image
+                      className={styles.avatar}
+                      src={user.avatar || "https://img.yzcdn.cn/vant/cat.jpeg"}
+                      mode="aspectFill"
+                    />
+                    <View className={styles.avatarEditIcon}>
+                      <IconFont type="icon-edit" size={16} color="#fff" />
+                    </View>
+                  </Button>
+                </View>
+
+                <View className={styles.userMeta}>
+                  <View className={styles.nameContainer}>
+                    <Input
+                      className={styles.usernameInput}
+                      value={user.nickname || ""}
+                      type="nickname"
+                      placeholder="点击设置名称"
+                      onBlur={handleNicknameChange}
+                      maxlength={20}
+                    />
+                    <IconFont type="icon-edit" size={14} color="#999" />
                   </View>
-                ) : (
+
                   <View className={styles.userStats}>
                     <View className={styles.statItem}>
-                      <Text className={styles.statValue}>0</Text>
+                      <Text className={styles.statValue}>30</Text>
                       <Text className={styles.statLabel}>记账天数</Text>
                     </View>
-                    <View className={styles.statDivider} />
                     <View className={styles.statItem}>
-                      <Text className={styles.statValue}>0</Text>
+                      <Text className={styles.statValue}>128</Text>
                       <Text className={styles.statLabel}>记账笔数</Text>
                     </View>
                   </View>
-                )}
-              </View>
-            </View>
-          </View>
-
-          {/* 功能菜单 */}
-          <View className={styles.menuGroup}>
-            <View className={styles.menuHeader}>
-              <IconFont type="icon-setting" size={16} color="#666" />
-              <Text className={styles.menuTitle}>账户管理</Text>
-            </View>
-            <View className={styles.menuSection}>
-              <View className={styles.menuItem} onClick={() => Taro.navigateTo({ url: '/pages/accounts/index' })}>
-                <View className={styles.menuLeft}>
-                  <View className={styles.iconContainer} style={{ backgroundColor: '#E6F7FF' }}>
-                    <IconFont type="icon-wallet" size={20} color="#1890FF" />
-                  </View>
-                  <Text className={styles.menuText}>我的账户</Text>
                 </View>
-                <IconFont type="icon-you" size={16} color="#CCCCCC" />
               </View>
-              <View className={styles.menuItem} onClick={() => Taro.navigateTo({ url: '/pages/books/index' })}>
-                <View className={styles.menuLeft}>
-                  <View className={styles.iconContainer} style={{ backgroundColor: '#FFF7E6' }}>
-                    <IconFont type="icon-book" size={20} color="#FA8C16" />
+            ) : (
+              <View className={styles.notLoginContainer}>
+                <View className={styles.defaultAvatarContainer}>
+                  <Image
+                    className={styles.defaultAvatar}
+                    src="https://img.yzcdn.cn/vant/cat.jpeg"
+                    mode="aspectFill"
+                  />
+                  <View className={styles.defaultAvatarOverlay}>
+                    <IconFont type="icon-user" size={24} color="#fff" />
                   </View>
-                  <Text className={styles.menuText}>我的账本</Text>
                 </View>
-                <IconFont type="icon-you" size={16} color="#CCCCCC" />
+                <View className={styles.loginTips}>
+                  <Text className={styles.loginTipsText}>
+                    登录后体验更多功能
+                  </Text>
+                  <View className={styles.loginBtn} onClick={handleLogin}>
+                    <Text>立即登录</Text>
+                    <IconFont type="icon-you" size={14} color="#fff" style={{ marginLeft: '8px' }} />
+                  </View>
+                </View>
               </View>
-            </View>
+            )}
           </View>
 
           <View className={styles.menuGroup}>
             <View className={styles.menuHeader}>
-              <IconFont type="icon-app" size={16} color="#666" />
-              <Text className={styles.menuTitle}>应用设置</Text>
+              <IconFont type="icon-setting" size={18} color="#3f51b5" />
+              <Text className={styles.menuTitle}>设置</Text>
             </View>
             <View className={styles.menuSection}>
-              <View className={styles.menuItem} onClick={() => handleMenuClick('about')}>
+              <View
+                className={styles.menuItem}
+                onClick={() => handleMenuClick("about")}
+              >
                 <View className={styles.menuLeft}>
-                  <View className={styles.iconContainer} style={{ backgroundColor: '#E6FFFB' }}>
-                    <IconFont type="icon-info" size={20} color="#13C2C2" />
+                  <View
+                    className={styles.iconWrapper}
+                    style={{ backgroundColor: '#E8EAF6' }}
+                  >
+                    <IconFont type="icon-info" size={22} color="#3f51b5" />
                   </View>
                   <Text className={styles.menuText}>关于我们</Text>
                 </View>
-                <IconFont type="icon-you" size={16} color="#CCCCCC" />
+                <IconFont type="icon-you" size={16} color="#BDBDBD" />
               </View>
-              <View className={styles.menuItem} onClick={() => handleMenuClick('group')}>
+              <View
+                className={styles.menuItem}
+                onClick={() => handleMenuClick("feedback")}
+              >
                 <View className={styles.menuLeft}>
-                  <View className={styles.iconContainer} style={{ backgroundColor: '#F6FFED' }}>
-                    <IconFont type="icon-weixin" size={20} color="#52C41A" />
+                  <View
+                    className={styles.iconWrapper}
+                    style={{ backgroundColor: '#E8F5E9' }}
+                  >
+                    <IconFont type="icon-message" size={22} color="#4CAF50" />
                   </View>
-                  <Text className={styles.menuText}>加入微信群</Text>
+                  <Text className={styles.menuText}>意见反馈</Text>
                 </View>
-                <View className={styles.newBadge}>
+                <View className={styles.badge}>
                   <Text>新</Text>
                 </View>
               </View>
             </View>
           </View>
 
-          {/* 页脚 */}
+          {/* 退出登录按钮 */}
+          {user && (
+            <View className={styles.logoutBtnWrap}>
+              <View className={styles.logoutBtn} onClick={handleLogout}>
+                退出登录
+              </View>
+            </View>
+          )}
+
           <View className={styles.footer}>
             <Text className={styles.version}>365猫记账 v1.0.0</Text>
           </View>

@@ -67,7 +67,7 @@ const AccountSelector: React.FC<AccountSelectorProps> = ({
         )}
 
         <Text className={styles.accountName}>
-          {selectedAccount?.name || "选择账户"}
+          {selectedAccount?.name || "不选择账户"}
         </Text>
         <View
           className={styles.deleteAccountWrap}
@@ -114,9 +114,9 @@ const AccountSelector: React.FC<AccountSelectorProps> = ({
                 onClick={() => handleSelect(account)}
               >
                 <View className={styles.accountInfo}>
-                  <View 
+                  <View
                     className={styles.accountLogo}
-                    style={{ 
+                    style={{
                       background: `linear-gradient(135deg, #FFE300 0%, #FFB800 100%)`,
                       boxShadow: '0 4rpx 8rpx rgba(255, 200, 0, 0.2)'
                     }}

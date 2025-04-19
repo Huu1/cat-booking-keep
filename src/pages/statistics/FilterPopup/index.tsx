@@ -156,7 +156,7 @@ const FilterPopup: React.FC<Props> = ({
             </View>
           </View>
 
-          <View className={styles.section}>
+          {/* <View className={styles.section}>
             <View className={styles.sectionHeader}>
               <View className={styles.sectionTitle}>筛选账户</View>
               <View
@@ -172,7 +172,7 @@ const FilterPopup: React.FC<Props> = ({
                 renderOption(account, "accounts")
               )}
             </View>
-          </View>
+          </View> */}
         </ScrollView>
       </View>
       <SafeArea position="bottom" />

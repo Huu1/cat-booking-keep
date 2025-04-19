@@ -3,6 +3,7 @@ import { View, Text } from "@tarojs/components";
 import IconFont from "@/components/Iconfont";
 import styles from "./index.module.less";
 import dayjs from "dayjs";
+import { Image, ImagePreview, Space } from "@nutui/nutui-react-taro";
 
 interface Category {
   id: number;
@@ -30,6 +31,7 @@ interface Record {
   recordDate: string;
   category: Category;
   account: Account;
+  images: string[];
 }
 
 interface RecordCardProps {
@@ -59,6 +61,8 @@ const RecordCard: React.FC<RecordCardProps> = ({
 
   // 添加状态控制展开收起
   const [isExpanded, setIsExpanded] = useState(true);
+
+  const [showPreview, setShowPreview] = useState(false);
 
   return (
     <View className={styles.recordCard}>
@@ -113,11 +117,13 @@ const RecordCard: React.FC<RecordCardProps> = ({
               onClick={() => handleClick(record.id)}
             >
               <View
-                className={`${styles.iconWrapper} ${
+                className={`${styles.iconWrapper}  ${
                   record.type === "expense"
                     ? styles.expenseIcon
                     : styles.incomeIcon
-                }`}
+                }
+                  ${record.images?.length > 0 ? styles.hasImage : ""}
+                `}
               >
                 <IconFont type={record.category.icon} size={32} />
               </View>
@@ -135,11 +141,40 @@ const RecordCard: React.FC<RecordCardProps> = ({
                     </Text>
                   )}
                 </Text>
+                {record.images?.length ? (
+                  <Space>
+                    {record.images?.map((i) => {
+                      return (
+                        <Image
+                          key={i}
+                          src={i}
+                          mode="scaleToFill"
+                          width={36}
+                          height={36}
+                          radius={6}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setShowPreview(true);
+                          }}
+                        />
+                      );
+                    })}
+                  </Space>
+                ) : (
+                  <></>
+                )}
               </View>
+              <ImagePreview
+                images={record.images.map((i) => ({ src: i }))}
+                visible={showPreview}
+                onClose={() => setShowPreview(false)}
+              />
               <Text
                 className={`${styles.amount} ${
                   record.type === "expense" ? styles.expense : styles.income
-                }`}
+                }
+                     ${record.images?.length > 0 ? styles.hasImage : ""}
+                `}
               >
                 {record.type === "expense" ? "-" : "+"}
                 {parseFloat(record.amount).toFixed(2)}

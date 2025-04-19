@@ -269,13 +269,13 @@ const Statistics = () => {
         />
 
         {/* 资产趋势卡片 */}
-        <AssetTrendsCard
+        {/* <AssetTrendsCard
           style={{ display: showTrendCards ? "block" : "none" }}
           dateType={dateType}
           currentDate={currentDate}
           accountIds={accountIds}
           bookIds={bookIds}
-        />
+        /> */}
 
         {/* 收入支出卡片 */}
         <IncomeAndExpenseCard

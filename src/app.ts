@@ -1,4 +1,5 @@
 import { useDidShow, useDidHide } from "@tarojs/taro";
+
 // 全局样式
 import "./app.scss";
 import { useAppStore } from "./store";

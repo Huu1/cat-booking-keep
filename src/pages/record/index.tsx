@@ -15,6 +15,7 @@ import dayjs from "dayjs";
 import { useRequest } from "taro-hooks";
 import AccountSelector from "./components/AcccountSelector";
 import BookSelector from "./components/BookSelector";
+import ChooseImage from "./components/ChooseImage";
 
 // 在组件中使用
 const recordTypeOptions = [
@@ -22,10 +23,20 @@ const recordTypeOptions = [
   { value: "income", label: "收入" },
 ];
 
-const Index = () => {
 
-  // 基础状态管理
-  const [formState, setFormState] = useState({
+// 基础状态管理
+interface FormState {
+  amount: string;
+  note: string;
+  date: string;
+  recordType: "expense" | "income";
+  selectedCategoryId: number | null;
+  bookId: number | null;
+  accountId: number | null;
+  images: string[];
+}
+const Index = () => {
+  const [formState, setFormState] = useState<FormState>({
     amount: "",
     note: "",
     date: dayjs().format("YYYY/MM/DD HH:mm:ss"),
@@ -33,6 +44,7 @@ const Index = () => {
     selectedCategoryId: null as number | null,
     bookId: null as number | null,
     accountId: null as number | null,
+    images: [],
   });
 
   // 编辑模式状态管理
@@ -87,6 +99,7 @@ const Index = () => {
         date: params.recordDate || formState.date,
         bookId: params.bookId ? Number(params.bookId) : null,
         accountId: params.accountId ? Number(params.accountId) : null,
+        images: params.images ? params.images?.split(",") : [],
         selectedCategoryId: params.categoryId
           ? Number(params.categoryId)
           : null,
@@ -129,6 +142,7 @@ const Index = () => {
       // 编辑模式下直接返回，非编辑模式且有回调时执行回调
       if (editState.isEditMode || !params?.[0]?.callback) {
         Taro.eventCenter.trigger("reload_index_page");
+        Taro.eventCenter.trigger("reload_record_detail_page");
         setTimeout(() => Taro.navigateBack(), 1000);
       } else {
         params[0].callback?.();
@@ -149,11 +163,9 @@ const Index = () => {
   // 提交处理
   const submit = useCallback(
     (params) => {
-      if (isSubmitting || !params.bookId || !params.accountId) {
+      if (isSubmitting || !params.bookId) {
         !params.bookId &&
           Taro.showToast({ title: "请选择账本", icon: "error" });
-        !params.accountId &&
-          Taro.showToast({ title: "请选择账户", icon: "error" });
         return;
       }
 
@@ -178,6 +190,7 @@ const Index = () => {
           accountId: formState.accountId,
           type: formState.recordType,
           bookId: formState.bookId,
+          images: formState.images ?? [],
         });
       },
       [formState, submit]
@@ -285,6 +298,15 @@ const Index = () => {
     [updateFormState]
   );
 
+  const getImages=()=>{
+    const instance = Taro.getCurrentInstance();
+    const params = instance?.router?.params || {};
+    if (params.images) {
+      return params.images?.split(",");
+    }
+    return [];
+  }
+
   return (
     <Layout
       currentTab="home"
@@ -300,9 +322,22 @@ const Index = () => {
       />
 
       <View className={styles.actrionPanel}>
-        <AccountSelector selectedAccountId={formState.accountId as any} onSelect={handlers.handleAccountChange} />
+        {/* <AccountSelector
+          selectedAccountId={formState.accountId as any}
+          onSelect={handlers.handleAccountChange}
+        /> */}
 
-        <BookSelector selectedBookId={formState.bookId as any} onSelect={handlers.handleBookChange} />
+        <ChooseImage
+          onImageSelected={(urls: string[]) => {
+            updateFormState({ images: urls });
+          }}
+          images={formState.images as string[]}
+          maxCount={3}
+        />
+        <BookSelector
+          selectedBookId={formState.bookId as any}
+          onSelect={handlers.handleBookChange}
+        />
       </View>
 
       <View className={styles.inputContainer}>

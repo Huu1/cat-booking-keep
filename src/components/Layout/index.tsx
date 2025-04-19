@@ -13,12 +13,12 @@ const tabs = [
     iconType: "icon-weijianzichanbiao",
     path: "/pages/index/index",
   },
-  {
-    key: "account",
-    title: "资产",
-    iconType: "icon-zichan",
-    path: "/pages/account/index",
-  },
+  // {
+  //   key: "account",
+  //   title: "资产",
+  //   iconType: "icon-zichan",
+  //   path: "/pages/account/index",
+  // },
   {
     key: "statistics",
     title: "统计",

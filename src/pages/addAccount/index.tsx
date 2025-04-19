@@ -9,6 +9,14 @@ import styles from "./index.module.less";
 import { useRequest } from "taro-hooks";
 import { addAccount, getAccount, updateAccount } from "./service";
 
+export enum AccountType {
+  CASH = "cash", // 资金账户（现金、银行卡等）
+  CREDIT = "credit", // 信用账户（信用卡、花呗等）
+  INVESTMENT = "investment", // 理财账户（基金、股票等）
+  RECEIVABLE = "receivable", // 应收款项
+  PAYABLE = "payable", // 应付款项
+}
+
 const AddAccount = () => {
   const [accountName, setAccountName] = useState("");
   const [description, setDescription] = useState("");
@@ -16,6 +24,8 @@ const AddAccount = () => {
   const [templateInfo, setTemplateInfo] = useState<any>(null);
   const [isEdit, setIsEdit] = useState(false);
   const [accountId, setAccountId] = useState<string | null>(null);
+
+  const [accountType, setAccountType] = useState<AccountType>();
 
   // 获取路由参数
   useEffect(() => {
@@ -38,6 +48,8 @@ const AddAccount = () => {
           icon: params.icon || data.icon,
           name: params.name || data.name,
         });
+
+        setAccountType(data.accountType);
       });
     }
   }, []);
@@ -55,6 +67,8 @@ const AddAccount = () => {
         icon: data.icon,
         name: data.templateName,
       });
+
+      setAccountType(data.type);
     },
   });
 
@@ -137,6 +151,119 @@ const AddAccount = () => {
     save(params);
   };
 
+  const renderFormByAccountType = () => {
+    switch (accountType) {
+      case AccountType.CREDIT:
+        return (
+          <>
+            <View className={styles.inputCard}>
+              <View className={styles.inputItem}>
+                <Text className={styles.inputLabel}>账户名称</Text>
+                <Input
+                  className={styles.inputField}
+                  value={accountName}
+                  onInput={handleNameChange}
+                  placeholder="请输入账户名称"
+                  placeholderClass={styles.placeholder}
+                />
+              </View>
+              <View className={styles.inputItem}>
+                <Text className={styles.inputLabel}>备注</Text>
+                <Input
+                  className={styles.inputField}
+                  value={description}
+                  onInput={handleNoteChange}
+                  placeholder="点击填写备注（可不填）"
+                  placeholderClass={styles.placeholder}
+                />
+              </View>
+            </View>
+            <View className={styles.inputCard}>
+              <View className={styles.inputItem}>
+                <Text className={styles.inputLabel}>信用额度</Text>
+                <Input
+                  className={styles.inputField}
+                  value={accountName}
+                  onInput={handleNameChange}
+                  placeholder="请输入信用额度"
+                  placeholderClass={styles.placeholder}
+                />
+              </View>
+              <View className={styles.inputItem}>
+                <Text className={styles.inputLabel}>当前欠款</Text>
+                <Input
+                  className={styles.inputField}
+                  value={description}
+                  onInput={handleNoteChange}
+                  placeholder="点击填写备注（可不填）"
+                  placeholderClass={styles.placeholder}
+                />
+              </View>
+              <View className={styles.inputItem}>
+                <Text className={styles.inputLabel}>账单日</Text>
+                <Input
+                  className={styles.inputField}
+                  value={description}
+                  onInput={handleNoteChange}
+                  placeholder="点击填写备注（可不填）"
+                  placeholderClass={styles.placeholder}
+                />
+              </View>
+              <View className={styles.inputItem}>
+                <Text className={styles.inputLabel}>还款日</Text>
+                <Input
+                  className={styles.inputField}
+                  value={description}
+                  onInput={handleNoteChange}
+                  placeholder="点击填写备注（可不填）"
+                  placeholderClass={styles.placeholder}
+                />
+              </View>
+            </View>
+          </>
+        );
+
+      default:
+        return (
+          <View className={styles.inputCard}>
+            <View className={styles.inputItem}>
+              <Text className={styles.inputLabel}>账户名称</Text>
+              <Input
+                className={styles.inputField}
+                value={accountName}
+                onInput={handleNameChange}
+                placeholder="请输入账户名称"
+                placeholderClass={styles.placeholder}
+              />
+            </View>
+
+            <View className={styles.inputItem}>
+              <Text className={styles.inputLabel}>余额</Text>
+              <Input
+                className={styles.inputField}
+                value={balance}
+                onInput={handleBalanceChange}
+                type="digit"
+                placeholder="请输入账户余额"
+                placeholderClass={styles.placeholder}
+              />
+            </View>
+
+            <View className={styles.inputItem}>
+              <Text className={styles.inputLabel}>备注</Text>
+              <Input
+                className={styles.inputField}
+                value={description}
+                onInput={handleNoteChange}
+                placeholder="点击填写备注（可不填）"
+                placeholderClass={styles.placeholder}
+              />
+            </View>
+          </View>
+        );
+    }
+  };
+
   return (
     <Layout
       showTabBar={false}
@@ -173,41 +300,7 @@ const AddAccount = () => {
             </View>
           </View>
 
-          <View className={styles.inputCard}>
-            <View className={styles.inputItem}>
-              <Text className={styles.inputLabel}>账户名称</Text>
-              <Input
-                className={styles.inputField}
-                value={accountName}
-                onInput={handleNameChange}
-                placeholder="请输入账户名称"
-                placeholderClass={styles.placeholder}
-              />
-            </View>
-
-            <View className={styles.inputItem}>
-              <Text className={styles.inputLabel}>余额</Text>
-              <Input
-                className={styles.inputField}
-                value={balance}
-                onInput={handleBalanceChange}
-                type="digit"
-                placeholder="请输入账户余额"
-                placeholderClass={styles.placeholder}
-              />
-            </View>
-
-            <View className={styles.inputItem}>
-              <Text className={styles.inputLabel}>备注</Text>
-              <Input
-                className={styles.inputField}
-                value={description}
-                onInput={handleNoteChange}
-                placeholder="点击填写备注（可不填）"
-                placeholderClass={styles.placeholder}
-              />
-            </View>
-          </View>
+          {renderFormByAccountType()}
 
           <Button
             loading={loading}
@@ -218,7 +311,6 @@ const AddAccount = () => {
               backgroundColor: "#FFE300",
               color: "#333",
               border: "none",
-              marginTop: 12,
             }}
           >
             {isEdit ? "更新" : "保存"}
