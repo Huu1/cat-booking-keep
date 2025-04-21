@@ -9,25 +9,25 @@ interface AddRecordButtonProps {
 }
 
 const AddRecordButton = ({ onAddRecord }: AddRecordButtonProps) => {
-  const [buttonBottom, setButtonBottom] = useState(120);
+  // const [buttonBottom, setButtonBottom] = useState(120);
 
-  useEffect(() => {
-    const systemInfo = Taro.getSystemInfoSync();
-    const tabBarHeight = 56;
-    const safeAreaBottom = systemInfo.safeArea
-      ? systemInfo.screenHeight - systemInfo.safeArea.bottom
-      : 0;
-    setButtonBottom(tabBarHeight + safeAreaBottom + 20);
-  }, []);
+  // useEffect(() => {
+  //   const systemInfo = Taro.getSystemInfoSync();
+  //   const tabBarHeight = 56;
+  //   const safeAreaBottom = systemInfo.safeArea
+  //     ? systemInfo.screenHeight - systemInfo.safeArea.bottom
+  //     : 0;
+  //   setButtonBottom(tabBarHeight + safeAreaBottom + 20);
+  // }, []);
 
   return (
     <View
       className={styles.addRecordButton}
-      style={{ bottom: buttonBottom + "px" }}
+      style={{ bottom: 20 + "px" }}
       onClick={onAddRecord}
     >
       <View className={styles.addButtonInner}>
-        {/* <IconFont type="icon-tianjia" size={20} color="#333" /> */}
+        <IconFont type="icon-tianjia" size={20} color="#fff" />
         <Text className={styles.addButtonText}>记一笔</Text>
       </View>
     </View>

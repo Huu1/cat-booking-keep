@@ -23,7 +23,6 @@ const recordTypeOptions = [
   { value: "income", label: "收入" },
 ];
 
-
 // 基础状态管理
 interface FormState {
   amount: string;
@@ -298,14 +297,14 @@ const Index = () => {
     [updateFormState]
   );
 
-  const getImages=()=>{
+  const getImages = () => {
     const instance = Taro.getCurrentInstance();
     const params = instance?.router?.params || {};
     if (params.images) {
       return params.images?.split(",");
     }
     return [];
-  }
+  };
 
   return (
     <Layout
@@ -321,37 +320,38 @@ const Index = () => {
         onCategorySelect={handlers.handleCategorySelect}
       />
 
-      <View className={styles.actrionPanel}>
-        {/* <AccountSelector
-          selectedAccountId={formState.accountId as any}
-          onSelect={handlers.handleAccountChange}
-        /> */}
-
-        <ChooseImage
-          onImageSelected={(urls: string[]) => {
-            updateFormState({ images: urls });
-          }}
-          images={formState.images as string[]}
-          maxCount={3}
-        />
-        <BookSelector
-          selectedBookId={formState.bookId as any}
-          onSelect={handlers.handleBookChange}
-        />
-      </View>
-
       <View className={styles.inputContainer}>
-        <AmountDisplay
-          amount={formState.amount}
-          recordType={formState.recordType}
-        />
+        <View>
+          {/* <BookSelector
+            selectedBookId={formState.bookId as any}
+            onSelect={handlers.handleBookChange}
+            className={styles.bookSelector}
+
+          /> */}
+
+          <ChooseImage
+            onImageSelected={(urls: string[]) => {
+              updateFormState({ images: urls });
+            }}
+            images={formState.images as string[]}
+            maxCount={3}
+            className={styles.imageSelector}
+          />
+
+          <View className={styles.h_divider}></View>
+
+          <DateNote
+            note={formState.note}
+            onNoteChange={handlers.handleNoteChange}
+          />
+
+          <AmountDisplay
+            amount={formState.amount}
+            recordType={formState.recordType}
+          />
+        </View>
+
         <View className={styles.divider} />
-        <DateNote
-          note={formState.note}
-          date={formState.date}
-          onNoteChange={handlers.handleNoteChange}
-          onDateChange={handlers.handleDateChange}
-        />
       </View>
 
       <NumberKeyboard
@@ -362,6 +362,9 @@ const Index = () => {
         onAgain={handlers.handleAgain}
         disabled={isSubmitting}
         isEditMode={editState.isEditMode} // 传递编辑模式状态
+
+        date={formState.date}
+        onDateChange={handlers.handleDateChange}
       />
 
       <SafeArea position="bottom" />

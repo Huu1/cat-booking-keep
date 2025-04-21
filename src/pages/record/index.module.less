@@ -24,6 +24,21 @@
   background-color: white;
   margin-bottom: 20rpx;
   border-radius: 24rpx;
+  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.75);
+  > View:nth-child(1) {
+    display: flex;
+    align-items: center;
+    margin-left: 16rpx;
+  }
+}
+
+.h_divider {
+  height: 18px;
+  width: 2px;
+  background-color: rgba(0, 0, 0, 0.75);
+  margin-left: 12px;
+  border-radius: 4px;
 }
 
 .divider {
@@ -31,3 +46,23 @@
   background-color: @border-color;
   margin: 0 30rpx;
 }
+
+.topControls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+  padding: 0 16rpx;
+}
+
+.bookSelector {
+  background-color: rgba(0, 0, 0, 0.03);
+  border-radius: 16rpx;
+  padding: 8rpx 16rpx;
+  transition: all 0.2s ease;
+
+  &:active {
+    background-color: rgba(0, 0, 0, 0.06);
+  }
+}
+

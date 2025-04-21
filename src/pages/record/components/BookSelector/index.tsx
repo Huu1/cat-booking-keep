@@ -21,11 +21,13 @@ interface Book {
 interface BookSelectorProps {
   selectedBookId?: number;
   onSelect: (bookId: number) => void;
+  className?: string;
 }
 
 const BookSelector: React.FC<BookSelectorProps> = ({
   selectedBookId,
   onSelect,
+  className=''
 }) => {
   const [visible, setVisible] = useState(false);
 
@@ -52,8 +54,8 @@ const BookSelector: React.FC<BookSelectorProps> = ({
 
   return (
     <>
-      <View className={styles.bookSelector} onClick={handleOpen}>
-        <Text className={styles.bookName}>{selectedBook?.name}</Text>
+      <View className={`${styles.bookSelector } ${ className}`} onClick={handleOpen}>
+        <IconFont type="icon-shouzhizhangben" />
       </View>
 
       <Popup

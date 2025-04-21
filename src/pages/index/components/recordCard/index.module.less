@@ -59,6 +59,21 @@
   border-radius: 32rpx;
   overflow: hidden;
   margin-top: 12rpx;
+  position: relative;
+  :global(.nut-swipe) {
+
+
+    &:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 0px;
+      height: 1px;
+      background-color: @border-color;
+      z-index: 0;
+    }
+  }
 }
 
 .recordItem {
@@ -67,23 +82,7 @@
   padding: 8px 16px;
   background-color: @background-white;
   position: relative;
-
-  &::before {
-    content: "";
-    position: absolute;
-    height: 1px;
-    background-color: @border-color;
-    left: 14px;
-    right: 14px;
-    bottom: 1px;
-  }
-
-  &:last-child {
-    border-bottom: none;
-    &::before {
-      display: none;
-    }
-  }
+  transition: transform 0.2s ease;
 }
 
 .iconWrapper {
@@ -115,7 +114,7 @@
 .category {
   font-size: 14px;
   color: @primary-text;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .subCategory {
@@ -157,3 +156,15 @@
 .hasImage {
   align-self: flex-start;
 }
+
+.deleteButton {
+  height: calc(100% - 1px);
+  width: 120rpx;
+  background-color: #ff4d4f;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+

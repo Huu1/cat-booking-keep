@@ -45,13 +45,11 @@ interface LayoutProps {
 // 在 Layout 组件中
 const Layout: React.FC<LayoutProps> = ({
   children,
-  currentTab,
-  showTabBar = true,
   navBar,
   bodyClassName,
   wrapClassName,
 }) => {
-  const [contentHeight, setContentHeight] = useState("100%");
+  const [contentHeight, setContentHeight] = useState();
   const [navBarHeight, setNavBarHeight] = useState(48); // 默认导航栏高度
   const _className = cs(styles.pageContainer, wrapClassName);
 
@@ -72,24 +70,10 @@ const Layout: React.FC<LayoutProps> = ({
     // 获取系统信息
     const systemInfo = Taro.getSystemInfoSync();
 
-    if (showTabBar) {
-      // 获取底部安全区域高度
-      const safeAreaBottom = systemInfo.safeArea
-        ? systemInfo.screenHeight - systemInfo.safeArea.bottom
-        : 0;
-      // 标准底部导航栏高度 + 安全区域高度
-      const tabBarHeight = 56 + safeAreaBottom;
-
-      // 使用实际的导航栏高度计算内容区域高度
-      const calculatedHeight =
-        systemInfo.windowHeight - tabBarHeight - navBarHeight;
-      setContentHeight(`${calculatedHeight}px`);
-    } else {
-      // 不显示TabBar时，内容区域高度 = 屏幕高度 - 导航栏高度
-      const calculatedHeight = systemInfo.windowHeight - navBarHeight;
-      setContentHeight(`${calculatedHeight}px`);
-    }
-  }, [showTabBar, navBarHeight]); // 添加 navBarHeight 作为依赖
+    // 不显示TabBar时，内容区域高度 = 屏幕高度 - 导航栏高度
+    const calculatedHeight = systemInfo.windowHeight - navBarHeight;
+    setContentHeight(`${calculatedHeight}px`);
+  }, [navBarHeight]); // 添加 navBarHeight 作为依赖
 
   return (
     <View className={styles.layoutContainer}>
@@ -114,7 +98,7 @@ const Layout: React.FC<LayoutProps> = ({
           {children}
         </View>
       </ScrollView>
-      {showTabBar && <TabBar current={currentTab as any} tabs={tabs} />}
+      {/* {showTabBar && <TabBar current={currentTab as any} tabs={tabs} />} */}
     </View>
   );
 };

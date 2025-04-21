@@ -12,6 +12,7 @@ interface ChooseImageProps {
   onImageSelected?: (imageUrls: string[]) => void;
   maxCount?: number;
   images?: string[]; // 添加 images 属性用于回显
+  className?: string;
 }
 
 // 初始化时，将已有的图片转换为 FileItem 格式
@@ -30,6 +31,7 @@ const Index: React.FC<ChooseImageProps> = ({
   onImageSelected,
   maxCount = 3,
   images = [],
+  className
 }) => {
   const [list, setList] = useState<FileItem[]>(() => {
     return initImageList(images);
@@ -72,15 +74,15 @@ const Index: React.FC<ChooseImageProps> = ({
 
   return (
     <View
-      className={styles.pictureBox}
+      className={`${styles.pictureBox} ${ className}`}
       onClick={() => {
         setVisible(true);
       }}
     >
       <IconFont
-        type="icon-zhaopian"
-        size={16}
-        color={images.length > 0 ? "#0b88f6" : "#000"}
+        type="icon-xiangji"
+        size={28}
+        // color={images.length > 0 ? "#0b88f6" : "#000"}
       />
 
       <Popup

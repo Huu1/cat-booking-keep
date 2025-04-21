@@ -1,63 +1,127 @@
 @import '@/styles/variables.less';
 
+.monthStaticWrapper {
+  position: relative;
+  padding-bottom: 20px;
+}
+
+.swiper {
+  height: 140px;
+  width: 100%;
+}
+
 .monthStatic {
-  padding: 32rpx 28rpx;
-  background: linear-gradient(135deg, #fff590 0%, #fdfcd6 100%);
-  border-radius: 32rpx;
-  margin: 30rpx;
-  box-shadow: 0 6rpx 16rpx rgba(0, 0, 0, 0.04);
-  font-family: PingFang SC;
+  background-color: #fff;
+  border-radius: 14px;
+  padding: 12px 16px;
+  height: 100%;
+  margin: 0 8px;
+  background: linear-gradient(60deg, #fef28e 0%, #fff17b 80%);
+  border: 1px solid #f4e77a;
+  box-sizing: border-box;
+}
 
-  > view:first-child {
-    font-weight: 500;
-    font-size: 30rpx;
-    color: #000;
-    letter-spacing: 1rpx;
-  }
+.statItem {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', STHeiti, 'Microsoft Yahei', Tahoma, Simsun, sans-serif;
+  letter-spacing: 0.2px;
+}
 
-
-
-  .bottomRow {
-    display: flex;
-    gap: 40rpx;
-    > View {
-      display: flex;
-      gap: 6rpx;
-      align-items: center;
-      > Text:first-child {
-        font-family: PingFang SC;
-        color: #666666;
-        font-size: 26rpx;
-      }
-    }
-  }
+.statLabel {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 2px;
+  font-weight: normal;
 }
 
 .amountBox {
-  color: #333333;
+  display: flex;
+  align-items: baseline;
   font-weight: 500;
-  > text:first-child {
-    display: inline-block;
-    margin-right: 6rpx;
-    font-size: 16px;
-  }
-  > text:last-child {
-    font-size: 16px;
-  }
+  letter-spacing: 0;
+  font-feature-settings: "tnum";
+}
+
+.currency {
+  font-size: 14px;
+  margin-right: 2px;
 }
 
 .expenseNumber {
-  font-family: PingFang SC;
-  font-weight: bold;
-  color: #111111;
-  margin-top: 14rpx;
-  margin-bottom: 28rpx;
-  letter-spacing: 0.5rpx;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
-  > text:first-child {
-    font-size: 28px;
-  }
-  > text:last-child {
-    font-size: 28px;
-  }
+  font-size: 28px;
+  color: #333;
+  font-weight: 600;
+}
+
+.incomeNumber {
+  font-size: 22px;
+  color: #333;
+  font-weight: 500;
+}
+
+.balanceNumber {
+  font-size: 22px;
+  color: #333;
+  font-weight: 500;
+}
+
+.budgetNumber {
+  font-size: 22px;
+  color: #6c5ce7;
+  font-weight: 600;
+}
+
+.avgNumber {
+  font-size: 20px;
+  color: #ff9f43;
+  font-weight: 500;
+}
+
+.recordCount {
+  font-size: 20px;
+  color: #555;
+  font-weight: 500;
+}
+
+.statRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.statRow .statItem {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.divider {
+  width: 0px;
+  height: 55px;
+  background-color: #eee;
+  margin: 0 20px;
+}
+
+.indicators {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: #ddd;
+  margin: 0 4px;
+  transition: all 0.3s;
+}
+
+.indicator.active {
+  width: 18px;
+  background-color: #4285f4;
 }

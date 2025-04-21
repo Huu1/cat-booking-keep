@@ -1,94 +1,200 @@
 .container {
-  background-color: #f8f8f8;
-  padding: 20px;
+}
+
+.billBox {
+  position: relative;
+  &.billShow {
+    animation: unrollBill 0.6s ease-out forwards;
+  }
+
+  &::before {
+    position: absolute;
+    right: 10px;
+    top: 12px;
+    width: 57px;
+    height: 28px;
+    content: "";
+    background-image: url(https://static.licdn.com/scds/common/u/images/apps/payments/photo/photo_paperclip_57x28_v1.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    transform-origin: center;
+    z-index: 999;
+  }
+
+
+
+
+}
+
+@keyframes unrollBill {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(20px);
+  }
+}
+
+.billTop {
+  position: relative; // 添加相对定位
+
+  background: #fff;
+  margin: 20px;
+  margin-top: 0;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+
+    // 遮罩层调整到伪元素之下
+    -webkit-mask-image: radial-gradient(
+      circle at 10px 120px,
+      transparent 10px,
+      #fff 10.5px
+    ),
+    linear-gradient(90deg, transparent 25%, #fff 0, #fff 75%, transparent 0);
+  -webkit-mask-size: 100%, 34px 3px;
+  -webkit-mask-repeat: repeat, repeat-x;
+  -webkit-mask-position: -10px, 50% 118.5px;
+  -webkit-mask-composite: source-out;
+  mask-composite: subtract;
+
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+
+
+}
+
+.billBottom {
+  border-radius: 16px;
+  margin: 20px;
+  padding: 24px;
+  padding-top: 0;
+
+  margin-top: -14px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+
+  background: #fff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+
+  -webkit-mask-image: radial-gradient(
+    circle at 50% 11px,
+    transparent 11px,
+    #fff 11.5px
+  );
+  -webkit-mask-position: 50% -11px;
+  -webkit-mask-size: 35px 100%;
+}
+
+.iconWrapper {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.expense {
+    border: 3px solid #ff6b6b;
+  }
+
+  &.income {
+    border: 3px solid #b2f2bb;
+  }
+}
+
+.billHeader {
   display: flex;
   flex-direction: column;
-  gap: 16rpx;
-}
-
-.loading {
-  display: flex;
-  justify-content: center;
   align-items: center;
-  height: 240px;
-  color: #999;
-  font-size: 15px;
+  padding-bottom: 24px;
+  // border-bottom: 3px dashed #e8f5e9;
+  margin-bottom: 24px;
 }
 
-.empty {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 240px;
-  color: #999;
-  font-size: 15px;
-}
-
-.actionButtons {
-  display: flex;
-  justify-content: space-around;
-  border-radius: 24rpx;
-  margin-bottom: 22rpx;
-  gap: 28rpx;
-}
-
-.actionButton {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: #fff;
-  padding: 24rpx 0;
-  border-radius: 22rpx;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  transition: all 0.2s ease;
-}
-
-.actionButton:active {
-  transform: scale(0.98);
-  opacity: 0.9;
-}
-
-.actionText {
-  font-size: 13px;
-  margin-top: 10px;
+.categoryName {
+  margin-top: 12px;
+  font-size: 18px;
+  color: #333;
   font-weight: 500;
 }
 
-.detailCard {
-  background-color: #fff;
-  border-radius: 24rpx;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  margin-bottom: 8rpx;
+.billContent {
+  padding: 0 12px;
 }
 
 .detailItem {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 18px 20px;
-  border-bottom: 1px solid #f0f0f0;
-}
+  padding: 12px 0;
+  font-size: 15px;
 
-.detailItem:last-child {
-  border-bottom: none;
+  &:not(:last-child) {
+    border-bottom: 1px dashed #f5f5f5;
+  }
 }
 
 .itemLabel {
-  font-size: 15px;
   color: #666;
-  font-weight: 400;
 }
 
 .itemValue {
-  display: flex;
-  align-items: center;
-  font-size: 15px;
   color: #333;
+
+  &.amount {
+    font-size: 18px;
+  }
 }
 
-.itemValue text:not(:last-child) {
-  margin-right: 8px;
+.billFooter {
+  display: flex;
+  padding-top: 24px;
+  margin-top: -10px;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+}
+
+.actionButton {
+  flex: 1;
+  display: flex;
+  padding: 12px;
+  align-items: flex-start;
+  justify-content: center;
+  font-size: 16px;
+  color: #333;
+
+  &.deleteButton {
+    background: #fff9db;
+    color: #ff6b6b;
+  }
+
+  &.editButton {
+    background: #b2f2bb;
+    color: #fff;
+  }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: #666;
+}
+
+.empty {
+  text-align: center;
+  padding: 40px;
+  color: #999;
 }

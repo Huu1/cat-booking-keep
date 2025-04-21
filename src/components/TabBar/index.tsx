@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text } from "@tarojs/components";
+import { View, Text, CoverView } from "@tarojs/components";
 import Taro from "@tarojs/taro";
 import IconFont from "@/components/Iconfont";
 import styles from "./index.module.less";
@@ -41,7 +41,7 @@ const TabBar: React.FC<TabBarProps> = ({ current, tabs, onChange }) => {
   };
 
   return (
-    <View
+    <CoverView
       className={styles.tabBarContainer}
       style={{
         paddingBottom: `${safeAreaBottom}px`,
@@ -50,12 +50,12 @@ const TabBar: React.FC<TabBarProps> = ({ current, tabs, onChange }) => {
       }}
     >
       {tabs.map((tab) => (
-        <View
+        <CoverView
           key={tab.key}
           className={styles.tabItem}
           onClick={() => handleTabClick(tab)}
         >
-          <View
+          <CoverView
             className={`${styles.iconWrapper} ${
               current === tab.key ? styles.active : ""
             }`}
@@ -65,17 +65,17 @@ const TabBar: React.FC<TabBarProps> = ({ current, tabs, onChange }) => {
               size={22}
               color={current === tab.key ? "#4285f4" : "#999999"}
             />
-          </View>
-          <Text
+          </CoverView>
+          <CoverView
             className={`${styles.tabTitle} ${
               current === tab.key ? styles.active : ""
             }`}
           >
             {tab.title}
-          </Text>
-        </View>
+          </CoverView>
+        </CoverView>
       ))}
-    </View>
+    </CoverView>
   );
 };
 

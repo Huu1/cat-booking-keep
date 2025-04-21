@@ -4,12 +4,13 @@
   flex: 1;
   overflow: auto;
   margin-bottom: 12rpx;
-  // background-color: @primary-background;
+  padding: 12rpx 0;
 }
 
 .categoriesGrid {
   display: flex;
   flex-wrap: wrap;
+  padding: 0 12rpx;
 }
 
 .categoryItem {
@@ -17,29 +18,59 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20rpx 0;
+  padding: 16rpx 0;
+
+  // &:active {
+  //   // transform: scale(0.95);
+  // }
 }
 
 .categoryIcon {
-  width: 86rpx;
-  height: 86rpx;
+  width: 100rpx;
+  height: 100rpx;
   border-radius: 50%;
-  background-color: #ececec;
+  background-color: #f5f5f5;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 10rpx;
+  margin-bottom: 12rpx;
+  transition: all 0.1s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.65);
 }
 
 .expenseCategoryIcon {
   .expenseIcon();
+  background-color: rgba(255, 107, 107, 0.3);
+  border: 2px solid rgba(255, 107, 107, 0.6);
 }
 
 .incomeCategoryIcon {
   .incomeIcon();
+  background-color: rgba(82, 196, 26, 0.3);
+  border: 2px solid rgba(82, 196, 26, 0.6);
 }
 
 .categoryName {
   font-size: 24rpx;
-  color: #333;
+  color: #666;
+  // transition: all 0.2s ease;
+  // line-height: 1.4;
+  font-weight: 400;
+  margin-top: 8rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  // max-width: 90%;
+}
+
+.selectedCategory {
+  // .categoryIcon {
+  //   // transform: scale(1.05);
+  // }
+
+  // .categoryName {
+  //   // color: #333;
+  //   // font-weight: 500;
+  // }
 }

@@ -1,6 +1,6 @@
 export default defineAppConfig({
   pages: [
-    'pages/index/index',
+    "pages/index/index",
     "pages/record/index",
     // "pages/account/index",
     // "pages/accountType/index",
@@ -11,19 +11,36 @@ export default defineAppConfig({
     "pages/addBook/index",
     "pages/my/index",
     "pages/statistics/index",
-    'pages/login/index',  // 添加登录页面
+    "pages/login/index", // 添加登录页面
   ],
   window: {
     backgroundTextStyle: "dark",
     navigationBarTextStyle: "black",
     navigationStyle: "custom",
   },
-
-  // // 小程序中需要配置外部样式表
-  // externalClasses: ['external-class'],
-
-  // // 配置在线图标库
-  // externalStyleSheets: [
-  //   '//at.alicdn.com/t/c/font_4866695_uetnhwq310a.css'
-  // ]
+  tabBar: {
+    color: "#999", // 未选中的文字颜色
+    selectedColor: "#999", // 选中时的文字颜色
+    backgroundColor: "#ffffff", // TabBar 背景色
+    list: [
+      {
+        pagePath: "pages/index/index",
+        text: "首页",
+        iconPath: "assets/tabbar/home.png",
+        selectedIconPath: "assets/tabbar/home-check.png",
+      },
+      {
+        pagePath: "pages/statistics/index",
+        text: "统计",
+        iconPath: "assets/tabbar/static.png",
+        selectedIconPath: "assets/tabbar/static-check.png",
+      },
+      {
+        pagePath: "pages/my/index",
+        text: "我的",
+        iconPath: "assets/tabbar/my.png",
+        selectedIconPath: "assets/tabbar/my-check.png",
+      },
+    ],
+  },
 });
