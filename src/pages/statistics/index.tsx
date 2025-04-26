@@ -47,7 +47,7 @@ const Statistics = () => {
   });
 
   // 当前选中的日期类型
-  const [dateType, setDateType] = useState<TDateType>("week");
+  const [dateType, setDateType] = useState<TDateType>("month");
   // 当前日期
   const [currentDate, setCurrentDate] = useState(new Date());
 

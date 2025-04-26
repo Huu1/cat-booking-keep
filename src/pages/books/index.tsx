@@ -165,45 +165,43 @@ const Books = () => {
                 className={styles.bookCard}
                 onClick={() => handleSetDefault(book)}
               >
-                <View className={styles.bookHeader}>
-                  <View
-                    className={styles.bookIcon}
-                    style={{ backgroundColor: book.color }}
-                  >
-                    <IconFont type={book.icon} size={22} color="#fff" />
+                <View className={styles.bookSpine} style={{ backgroundColor: book.color }}></View>
+                <View className={styles.bookInner}>
+                  <View className={styles.bookHeader}>
+                    <View
+                      className={styles.bookIcon}
+                      style={{ backgroundColor: book.color }}
+                    >
+                      <IconFont type={book.icon} size={22}  />
+                    </View>
+
+                    <IconFont
+                      type="icon-gengduo"
+                      size={22}
+                      color="#666"
+                      className={styles.moreIcon}
+                      onClick={((e) => handleMoreClick(e, book)) as any}
+                    />
                   </View>
 
-                  <IconFont
-                    type="icon-gengduo"
-                    size={22}
-                    color="#4285f4"
-                    className={styles.moreIcon}
-                    onClick={((e) => handleMoreClick(e, book)) as any}
-                  />
-                </View>
+                  <View className={styles.bookContent}>
+                    <Text className={styles.bookName}>{book.name}</Text>
 
-                <View className={styles.bookContent}>
-                  <Text className={styles.bookName}>{book.name}</Text>
-
-                  <View className={styles.bookActions}>
-                    {defaultBook?.id === book.id ? (
-                      <View className={styles.checkIcon}>
-                        <IconFont
-                          type="icon-xuanze"
-                          size={24}
-                          color="#4285f4"
-                        />
-                      </View>
-                    ) : (
-                      <></>
-                    )}
+                    <View className={styles.bookActions}>
+                      {defaultBook?.id === book.id ? (
+                        <View className={styles.checkIcon}>
+                          <IconFont
+                            type="icon-xuanze"
+                            size={18}
+                            color={book.color}
+                          />
+                        </View>
+                      ) : (
+                        <></>
+                      )}
+                    </View>
                   </View>
                 </View>
-                {/* {book.description && (
-                  <Text className={styles.bookDescription}>
-                    {book.description}
-                  </Text>
-                )} */}
               </View>
             ))}
 
@@ -214,7 +212,7 @@ const Books = () => {
             >
               <View className={styles.addBookContent}>
                 <View className={styles.addBookIcon}>
-                  <IconFont type="icon-xinjian" size={20} color="#fff" />
+                  <IconFont type="icon-xinjian" size={24} color="#fff" />
                 </View>
                 <Text className={styles.addBookText}>新建账本</Text>
               </View>

@@ -114,11 +114,11 @@ const Index = () => {
 
                   <View className={styles.userStats}>
                     <View className={styles.statItem}>
-                      <Text className={styles.statValue}>30</Text>
+                      <Text className={styles.statValue}>0</Text>
                       <Text className={styles.statLabel}>记账天数</Text>
                     </View>
                     <View className={styles.statItem}>
-                      <Text className={styles.statValue}>128</Text>
+                      <Text className={styles.statValue}>0</Text>
                       <Text className={styles.statLabel}>记账笔数</Text>
                     </View>
                   </View>
@@ -157,7 +157,7 @@ const Index = () => {
             <View className={styles.menuSection}>
               <View
                 className={styles.menuItem}
-                onClick={() => handleMenuClick("about")}
+                // onClick={() => handleMenuClick("about")}
               >
                 <View className={styles.menuLeft}>
                   <View
@@ -172,7 +172,7 @@ const Index = () => {
               </View>
               <View
                 className={styles.menuItem}
-                onClick={() => handleMenuClick("feedback")}
+                // onClick={() => handleMenuClick("feedback")}
               >
                 <View className={styles.menuLeft}>
                   <View

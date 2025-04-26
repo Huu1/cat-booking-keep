@@ -1,4 +1,4 @@
-@import '@/styles/variables.less';
+@import "@/styles/variables.less";
 
 .monthStaticWrapper {
   position: relative;
@@ -6,7 +6,7 @@
 }
 
 .swiper {
-  height: 140px;
+  height: 120px;
   width: 100%;
 }
 
@@ -17,15 +17,17 @@
   height: 100%;
   margin: 0 8px;
   background: linear-gradient(60deg, #fef28e 0%, #fff17b 80%);
-  border: 1px solid #f4e77a;
+  // border: 1px solid #f4e77a;
   box-sizing: border-box;
 }
 
 .statItem {
+  margin-top: 4px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 16px;
-  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', STHeiti, 'Microsoft Yahei', Tahoma, Simsun, sans-serif;
+  margin-bottom: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC",
+    "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
   letter-spacing: 0.2px;
 }
 
@@ -50,21 +52,22 @@
 }
 
 .expenseNumber {
-  font-size: 28px;
+  margin-top: 4px;
+  font-size: 30px;
   color: #333;
-  font-weight: 600;
+  // font-weight: 600;
 }
 
 .incomeNumber {
-  font-size: 22px;
-  color: #333;
-  font-weight: 500;
+  font-size: 16px;
+  color: #555;
+  margin-left: 6px;
 }
 
 .balanceNumber {
-  font-size: 22px;
-  color: #333;
-  font-weight: 500;
+  font-size: 16px;
+  color: #555;
+  margin-left: 6px;
 }
 
 .budgetNumber {
@@ -87,20 +90,17 @@
 
 .statRow {
   display: flex;
-  justify-content: space-between;
+  // justify-content: space-between;
+  gap: 42px;
   align-items: flex-start;
+  > View {
+    display: flex;
+  }
 }
 
 .statRow .statItem {
   flex: 1;
   margin-bottom: 0;
-}
-
-.divider {
-  width: 0px;
-  height: 55px;
-  background-color: #eee;
-  margin: 0 20px;
 }
 
 .indicators {
@@ -124,4 +124,192 @@
 .indicator.active {
   width: 18px;
   background-color: #4285f4;
+}
+
+.rowStatItem {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.budgetPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.budgetHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.budgetTitle {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333;
+}
+
+.budgetAction {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.budgetActionText {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.budgetProgress {
+  margin-top: 8rpx;
+}
+
+.progressBar {
+  height: 16rpx;
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 8rpx;
+  overflow: hidden;
+  margin-bottom: 12rpx;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(to right, #2ecc71, #e74c3c);
+  border-radius: 8rpx;
+  transition: width 0.3s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.budgetInfo {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.budgetTitle {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.overBudget {
+  background-color: rgba(231, 76, 60, 0.2);
+  border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+.remainBudget {
+  background-color: rgba(46, 204, 113, 0.2);
+  border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+.overBudgetText {
+  font-size: 24rpx;
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+.remainBudgetText {
+  font-size: 24rpx;
+  color: #2ecc71;
+  font-weight: 600;
+}
+
+.budgetTips {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2px;
+}
+
+.overBudget, .remainBudget {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 8rpx 16rpx;
+  border-radius: 16rpx;
+}
+
+.overBudget {
+  background-color: rgba(255, 107, 107, 0.1);
+}
+
+.remainBudget {
+  background-color: rgba(81, 207, 102, 0.1);
+}
+
+.overBudgetText {
+  font-size: 24rpx;
+  color: #ff6b6b;
+  font-weight: 500;
+}
+
+.remainBudgetText {
+  font-size: 24rpx;
+  color: #51cf66;
+  font-weight: 500;
+}
+
+// 预算设置弹窗样式
+.budgetPopup {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.budgetPopupTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.budgetInputWrapper {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+}
+
+.budgetInputPrefix {
+  font-size: 24px;
+  font-weight: 500;
+  color: #333;
+  margin-right: 8px;
+}
+
+.budgetInput {
+  flex: 1;
+  font-size: 24px;
+  color: #333;
+  border: none;
+  padding: 0;
+  background: transparent;
+}
+
+.budgetPopupButtons {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.budgetCancelBtn {
+  flex: 1;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+  color: #666;
+  border: none;
+}
+
+.budgetConfirmBtn {
+  flex: 1;
+  border-radius: 8px;
+  background: linear-gradient(to right, #2ecc71, #27ae60);
+  color: #fff;
+  border: none;
 }

@@ -71,7 +71,8 @@ const Layout: React.FC<LayoutProps> = ({
     const systemInfo = Taro.getSystemInfoSync();
 
     // 不显示TabBar时，内容区域高度 = 屏幕高度 - 导航栏高度
-    const calculatedHeight = systemInfo.windowHeight - navBarHeight;
+    const calculatedHeight =
+      systemInfo.windowHeight - (navBar ? navBarHeight : 0);
     setContentHeight(`${calculatedHeight}px`);
   }, [navBarHeight]); // 添加 navBarHeight 作为依赖
 
